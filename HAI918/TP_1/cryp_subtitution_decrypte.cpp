@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include "image_ppm.h"
 #include <math.h>
+#include <typeinfo>
 
 float PSNR(OCTET *ImgA, OCTET *ImgB, int nH, int nW){
   float eqm = 0;
@@ -23,13 +24,13 @@ float ENT(float *Hist){
     //printf("log = %f\n",double(sum) + double(Hist[i]*log2(Hist[i])));
     sum += double((Hist[i]*log2(Hist[i])));
   }
-  printf("%f\n", -sum);
+  // printf("%f\n", -sum);
   return -sum;
 }
 
 int main(int argc, char* argv[])
 {
-  char cNomImgLue[250], cNomImgEcrite[250];
+  char cNomImgLue[250], cNomImgEcrite[250], test[250], number[250], extension[250];
   int nH, nW, nTaille, S;
   
   if (argc != 3) 
@@ -40,6 +41,15 @@ int main(int argc, char* argv[])
    
    sscanf (argv[1],"%s",cNomImgLue) ;
    sscanf (argv[2],"%s",cNomImgEcrite);
+   sscanf ("hello.pgm","%s",test);
+  char test_2[250]="test";
+  sprintf(number, "%d", 0);
+  sprintf(extension, "%s", ".pgm");
+
+  char *cat;
+  asprintf(&cat, "%s%s%s", test_2, number, extension);
+  puts(cat);
+  printf("%s\n", cat);
 
    OCTET *ImgIn,*ImageDechiffre;
    int *key ;
@@ -59,7 +69,6 @@ int main(int argc, char* argv[])
       {
         if(i+j != 0){
           ImageDechiffre[i*nW+j] = (ImgIn[i*nW+j] - ImgIn[i*nW+j-1]-rand()%256)%256;
-          //printf("ImageDechiffre[i*nW+j] = %i\n", ImageDechiffre[i*nW+j]);
         }
       }
     
@@ -82,8 +91,9 @@ int main(int argc, char* argv[])
       ecrire_image_pgm(cNomImgEcrite, ImageDechiffre,  nH, nW);
     }
   }
-
+  ecrire_image_pgm(cat, ImageDechiffre,  nH, nW);
   //Histogramme
+  /*
   int * tabHisto;
   allocation_tableau(tabHisto, int, 256);
   for(int i = 0; i < 256; i++){
@@ -93,7 +103,7 @@ int main(int argc, char* argv[])
     for (int i=0; i < nH; i++)
         for (int j=0; j < nW; j++)
             tabHisto[ImgIn[i*nW+j]] += 1;
-    
+    */
   //ENT(tabHisto);
   //** Dechiffrage
 
