@@ -4,19 +4,18 @@
 #include "image_ppm.h"
 
 
-float PSNR(OCTET *ImgA, OCTET *ImgB, int nH, int nW){
-  float eqm = 0;
+double PSNR(OCTET *ImgA, OCTET *ImgB, int nH, int nW){
+  double eqm = 0;
   for (int i=0; i < nH; i++)
    for (int j=0; j < nW; j++)
      {
-      eqm = ImgA[i*nW+j]*ImgB[i*nW+j];
+      eqm += pow(ImgA[i*nW+j]-ImgB[i*nW+j],2);
     }
-
-  eqm = eqm*(1/(nW*nH));
-  return 10*log((255*255));
+  
+  eqm /= (nW*nH);
+  return 10*log10(pow(255,2)/eqm);
 
 }
-
 int main(int argc, char* argv[])
 {
   char cNomImgLue[250], cNomImgEcrite[250], cNomImgEcrite_2[250];
