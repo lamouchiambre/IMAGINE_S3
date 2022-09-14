@@ -56,8 +56,22 @@ int main(int argc, char* argv[])
       if(i+j != 0){
         ImgOut[i*nW+j] = (ImgOut[i*nW+j-1] + ImgIn[i*nW+j]+rand()%256)%256;
       }
-
      }
+    //Histogramme
+  int * tabHisto;
+  allocation_tableau(tabHisto, int, 256);
+  for(int i = 0; i < 256; i++){
+        tabHisto[i] = 0;
+    }
+
+    for (int i=0; i < nH; i++)
+        for (int j=0; j < nW; j++)
+            tabHisto[ImgOut[i*nW+j]] += 1;
+        
+    for (int i = 0; i < 256; i++)
+    {
+      printf("%d %d \n", i, tabHisto[i]);
+    }
   srand(23);
   //** Dechiffrage
   ImageDechiffre[0] = (ImgOut[0] - rand()%256)%256;
@@ -72,21 +86,7 @@ int main(int argc, char* argv[])
   ecrire_image_pgm(cNomImgEcrite, ImgOut,  nH, nW);
   ecrire_image_pgm(cNomImgEcrite_2, ImageDechiffre,  nH, nW);
 
-  //Histogramme
-  int * tabHisto;
-  allocation_tableau(tabHisto, int, 256);
-  for(int i = 0; i < 256; i++){
-        tabHisto[i] = 0;
-    }
 
-    for (int i=0; i < nH; i++)
-        for (int j=0; j < nW; j++)
-            tabHisto[ImgIn[i*nW+j]] += 1;
-        
-    for (int i = 0; i < 256; i++)
-    {
-      printf("%d %d \n", i, tabHisto[i]);
-    }
     
 
   //** Dechiffrage
