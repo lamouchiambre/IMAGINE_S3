@@ -17,7 +17,8 @@ float PSNR(OCTET *ImgA, OCTET *ImgB, int nH, int nW){
   return 10*log((255*255));
 
 }
-float entropy(OCTET* img, int nH, int nW){
+
+float entropy(unsigned char* img, int nH, int nW){
     int count = 0;
     int* hist = new int[256];
     for (int i=0;i<256;i++){
@@ -36,17 +37,6 @@ float entropy(OCTET* img, int nH, int nW){
     }
     return -res;
 }
-
-float ENT(float *Hist){
-  float sum = 0.0;
-  for(int i=0; i < 256; i++){
-    //printf("log = %f\n",double(sum) + double(Hist[i]*log2(Hist[i])));
-    sum += double((Hist[i]*log2(Hist[i])));
-  }
-  // printf("%f\n", -sum);
-  return -sum;
-}
-
 int main(int argc, char* argv[])
 {
   char cNomImgLue[250], cNomImgEcrite[250], test[250], number[250], extension[250];
@@ -62,13 +52,11 @@ int main(int argc, char* argv[])
    sscanf (argv[2],"%s",cNomImgEcrite);
    sscanf ("hello.pgm","%s",test);
   char test_2[250]="test";
-  sprintf(number, "%d", 0);
   sprintf(extension, "%s", ".pgm");
 
   char *cat;
   asprintf(&cat, "%s%s%s", test_2, number, extension);
   puts(cat);
-  printf("%s\n", cat);
 
    OCTET *ImgIn,*ImageDechiffre;
    int *key ;
@@ -76,27 +64,25 @@ int main(int argc, char* argv[])
    lire_nb_lignes_colonnes_image_pgm(cNomImgLue, &nH, &nW);
    nTaille = nH * nW;
   
-   allocation_tableau(ImgIn, OCTET, nTaille);
+   allocation_tableau(ImgIn, unsigned char, nTaille);
    lire_image_pgm(cNomImgLue, ImgIn, nH * nW);;
-   allocation_tableau(ImageDechiffre, OCTET, nTaille);
+   allocation_tableau(ImageDechiffre, unsigned char, nTaille);
    
   for(int k=0; k < 256; k++){
     srand(k);
-    ImageDechiffre[0] = (ImgIn[0] - rand()%256)%256;
-    for (int i=0; i < nH; i++)
-      for (int j=0; j < nW; j++)
-      {
-        if(i+j != 0){
-          ImageDechiffre[i*nW+j] = (ImgIn[i*nW+j] - ImgIn[i*nW+j-1]-rand()%256)%256;
-        }
+    unsigned char newkey = (unsigned char)rand()%256;
+    ImageDechiffre[0] = (ImgIn[0] - newkey)%256;
+    for (int i=0; i < nTaille; i++){
+      newkey = rand()%256;
+      ImageDechiffre[i] = (ImgIn[i] - ImageDechiffre[i-1]-newkey)%256;
       }
     
-    if(entropy(ImageDechiffre, nH, nW) < 7.9 ){
+    if(entropy(ImageDechiffre,nH, nW ) < 8){
+      printf("entropy %f ", entropy(ImageDechiffre, nH,nW));
       printf("La clée est %i\n", k);
       ecrire_image_pgm(cNomImgEcrite, ImageDechiffre,  nH, nW);
     }
   }
-  ecrire_image_pgm(cat, ImageDechiffre,  nH, nW);
 
    free(ImgIn);
    free(ImageDechiffre);

@@ -1,0 +1,2 @@
+cryp_AES.o: cryp_AES.cpp image_ppm.h AES.h
+AES.o: AES.cpp AES.h
