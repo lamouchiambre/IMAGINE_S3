@@ -16,7 +16,7 @@ int* Histogramme(OCTET *ImgIn, int nW, int nH){
       tabHisto[ImgIn[i*nW+j]] += 1;
   
   for(int i = 0; i < 256; i++){
-    printf("i% i%", i, tabHisto[i]);
+    printf("%i %i \n", i, tabHisto[i]);
   }
   
   return tabHisto;
@@ -86,18 +86,41 @@ int main(int argc, char* argv[])
 
   srand(1);
   OCTET key[] = { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f };
-  unsigned int len_bytes = nTaille * sizeof(OCTET);
-   AES aes(AESKeyLength::AES_128);
+  OCTET vector_in[] = { 0x00, 0x00, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f };
 
-   ImgOut = aes.EncryptECB(ImgIn, len_bytes, key);
-   ImgDecr = aes.DecryptECB(ImgOut, len_bytes, key);
-   printf("%i\n", ImgDecr[0]);
+  unsigned int len_bytes = nTaille * sizeof(OCTET);
+  AES aes(AESKeyLength::AES_128);
+
+  // CBC
+  // ImgOut = aes.EncryptCBC(ImgIn, len_bytes, key, vector_in);
+  // ImgDecr = aes.DecryptCBC(ImgOut, len_bytes, key, vector_in);
+  
+  // CFB
+  // ImgOut = aes.EncryptCFB(ImgIn, len_bytes, key, vector_in);
+  // ImgDecr = aes.DecryptCFB(ImgOut, len_bytes, key, vector_in);
+
+  // OFB
+  //ImgOut = aes.EncryptOFB(ImgIn, len_bytes, key, vector_in);
+  //ImgDecr = aes.DecryptOFB(ImgOut, len_bytes, key, vector_in);
+
+    // OFB
+  ImgOut = aes.EncryptCTR(ImgIn, len_bytes, key);
+  ImgDecr = aes.DecryptCTR(ImgOut, len_bytes, key);
+
+  // ECB 
+  // ImgOut = aes.EncryptECB(ImgIn, len_bytes, key);
+  // ImgDecr = aes.DecryptECB(ImgOut, len_bytes, key);
+  
+
+  
+   //printf("%i\n", ImgDecr[0]);
   
   
   printf("PSNR %f\n",PSNR(ImgIn, ImgOut,nH,nW));
-  printf("Entropy Image Décrypter %f\n",entropy(ImgIn, nH, nW));
+  printf("Entropy Image claire %f\n",entropy(ImgIn, nH, nW));
   printf("Entropy Image Crypter %f\n",entropy(ImgOut, nH, nW));
-
+  printf("### HISTOGRAMME ###\n");
+  Histogramme(ImgOut, nW, nH);
 
   ecrire_image_pgm(cNomImgEcrite, ImgOut,  nH, nW);
   ecrire_image_pgm(cNomImgDecr, ImgDecr,  nH, nW);
