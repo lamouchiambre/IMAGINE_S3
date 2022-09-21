@@ -199,13 +199,6 @@ void AES::incrCounter(OCTET **counter){
     }
   }
 }
-// void AES::incrCounter(OCTET **counter){
-//   for( int i =0; i< blockBytesLen; i++)
-//   if(){
-
-//   }
-
-// }
 
 unsigned char *AES::EncryptCTR(const unsigned char in[], unsigned int inLen,
                                const unsigned char key[]) {

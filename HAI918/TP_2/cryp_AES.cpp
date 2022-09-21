@@ -22,6 +22,43 @@ int* Histogramme(OCTET *ImgIn, int nW, int nH){
   return tabHisto;
 }
 
+OCTET* addNoise(OCTET* img, int nTaille){
+  srand(0);
+  OCTET* imgNoise = new unsigned char[nTaille];
+  int nbBlock = int(nTaille/16);
+  int * indBlockNoise = new int[int(nbBlock)];
+  int ibn = 0;
+  for (int i = 0; i<nTaille; i++){
+    imgNoise[i] = img[i];
+  }
+  //create list of random indice of noised block
+  int j = 0;
+  for(int i = 0; i < nbBlock; i+=5){
+    indBlockNoise[j] = i + rand()%5;
+    j++;
+
+  }
+  int valRand = 0;
+  for (int i = 0; i < nbBlock; i++){
+    if(indBlockNoise[ibn]==i){
+      valRand = i*16 + rand()%16;
+      imgNoise[valRand] = rand()%256;     
+      ibn++;
+      }
+    }
+
+  return imgNoise;
+
+}
+
+OCTET* substraction(OCTET* imgA, OCTET* imgB, int nTaille){
+  OCTET* imgSub = new unsigned char[nTaille];
+  for (int i = 0; i< nTaille; i++){
+    imgSub[i] = abs(imgA[i]-imgB[i]);
+  }
+  return imgSub;
+}
+
 double PSNR(OCTET *ImgA, OCTET *ImgB, int nH, int nW){
   double eqm = 0;
   for (int i=0; i < nH; i++)
@@ -72,7 +109,7 @@ int main(int argc, char* argv[])
 	  
   //sscanf ("img_out/01_melange_decript.pgm","%s",cNomImgDecr);
 
-   OCTET *ImgIn, *ImgOut,*ImgDecr;
+   OCTET *ImgIn, *ImgInNoise, *ImgOut, *ImgOutNoise,*ImgDecr, *ImgDecrNoise, *ImgSubCryp;
    
    lire_nb_lignes_colonnes_image_pgm(cNomImgLue, &nH, &nW);
    nTaille = nH * nW;
@@ -82,6 +119,10 @@ int main(int argc, char* argv[])
    lire_image_pgm(cNomImgLue, ImgIn, nH * nW);
    allocation_tableau(ImgOut, OCTET, nTaille);
    allocation_tableau(ImgDecr, OCTET, nTaille);
+   allocation_tableau(ImgInNoise, OCTET, nTaille);
+   allocation_tableau(ImgOutNoise, OCTET, nTaille);
+   allocation_tableau(ImgDecrNoise, OCTET, nTaille);
+   allocation_tableau(ImgSubCryp, OCTET, nTaille);
 
 
   srand(1);
@@ -90,11 +131,19 @@ int main(int argc, char* argv[])
 
   unsigned int len_bytes = nTaille * sizeof(OCTET);
   AES aes(AESKeyLength::AES_128);
+  //sub test
 
   // CBC
-  // ImgOut = aes.EncryptCBC(ImgIn, len_bytes, key, vector_in);
-  // ImgDecr = aes.DecryptCBC(ImgOut, len_bytes, key, vector_in);
+  ImgInNoise = addNoise(ImgIn, nTaille);
+  ImgOut = aes.EncryptCTR(ImgIn, len_bytes, key);
+  ImgOutNoise = aes.EncryptCTR(ImgInNoise, len_bytes, key);
   
+  // ImgDecr = aes.DecryptCBC(ImgOut, len_bytes, key, vector_in);
+  // ImgDecrNois = aes.DecryptCBC(ImgOut, len_bytes, key, vector_in);
+
+
+  ImgSubCryp = substraction(ImgOutNoise, ImgOut, nTaille);
+
   // CFB
   // ImgOut = aes.EncryptCFB(ImgIn, len_bytes, key, vector_in);
   // ImgDecr = aes.DecryptCFB(ImgOut, len_bytes, key, vector_in);
@@ -103,9 +152,9 @@ int main(int argc, char* argv[])
   //ImgOut = aes.EncryptOFB(ImgIn, len_bytes, key, vector_in);
   //ImgDecr = aes.DecryptOFB(ImgOut, len_bytes, key, vector_in);
 
-    // OFB
-  ImgOut = aes.EncryptCTR(ImgIn, len_bytes, key);
-  ImgDecr = aes.DecryptCTR(ImgOut, len_bytes, key);
+    // CTR
+  // ImgOut = aes.EncryptCTR(ImgIn, len_bytes, key);
+  // ImgDecr = aes.DecryptCTR(ImgOut, len_bytes, key);
 
   // ECB 
   // ImgOut = aes.EncryptECB(ImgIn, len_bytes, key);
@@ -120,10 +169,12 @@ int main(int argc, char* argv[])
   printf("Entropy Image claire %f\n",entropy(ImgIn, nH, nW));
   printf("Entropy Image Crypter %f\n",entropy(ImgOut, nH, nW));
   printf("### HISTOGRAMME ###\n");
-  Histogramme(ImgOut, nW, nH);
+  //Histogramme(ImgOut, nW, nH);
 
-  ecrire_image_pgm(cNomImgEcrite, ImgOut,  nH, nW);
-  ecrire_image_pgm(cNomImgDecr, ImgDecr,  nH, nW);
+  //ecrire_image_pgm(cNomImgEcrite, addNoise(ImgIn, nTaille),  nH, nW);
+  ecrire_image_pgm(cNomImgEcrite, ImgOutNoise,  nH, nW);
+  // ecrire_image_pgm(cNomImgDecr, ImgDecr,  nH, nW);
+  ecrire_image_pgm(cNomImgDecr, ImgSubCryp,  nH, nW);
 
    free(ImgIn);
    free(ImgOut);
