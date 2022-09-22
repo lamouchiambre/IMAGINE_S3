@@ -217,10 +217,6 @@ unsigned char *AES::EncryptCTR(const unsigned char in[], unsigned int inLen,
     EncryptBlock(compteur, encryptedBlock, roundKeys);
 
     XorBlocks(in + i, encryptedBlock, out + i, blockBytesLen);
-    for (int i = 0; i < blockBytesLen; i++){
-      std::cout <<static_cast<int>(compteur[i])<<" "; 
-    }
-    printf("\n");
     incrCounter(&compteur);
 
   }

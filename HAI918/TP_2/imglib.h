@@ -21,7 +21,25 @@ void binary(unsigned int num){
   }
   std::cout << std::endl;
 }
+float entropy(OCTET* img, int nH, int nW){
+    int count = 0;
+    int* hist = new int[256];
+    for (int i=0;i<256;i++){
+        hist[i]=0;
+    }
+    for (int i=0; i<nH*nW; i++){
+        hist[img[i]]++;
+        count++;
+    }
 
+    float res = 0.0;
+    for (int i=0; i<256; i++){
+        if (hist[i]){
+            res+=((float)hist[i]/(float)count)*log2((float)hist[i]/(float)count);
+        }
+    }
+    return -res;
+}
 int* Histogramme(OCTET *ImgIn, int nW, int nH){
   int * tabHisto;
   allocation_tableau(tabHisto, int, 256);
@@ -38,6 +56,62 @@ int* Histogramme(OCTET *ImgIn, int nW, int nH){
   }
   
   return tabHisto;
+}
+
+OCTET* entropyBlock16(OCTET* img, int nTaille){
+  OCTET* entropyBox;
+  float* entropyBoxF;
+  OCTET subArray[16];
+  int tailleEntropyBox;
+  float min=256;
+  float max=-1;
+
+
+  allocation_tableau(entropyBox, OCTET, int(nTaille/16));
+
+  if (nTaille%16 == 0)
+  {
+    tailleEntropyBox = int(nTaille/16);
+  }else
+  {
+    tailleEntropyBox = int(nTaille/16) - 1;
+  }
+  
+  for (int i = 0; i < tailleEntropyBox; i++)
+  {
+    for (int j = 0; j < 16; j++)
+    {
+      /* code */
+      subArray[j] = img[i*16 + j]; 
+    } 
+    float ent = entropy(subArray , 4, 4);
+    min = std::min(min, ent);
+    max = std::max(max, ent);
+    
+    //entropyBoxF[i] = entropy(subArray , 4, 4); 
+
+  } 
+
+  for (int i = 0; i < tailleEntropyBox; i++)
+  {
+    for (int j = 0; j < 16; j++)
+    {
+      /* code */
+      subArray[j] = img[i*16 + j]; 
+    } 
+
+    // entropyBox[i] = int(entropy(subArray , 4, 4))*10; 
+    printf("%i \n", int(entropy(subArray , 4, 4)));
+    // entropyBox[i] = 255 - 10*int(entropy(subArray , 4, 4));
+    if (min+max == 0)
+    {
+      entropyBox[i] = 0;
+    }else{
+      entropyBox[i] = 255 + int((int(entropy(subArray , 4, 4)-min)*(0-255))/int(max-min)); 
+    }
+  }  
+
+  return entropyBox;
 }
 
 OCTET* addNoise(OCTET* img, int nTaille){
@@ -91,23 +165,5 @@ double PSNR(OCTET *ImgA, OCTET *ImgB, int nH, int nW){
 
 }
 
-float entropy(OCTET* img, int nH, int nW){
-    int count = 0;
-    int* hist = new int[256];
-    for (int i=0;i<256;i++){
-        hist[i]=0;
-    }
-    for (int i=0; i<nH*nW; i++){
-        hist[img[i]]++;
-        count++;
-    }
 
-    float res = 0.0;
-    for (int i=0; i<256; i++){
-        if (hist[i]){
-            res+=((float)hist[i]/(float)count)*log2((float)hist[i]/(float)count);
-        }
-    }
-    return -res;
-}
 #endif

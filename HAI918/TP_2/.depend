@@ -1,2 +1,2 @@
-cryp_AES.o: cryp_AES.cpp imglib.h image_ppm.h AES.h
+histogramme.o: histogramme.cpp imglib.h image_ppm.h AES.h
 AES.o: AES.cpp AES.h
