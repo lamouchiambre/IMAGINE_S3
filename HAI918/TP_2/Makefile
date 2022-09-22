@@ -7,7 +7,7 @@ PROGS		= cryp_AES #couleur #histogram3c #seuillage4p
 
 SOURCES		= cryp_AES.cpp AES.cpp #test_couleur.cpp #histogram3c.cpp # seuillage4p.cpp 
 
-HEADERS		= AES.h
+HEADERS		= AES.h imglib.h
 
 DEPFILE		= .depend
 

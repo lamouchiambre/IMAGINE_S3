@@ -1,96 +1,5 @@
-// test_couleur.cpp : Seuille une image en niveau de gris
-
 #include <stdio.h>
-#include "image_ppm.h"
-#include "AES.h"
-
-int* Histogramme(OCTET *ImgIn, int nW, int nH){
-  int * tabHisto;
-  allocation_tableau(tabHisto, int, 256);
-  for(int i = 0; i < 256; i++){
-    tabHisto[i] = 0;
-  }
-
-  for (int i=0; i < nH; i++)
-    for (int j=0; j < nW; j++)
-      tabHisto[ImgIn[i*nW+j]] += 1;
-  
-  for(int i = 0; i < 256; i++){
-    printf("%i %i \n", i, tabHisto[i]);
-  }
-  
-  return tabHisto;
-}
-
-OCTET* addNoise(OCTET* img, int nTaille){
-  srand(0);
-  OCTET* imgNoise = new unsigned char[nTaille];
-  int nbBlock = int(nTaille/16);
-  int * indBlockNoise = new int[int(nbBlock)];
-  int ibn = 0;
-  for (int i = 0; i<nTaille; i++){
-    imgNoise[i] = img[i];
-  }
-  //create list of random indice of noised block
-  int j = 0;
-  for(int i = 0; i < nbBlock; i+=5){
-    indBlockNoise[j] = i + rand()%5;
-    j++;
-
-  }
-  int valRand = 0;
-  for (int i = 0; i < nbBlock; i++){
-    if(indBlockNoise[ibn]==i){
-      valRand = i*16 + rand()%16;
-      imgNoise[valRand] = rand()%256;     
-      ibn++;
-      }
-    }
-
-  return imgNoise;
-
-}
-
-OCTET* substraction(OCTET* imgA, OCTET* imgB, int nTaille){
-  OCTET* imgSub = new unsigned char[nTaille];
-  for (int i = 0; i< nTaille; i++){
-    imgSub[i] = abs(imgA[i]-imgB[i]);
-  }
-  return imgSub;
-}
-
-double PSNR(OCTET *ImgA, OCTET *ImgB, int nH, int nW){
-  double eqm = 0;
-  for (int i=0; i < nH; i++)
-   for (int j=0; j < nW; j++)
-     {
-      eqm += pow(ImgA[i*nW+j]-ImgB[i*nW+j],2);
-    }
-  
-  eqm /= (nW*nH);
-  return 10*log10(pow(255,2)/eqm);
-
-}
-
-float entropy(OCTET* img, int nH, int nW){
-    int count = 0;
-    int* hist = new int[256];
-    for (int i=0;i<256;i++){
-        hist[i]=0;
-    }
-    for (int i=0; i<nH*nW; i++){
-        hist[img[i]]++;
-        count++;
-    }
-
-    float res = 0.0;
-    for (int i=0; i<256; i++){
-        if (hist[i]){
-            res+=((float)hist[i]/(float)count)*log2((float)hist[i]/(float)count);
-        }
-    }
-    return -res;
-}
+#include "imglib.h"
 
 int main(int argc, char* argv[])
 {
@@ -134,15 +43,19 @@ int main(int argc, char* argv[])
   //sub test
 
   // CBC
-  ImgInNoise = addNoise(ImgIn, nTaille);
-  ImgOut = aes.EncryptCTR(ImgIn, len_bytes, key);
-  ImgOutNoise = aes.EncryptCTR(ImgInNoise, len_bytes, key);
+  ImgOut = aes.EncryptCBC(ImgIn, len_bytes, key, vector_in);
+  ImgOutNoise = addNoise(ImgOut, nTaille);
   
-  // ImgDecr = aes.DecryptCBC(ImgOut, len_bytes, key, vector_in);
-  // ImgDecrNois = aes.DecryptCBC(ImgOut, len_bytes, key, vector_in);
+  ImgDecr = aes.DecryptCBC(ImgOut, len_bytes, key, vector_in);
+  ImgDecrNoise = aes.DecryptCBC(ImgOutNoise, len_bytes, key, vector_in);
 
+  ImgSubCryp = substraction(ImgDecr, ImgDecrNoise, nTaille);
+  // OCTET example_char = ImgIn[0];
+  // srand(time(NULL));
+  // OCTET example_char_change = set_bit(example_char, rand()%8);
+  // binary(example_char);
+  // binary(example_char_change);
 
-  ImgSubCryp = substraction(ImgOutNoise, ImgOut, nTaille);
 
   // CFB
   // ImgOut = aes.EncryptCFB(ImgIn, len_bytes, key, vector_in);
@@ -172,8 +85,9 @@ int main(int argc, char* argv[])
   //Histogramme(ImgOut, nW, nH);
 
   //ecrire_image_pgm(cNomImgEcrite, addNoise(ImgIn, nTaille),  nH, nW);
-  ecrire_image_pgm(cNomImgEcrite, ImgOutNoise,  nH, nW);
-  // ecrire_image_pgm(cNomImgDecr, ImgDecr,  nH, nW);
+  //ecrire_image_pgm(cNomImgEcrite, ImgDecr,  nH, nW);
+
+  ecrire_image_pgm(cNomImgEcrite, ImgDecrNoise,  nH, nW);
   ecrire_image_pgm(cNomImgDecr, ImgSubCryp,  nH, nW);
 
    free(ImgIn);
