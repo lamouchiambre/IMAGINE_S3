@@ -58,6 +58,77 @@ int* Histogramme(OCTET *ImgIn, int nW, int nH){
   return tabHisto;
 }
 
+OCTET* entropyBlock16Ntaille(OCTET* img, int nTaille){
+  OCTET* entropyBox;
+  OCTET* entropyBoxImg;
+  float* entropyBoxF;
+  OCTET subArray[16];
+  int tailleEntropyBox;
+  float min=256;
+  float max=-1;
+
+
+  allocation_tableau(entropyBox, OCTET, int(nTaille/16));
+  allocation_tableau(entropyBoxImg, OCTET, nTaille);
+
+  if (nTaille%16 == 0)
+  {
+    tailleEntropyBox = int(nTaille/16);
+  }else
+  {
+    tailleEntropyBox = int(nTaille/16) - 1;
+  }
+  
+  for (int i = 0; i < tailleEntropyBox; i++)
+  {
+    for (int j = 0; j < 16; j++)
+    {
+      subArray[j] = img[i*16 + j]; 
+    } 
+    float ent = entropy(subArray , 4, 4);
+    min = std::min(min, ent);
+    max = std::max(max, ent);
+  } 
+
+  for (int i = 0; i < tailleEntropyBox; i++)
+  {
+    for (int j = 0; j < 16; j++)
+    {
+      subArray[j] = img[i*16 + j]; 
+    } 
+    if (min+max == 0)
+    {
+      entropyBox[i] = 0;
+    }else{
+      entropyBox[i] = 255 + int(((entropy(subArray , 4, 4)-min)*(0-255))/(max-min)); 
+    }
+  }
+
+  int compt = 0;//compteur jusqu'à 16
+  int indEnt = 0;//indice de l'entropie
+
+  for (int i = 0; i < nTaille; i++)
+  {
+    if (compt == 16)
+    {
+      compt = 0;
+      indEnt++;
+    }
+
+    if (min+max == 0)
+    {
+      entropyBoxImg[i] = 0;
+    }else{
+      entropyBoxImg[i] = entropyBox[indEnt];
+    }
+    compt++;
+  }
+  printf("nTaille modulo 16 %i\n",nTaille%16);
+
+  printf("min : %f, max : %f \n", min, max);
+  return entropyBoxImg;
+}
+
 OCTET* entropyBlock16(OCTET* img, int nTaille){
   OCTET* entropyBox;
   float* entropyBoxF;
@@ -81,28 +152,20 @@ OCTET* entropyBlock16(OCTET* img, int nTaille){
   {
     for (int j = 0; j < 16; j++)
     {
-      /* code */
       subArray[j] = img[i*16 + j]; 
     } 
     float ent = entropy(subArray , 4, 4);
     min = std::min(min, ent);
     max = std::max(max, ent);
-    
-    //entropyBoxF[i] = entropy(subArray , 4, 4); 
-
   } 
 
   for (int i = 0; i < tailleEntropyBox; i++)
   {
     for (int j = 0; j < 16; j++)
     {
-      /* code */
       subArray[j] = img[i*16 + j]; 
     } 
 
-    // entropyBox[i] = int(entropy(subArray , 4, 4))*10; 
-    printf("%i \n", int(entropy(subArray , 4, 4)));
-    // entropyBox[i] = 255 - 10*int(entropy(subArray , 4, 4));
     if (min+max == 0)
     {
       entropyBox[i] = 0;

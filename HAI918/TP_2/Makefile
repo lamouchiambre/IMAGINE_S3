@@ -3,9 +3,9 @@ CXX_FLAGS	= -Wall -g -O0 -ansi -pedantic -std=c99
 
 LD_FLAGS 	=
 
-PROGS		= histogramme#cryp_AES_noise #couleur #histogram3c #seuillage4p 
+PROGS		= cryp_AES_noise#histogramme #couleur #histogram3c #seuillage4p 
 
-SOURCES		= histogramme.cpp AES.cpp#cryp_AES_noise.cpp  #test.cpp test_couleur.cpp #histogram3c.cpp # seuillage4p.cpp 
+SOURCES		= cryp_AES_noise.cpp AES.cpp#histogramme.cpp  #test.cpp test_couleur.cpp #histogram3c.cpp # seuillage4p.cpp 
 
 HEADERS		= imglib.h image_ppm.h AES.h# 
 

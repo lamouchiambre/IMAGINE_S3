@@ -206,9 +206,6 @@ unsigned char *AES::EncryptCTR(const unsigned char in[], unsigned int inLen,
   unsigned char *out = new unsigned char[inLen];
   unsigned char *block = new unsigned char[blockBytesLen];
   unsigned char *compteur = new unsigned char[blockBytesLen]{'0'};
-  for (int i = 0; i < blockBytesLen; i++){
-    std::cout <<static_cast<int>(compteur[i])<<" "; 
-  }
   unsigned char *encryptedBlock = new unsigned char[blockBytesLen];
   unsigned char *roundKeys = new unsigned char[4 * Nb * (Nr + 1)];
   KeyExpansion(key, roundKeys);
@@ -224,7 +221,7 @@ unsigned char *AES::EncryptCTR(const unsigned char in[], unsigned int inLen,
   delete[] block;
   delete[] encryptedBlock;
   delete[] roundKeys;
-
+  
   return out;
 }
 
