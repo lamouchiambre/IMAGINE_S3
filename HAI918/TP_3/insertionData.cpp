@@ -23,7 +23,7 @@ int main(int argc, char* argv[])
   sscanf (argv[1],"%s",cNomImgLue) ;
   sscanf (argv[2],"%s",cNomImageMessage);
   sscanf (argv[3],"%s",type);
-
+ 
   OCTET *ImgKey, *ImgIn,*ImgInMessage, *ImgOutMessage, *ImgOut, *ImgOutNoise,*ImgDecr, *ImgDecrNoise, *ImgSubCryp,*ImgSubDecryp, *ImgEntropy, *ImgEntropyNtaille;
    
   lire_nb_lignes_colonnes_image_pgm(cNomImgLue, &nH, &nW);
@@ -47,7 +47,7 @@ int main(int argc, char* argv[])
  
   std::string ext = ".pgm";
   std::string sNomImgLueMessage = sNomImgLue+"Message"+ext;
-  std::string sNomImgOutMessage = sImageMessage+"Decryp"+ext;
+  std::string sNomImgOutMessage = sImageMessage+"Decryp"+ext; 
  
  
   srand(1);
@@ -56,9 +56,9 @@ int main(int argc, char* argv[])
  
   unsigned int len_bytes = nTaille * sizeof(OCTET);
   AES aes(AESKeyLength::AES_128);
-
-
-  if (strs == "Npremier")
+ 
+ 
+  if (strs == "Npremier") 
   {   
     // int zero = 0; 
     // binary(zero);
@@ -84,6 +84,8 @@ int main(int argc, char* argv[])
 
   strcpy(cNomImgEcrite, sNomImgLueMessage.c_str());
   ecrire_image_pgm(cNomImgEcrite, ImgOut, nH, nW);
+  binary(255);
+  std::cout<< ( 255 & (1 << 8))<<std::endl;
 
   strcpy(cNomImgEcrite, sNomImgOutMessage.c_str());
   ecrire_image_pgm(cNomImgEcrite, ImgOutMessage, nHM, nWM);

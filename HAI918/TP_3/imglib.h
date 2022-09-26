@@ -91,7 +91,13 @@ OCTET* Poid(OCTET * img, OCTET * message, int bit, int nH, int nW, int nHM, int 
       // if(get_bit(ImageMessage[k*nbBlock],bit) != get_bit(message[i], j)){
       //   ImageMessage[k*nbBlock] = set_bit(ImageMessage[k*nbBlock], bit);
       // }
-      ImageMessage[k*nbBlock] |= (message[i] & (1 << bit));
+      // ImageMessage[k*nbBlock] |= (message[i] & (1 << bit));
+      printf("XXXXXXXXXXXXXXX\n");
+      binary(ImageMessage[k*nbBlock]);
+      binary(message[i]);
+      ImageMessage[k*nbBlock] = img[k*nbBlock]|((img[k*nbBlock] & (1 << bit))|(message[i] & (1 << bit)));
+      binary(ImageMessage[k*nbBlock]);
+
       k++;
 
     } 
@@ -122,7 +128,7 @@ OCTET* PoidEctract(OCTET * img, int bit, int nH, int nW, int nHM, int nWM){
       // }
       i++;
       //b = (b +1)%8;
-      printf("k %i i %i b %i \n", k, i, b);
+
     }
   }
 
