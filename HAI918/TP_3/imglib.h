@@ -19,7 +19,7 @@ int set_bit(int num, int position)
 }
 
 void binary(unsigned int num){
-  for(int i = 256; i > 0; i = i/2){
+  for(int i = 128; i > 0; i = i/2){
     if(num & i){
       std::cout << "1 ";
     }else{
@@ -88,15 +88,16 @@ OCTET* Poid(OCTET * img, OCTET * message, int bit, int nH, int nW, int nHM, int 
   int k = 0;
   for (int i = 0; i < nHM*nWM; i++){
     for(int j = 0; j < 8; j++){
-      // if(get_bit(ImageMessage[k*nbBlock],bit) != get_bit(message[i], j)){
-      //   ImageMessage[k*nbBlock] = set_bit(ImageMessage[k*nbBlock], bit);
-      // }
-      // ImageMessage[k*nbBlock] |= (message[i] & (1 << bit));
-      printf("XXXXXXXXXXXXXXX\n");
-      binary(ImageMessage[k*nbBlock]);
-      binary(message[i]);
-      ImageMessage[k*nbBlock] = img[k*nbBlock]|((img[k*nbBlock] & (1 << bit))|(message[i] & (1 << bit)));
-      binary(ImageMessage[k*nbBlock]);
+
+      // printf("XXXXXXXXXXXXXXX\n");
+      // binary(ImageMessage[k*nbBlock]);
+      // binary(message[i]);
+      if((img[k*nbBlock] & (1 << bit))|(message[i] & (1 << bit)))
+      {
+        ImageMessage[k*nbBlock] = img[k*nbBlock] | (1 << bit);
+      }
+      //ImageMessage[k*nbBlock] = img[k*nbBlock]|((img[k*nbBlock] & (1 << bit))|(message[i] & (1 << bit)));
+      //binary(ImageMessage[k*nbBlock]);
 
       k++;
 
@@ -107,34 +108,64 @@ OCTET* Poid(OCTET * img, OCTET * message, int bit, int nH, int nW, int nHM, int 
 
 }
 
+OCTET* PoidPixel(OCTET * img, OCTET * message, int bit, int nH, int nW, int nHM, int nWM){
+  OCTET* ImageMessage;
+  allocation_tableau(ImageMessage, OCTET, nH*nW);
+
+  int nbBlock = int((nH*nW)/(nHM*nWM));
+  for(int i = 0; i <nH*nW ;i++){
+    ImageMessage[i] = img[i];
+  } 
+
+  int k = 0;
+  for (int i = 0; i < nHM*nWM; i++){
+    ImageMessage[i*nbBlock] = img[i];
+  }
+  return ImageMessage; 
+
+}
+
+OCTET* PoidPixelEctract(OCTET * img, int bit, int nH, int nW, int nHM, int nWM){
+  OCTET* ImageMessage2;
+  allocation_tableau(ImageMessage2, OCTET, nHM*nWM);
+
+  int nbBlock = int((nH*nW)/(nHM*nWM*8));
+
+  int i = 0;
+  for (int k = 0; k < nHM*nWM; k++){
+    ImageMessage2[i] = k%256;// img[i*nbBlock];
+  }
+
+  return ImageMessage2;
+
+}
+
 OCTET* PoidEctract(OCTET * img, int bit, int nH, int nW, int nHM, int nWM){
   OCTET* ImageMessage;
   allocation_tableau(ImageMessage, OCTET, nHM*nWM);
 
-  int nbBlock = int((nH*nW)/(nHM*nWM));
+  int nbBlock = int((nH*nW)/(nHM*nWM*8));
   for(int i = 0; i <nHM*nWM ;i++){
     ImageMessage[i] = 0;
-    //binary(ImageMessage[i]);
   }
 
 
   int i = 0;
   for (int k = 0; k < nHM*nWM; k++){
-    for(int b = 0; b < 8; ++b){
-      ImageMessage[k] |= (img[i*nbBlock] & (1 << bit));
-
-      // if(get_bit(img[i*nbBlock],bit)){
-      //   ImageMessage[k] = set_bit(ImageMessage[k], b);
-      // }
+    for(int b = 7; b >= 0; b--){
+      printf("XXXXXXXXXXXXXXX\n");
+      binary(img[i*nbBlock]);
+      binary(ImageMessage[k]);
+      binary((1 << bit));
+      binary((1 << b));
+      //binary(message[i]);
+      if(img[i*nbBlock] & (1 << bit))
+      {
+        ImageMessage[k] = ImageMessage[k] | (1 << b);
+      }
       i++;
-      //b = (b +1)%8;
-
+      binary(ImageMessage[k]);
     }
-  }
-
-  for(int i = 0; i <nHM*nWM ;i++){
-    //ImageMessage[i] = 0;
-    //binary(ImageMessage[i]);
   }
 
   return ImageMessage;
