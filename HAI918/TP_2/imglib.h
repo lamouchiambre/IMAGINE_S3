@@ -21,6 +21,7 @@ void binary(unsigned int num){
   }
   std::cout << std::endl;
 }
+
 float entropy(OCTET* img, int nH, int nW){
     int count = 0;
     int* hist = new int[256];
@@ -170,7 +171,7 @@ OCTET* entropyBlock16(OCTET* img, int nTaille){
     {
       entropyBox[i] = 0;
     }else{
-      entropyBox[i] = 255 + int((int(entropy(subArray , 4, 4)-min)*(0-255))/int(max-min)); 
+      entropyBox[i] = 255 + int((entropy(subArray , 4, 4)-min)*(0-255)/max-min); 
     }
   }  
 

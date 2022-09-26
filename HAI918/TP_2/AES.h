@@ -55,14 +55,19 @@ class AES {
   void DecryptBlock(const unsigned char in[], unsigned char out[],
                     unsigned char key[]);
 
-  void XorBlocks(const unsigned char *a, const unsigned char *b,
-                 unsigned char *c, unsigned int len);
+//   void XorBlocks(const unsigned char *a, const unsigned char *b,
+//                  unsigned char *c, unsigned int len);
 
   std::vector<unsigned char> ArrayToVector(unsigned char *a, unsigned int len);
 
   unsigned char *VectorToArray(std::vector<unsigned char> &a);
 
  public:
+  void XorBlocks(const unsigned char *a, const unsigned char *b,
+                 unsigned char *c, unsigned int len);
+  void subBlocks(const unsigned char *a, const unsigned char *b,
+                 unsigned char *c, unsigned int len);
+                 //XorBlocksImg
   explicit AES(const AESKeyLength keyLength = AESKeyLength::AES_256);
 
   unsigned char *EncryptECB(const unsigned char in[], unsigned int inLen,

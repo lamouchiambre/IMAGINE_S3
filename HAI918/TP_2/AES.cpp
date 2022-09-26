@@ -511,6 +511,13 @@ void AES::XorBlocks(const unsigned char *a, const unsigned char *b,
   }
 }
 
+void AES::subBlocks(const unsigned char *a, const unsigned char *b,
+                    unsigned char *c, unsigned int len) {
+  for (unsigned int i = 0; i < len; i++) {
+    c[i] = a[i] - b[i];
+  }
+}
+
 void AES::printHexArray(unsigned char a[], unsigned int n) {
   for (unsigned int i = 0; i < n; i++) {
     printf("%02x ", a[i]);

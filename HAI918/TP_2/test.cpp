@@ -14,13 +14,13 @@ int main(int argc, char* argv[])
     std::string name;
     int nH, nW, nTaille, S;
     
-    if (argc != 3) 
+    if (argc != 2) 
     {
-        printf("Usage: ImageIn.pgm chiffrement\n"); 
+        printf("Usage: ImageIn.pgm \n"); 
         exit (1) ;
     }
     sscanf (argv[1],"%s",cNomImgLue);
-    sscanf (argv[2],"%s",chiffrement);
+
     OCTET *ImgIn;
    
     lire_nb_lignes_colonnes_image_pgm(cNomImgLue, &nH, &nW);
@@ -29,15 +29,17 @@ int main(int argc, char* argv[])
     allocation_tableau(ImgIn, OCTET, nTaille);
     lire_image_pgm(cNomImgLue, ImgIn, nH * nW);
 
-    std::string title = "test";
-    std::string ext =".pgm";
-    name = std::string(cNomImgLue);
-    std::cout <<name<<std::endl;
-    std::string nameFile = title+ext;
+    Histogramme(ImgIn, nW, nH);
+
+    // std::string title = "test";
+    // std::string ext =".pgm";
+    // name = std::string(cNomImgLue);
+    // std::cout <<name<<std::endl;
+    // std::string nameFile = title+ext;
 
     //str to string
-    strcpy(cNomImgEcrit, nameFile.c_str());
-    ecrire_image_pgm(cNomImgEcrit, ImgIn, nH, nW);
+    // strcpy(cNomImgEcrit, nameFile.c_str());
+    // ecrire_image_pgm(cNomImgEcrit, ImgIn, nH, nW);
 
     free(ImgIn);
 

@@ -1,0 +1,11 @@
+min : -0.000000, max : 0.337290
+PSNR ImgIn/ImgOut 5.478751
+PSNR ImgIn/ImgDecryp avec bruit 35.672027
+PSNR Bruit initial/ bruit propagé inf
+Entropy Image claire 5.120422
+Entropy Image Crypter 7.999231
+Entropy Image Crypter avec bruit 7.999193
+Entropy Image DéCrypter 5.120422
+Entropy Image DéCrypter avec bruit 5.138477
+Entropy Image Bruit Sub Cryp 0.073787
+Entropy Image Bruit Sub Decryp 0.073787
