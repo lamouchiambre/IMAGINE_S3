@@ -1,0 +1,2 @@
+insertionData.o: insertionData.cpp imglib.h image_ppm.h AES.h
+AES.o: AES.cpp AES.h
