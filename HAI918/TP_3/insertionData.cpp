@@ -30,11 +30,9 @@ int main(int argc, char* argv[])
   OCTET * Img16, * Img16Out;
   OCTET * Img2, * Img2Out;
 
-
-
   lire_nb_lignes_colonnes_image_pgm(cNomImgLue, &nH, &nW);
   nTaille = nH * nW;
-  
+ 
   allocation_tableau(ImgIn, OCTET, nTaille);
   lire_image_pgm(cNomImgLue, ImgIn, nH * nW);
 
@@ -43,7 +41,7 @@ int main(int argc, char* argv[])
   lire_nb_lignes_colonnes_image_pgm(cNomImageMessage, &nHM, &nWM);
   nTailleM = nHM * nWM;
   lire_image_pgm(cNomImageMessage, ImgInMessage, nHM * nWM);
-
+ 
   allocation_tableau(ImgOut, OCTET, nTaille);
   allocation_tableau(ImgOutMessage, OCTET, nTailleM);
   allocation_tableau(Img256, OCTET, nTaille);
@@ -60,6 +58,8 @@ int main(int argc, char* argv[])
   std::string sImageMessage = std::string(cNomImageMessage);
  
   std::string ext = ".pgm";
+  
+  std::string sNomImgOutSub = sNomImgLue+"Sub"+ext;
   std::string sNomImgLueMessage = sNomImgLue+"Message"+ext;
   std::string sNomImgOutMessage = sImageMessage+"Decryp"+ext;
 
@@ -67,7 +67,8 @@ int main(int argc, char* argv[])
   srand(1);
   OCTET key[] = { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f };
   OCTET vector_in[] = { 0x00, 0x00, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f };
- 
+
+
   unsigned int len_bytes = nTaille * sizeof(OCTET);
   AES aes(AESKeyLength::AES_128);
   int b = 0;
@@ -75,15 +76,15 @@ int main(int argc, char* argv[])
   {
     Img256[i] = b;
     b = (b +1)%256 ;
-  } 
+  }
 
   if (strs == "Npremier") 
   {  
     ImgOut = Npremier(ImgIn, ImgInMessage, nH, nW, nHM, nWM);
     ImgOutMessage = NpremierEctract(ImgOut, nH, nW, nHM, nWM); 
   }else if(strs == "Poid"){
-    ImgOut = Poid(Img256, ImgInMessage,1, nH, nW, nHM, nWM);
-    ImgOutMessage = PoidEctract(ImgOut,1, nH, nW, nHM, nWM); 
+    ImgOut = Poid(ImgIn, ImgInMessage,7, nH, nW, nHM, nWM);
+    ImgOutMessage = PoidEctract(ImgOut,7, nH, nW, nHM, nWM); 
   }
   else if(strs == "PoidPixel"){
     ImgOut = PoidPixel(ImgIn, ImgInMessage, 7, nH, nW, nHM, nWM);
@@ -113,14 +114,18 @@ int main(int argc, char* argv[])
     printf("O_O\n");
   }
 
+
   printf("PSNR %f\n",PSNR(ImgIn, ImgOut,nH,nW));
   printf("PSNR %f\n",PSNR(ImgIn, ImgIn,nH,nW));
 
-  // strcpy(cNomImgEcrite, sNomImgLueMessage.c_str());
-  // ecrire_image_pgm(cNomImgEcrite, ImgOut, nH, nW);
-  // unsigned int num = 255;
-  // strcpy(cNomImgEcrite, sNomImgOutMessage.c_str());
-  // ecrire_image_pgm(cNomImgEcrite, ImgOutMessage, nHM, nWM);
+  strcpy(cNomImgEcrite, sNomImgLueMessage.c_str());
+  ecrire_image_pgm(cNomImgEcrite, ImgOut, nH, nW);
+
+  strcpy(cNomImgEcrite, sNomImgOutMessage.c_str());
+  ecrire_image_pgm(cNomImgEcrite, ImgOutMessage, nHM, nWM);
+
+  strcpy(cNomImgEcrite, sNomImgOutSub.c_str());
+  ecrire_image_pgm(cNomImgEcrite,substraction(ImgOut, ImgIn, nTaille), nH, nW);
 
    free(ImgIn);
    free(ImgOut);
