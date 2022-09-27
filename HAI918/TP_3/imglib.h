@@ -193,12 +193,15 @@ OCTET* insertionRandEctract(OCTET * img, int bit, int nH, int nW, int nHM, int n
 
 OCTET* attackExtractionRand(OCTET* img, int bit, int nH, int nW, int nHM, int nWM ){
   OCTET* ImageMessage;
-  allocation_tableau(ImageMessage, OCTET, nH*nW);
+  allocation_tableau(ImageMessage, OCTET, nHM*nWM);
   entropie = 10;
-  while (){
-
+  int key = 0;
+  while (entropie > 7.9 && key < 256 ){
+    ImageMessage = insertionRandMaxiEctract(img, bit, key, nH, nW, nHM, nWM);
+    entropie = entropy(ImageMessage, nHM*nWM);
   }
-
+  printf("entropy %d, key : %i ",entropie, key);
+  return ImageMessage;
 }
 
 OCTET* insertionRandMaxi(OCTET * img, OCTET * message, int bit, int key, int nH, int nW, int nHM, int nWM){

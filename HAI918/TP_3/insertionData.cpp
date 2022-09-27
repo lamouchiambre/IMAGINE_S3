@@ -103,6 +103,13 @@ int main(int argc, char* argv[])
     ImgOut = insertionRandMaxi(ImgIn, ImgInMessage, 0, nH, nW, nHM, nWM);
     ImgOutMessage = insertionRandMaxiEctract(ImgOut, 0, nH, nW, nHM, nWM); 
   }
+  else if(strs == "attack"){
+    attackExtractionRand(OCTET* img, int bit, int nH, int nW, int nHM, int nWM )
+    ImgOut = insertionRandMaxi(ImgIn, ImgInMessage, 0, nH, nW, nHM, nWM);
+    ImgOutMessage = insertionRandMaxiEctract(ImgOut, 0, nH, nW, nHM, nWM); 
+  }
+
+  
   else if (strs == "test")
   {
     for (int i = 0; i < 16*16; i++)
