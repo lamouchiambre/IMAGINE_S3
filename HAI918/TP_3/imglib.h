@@ -88,8 +88,169 @@ OCTET* NpremierEctract(OCTET * img,int nH, int nW, int nHM, int nWM){
 
 }
 
+OCTET* insertionSub(OCTET * img, OCTET * message, int bit, int nH, int nW, int nHM, int nWM){
+  OCTET* ImageMessage;
+  allocation_tableau(ImageMessage, OCTET, nH*nW);
 
-OCTET* Poid(OCTET * img, OCTET * message, int bit, int nH, int nW, int nHM, int nWM){
+  int nbBlock = int((nH*nW)/(nHM*nWM*8));
+  for(int i = 0; i <nH*nW ;i++){
+    ImageMessage[i] = img[i];
+  } 
+  int k = 0;
+  for (int i = 0; i < nHM*nWM; i++){
+    for(int j = 0; j < 8; j++){
+      if(get_bit(img[k*nbBlock],bit) ^ get_bit(message[i],j)){
+        if(get_bit(message[i],j)){
+          ImageMessage[k*nbBlock] = (ImageMessage[k*nbBlock] - ImageMessage[k*nbBlock]%2 + (1 << bit))%256;
+        }else{
+          ImageMessage[k*nbBlock] = (ImageMessage[k*nbBlock] - ImageMessage[k*nbBlock]%2  - (1 << bit))%256;
+        }
+      }
+
+      binaryM(ImageMessage[k*nbBlock], "i :");
+
+      k++;
+    } 
+  }
+
+  return ImageMessage; 
+}
+
+OCTET* insertionSubEctract(OCTET * img, int bit, int nH, int nW, int nHM, int nWM){
+  OCTET* ImageMessage;
+  allocation_tableau(ImageMessage, OCTET, nHM*nWM);
+
+  int nbBlock = int((nH*nW)/(nHM*nWM*8));
+  for(int i = 0; i <nHM*nWM ;i++){
+    ImageMessage[i] = 0;
+  }
+
+
+  int i = 0;
+  for (int k = 0; k < nHM*nWM; k++){
+    for(int b = 0; b < 8; b++){
+      if(img[i*nbBlock] & (1 << bit))
+      {
+        ImageMessage[k] = ImageMessage[k] ^ (1 << b);
+      }
+      i++;
+    }
+  }
+
+  return ImageMessage;
+
+}
+
+OCTET* insertionRand(OCTET * img, OCTET * message, int bit, int nH, int nW, int nHM, int nWM){
+  OCTET* ImageMessage;
+  allocation_tableau(ImageMessage, OCTET, nH*nW);
+
+  int nbBlock = int((nH*nW)/(nHM*nWM*8));
+  for(int i = 0; i <nH*nW ;i++){
+    ImageMessage[i] = img[i];
+  } 
+  srand(23);
+  int k = 0;
+  for (int i = 0; i < nHM*nWM; i++){
+    for(int j = 0; j < 8; j++){
+      int pos = rand()%nbBlock;
+      if(get_bit(img[k*nbBlock+pos],bit) ^ get_bit(message[i],j)){
+        ImageMessage[k*nbBlock+pos] = ImageMessage[k*nbBlock+pos] ^ (1 << bit); 
+      }
+      binaryM(ImageMessage[k*nbBlock], "i :");
+
+      k++;
+    } 
+  }
+
+  return ImageMessage; 
+} 
+
+OCTET* insertionRandEctract(OCTET * img, int bit, int nH, int nW, int nHM, int nWM){
+  OCTET* ImageMessage;
+  allocation_tableau(ImageMessage, OCTET, nHM*nWM);
+
+  int nbBlock = int((nH*nW)/(nHM*nWM*8));
+  for(int i = 0; i <nHM*nWM ;i++){
+    ImageMessage[i] = 0;
+  }
+  srand(23);
+  int i = 0;
+  for (int k = 0; k < nHM*nWM; k++){
+    for(int b = 0; b < 8; b++){
+      int pos = rand()%nbBlock;
+      if(img[i*nbBlock+pos] & (1 << bit))
+      {
+        ImageMessage[k] = ImageMessage[k] ^ (1 << b);
+      }
+      i++;
+    }
+  }
+
+  return ImageMessage;
+
+}
+
+OCTET* attackExtractionRand(OCTET* img, int bit, int nH, int nW, int nHM, int nWM ){
+  OCTET* ImageMessage;
+  allocation_tableau(ImageMessage, OCTET, nH*nW);
+  entropie = 10;
+  while (){
+
+  }
+
+}
+
+OCTET* insertionRandMaxi(OCTET * img, OCTET * message, int bit, int key, int nH, int nW, int nHM, int nWM){
+  OCTET* ImageMessage;
+  allocation_tableau(ImageMessage, OCTET, nH*nW);
+
+  int nbBlock = int((nH*nW)/(nHM*nWM*8));
+  for(int i = 0; i <nH*nW ;i++){
+    ImageMessage[i] = img[i];
+  } 
+  srand(key);
+  int k = 0;
+  for (int i = 0; i < nHM*nWM; i++){
+    for(int j = 0; j < 8; j++){
+      int pos = rand()%(nH*nW);
+      if(get_bit(img[pos],bit) ^ get_bit(message[i],j)){
+        ImageMessage[pos] = ImageMessage[pos] ^ (1 << bit); 
+      }
+      //binaryM(ImageMessage[k*nbBlock], "i :");
+
+      k++;
+    } 
+  }
+
+  return ImageMessage; 
+}
+
+OCTET* insertionRandMaxiEctract(OCTET * img, int bit,int key, int nH, int nW, int nHM, int nWM){
+  OCTET* ImageMessage;
+  allocation_tableau(ImageMessage, OCTET, nHM*nWM);
+
+  int nbBlock = int((nH*nW)/(nHM*nWM*8));
+  for(int i = 0; i <nHM*nWM ;i++){
+    ImageMessage[i] = 0;
+  }
+  srand(key);
+  int i = 0;
+  for (int k = 0; k < nHM*nWM; k++){
+    for(int b = 0; b < 8; b++){
+      int pos = rand()%(nH*nW);
+      if(img[pos] & (1 << bit))
+      {
+        ImageMessage[k] = ImageMessage[k] ^ (1 << b);
+      }
+      i++;
+    }
+  }
+
+  return ImageMessage;
+
+}
+OCTET* insertion(OCTET * img, OCTET * message, int bit, int nH, int nW, int nHM, int nWM){
   OCTET* ImageMessage;
   allocation_tableau(ImageMessage, OCTET, nH*nW);
 
@@ -101,21 +262,17 @@ OCTET* Poid(OCTET * img, OCTET * message, int bit, int nH, int nW, int nHM, int 
   int k = 0;
   for (int i = 0; i < nHM*nWM; i++){
     for(int j = 0; j < 8; j++){
-      // if((img[k*nbBlock] & (1 << bit))|(message[i] & (1 << bit)))
-      // {
-      //   ImageMessage[k*nbBlock] = img[k*nbBlock] | (1 << bit);
-      // }
-      printf("XXXXXXXXXXXXXXX\n");
-      binaryM(message[i], "m :");
-      binaryM(ImageMessage[k*nbBlock], "i :");
-      binaryM(1 << j, "j :");
-      binaryM(1 << bit, "b :");
-      printf("---------------\n");
-      binaryM(get_bit(ImageMessage[k*nbBlock],bit),"i & b : ");
-      binaryM(get_bit(message[i],j), "m & j :");
+      // printf("XXXXXXXXXXXXXXX\n");
+      // binaryM(message[i], "m :");
+      // binaryM(ImageMessage[k*nbBlock], "i :");
+      // binaryM(1 << j, "j :");
+      // binaryM(1 << bit, "b :");
+      // printf("---------------\n");
+      // binaryM(get_bit(ImageMessage[k*nbBlock],bit),"i & b : ");
+      // binaryM(get_bit(message[i],j), "m & j :");
       if(get_bit(img[k*nbBlock],bit) ^ get_bit(message[i],j)){
         ImageMessage[k*nbBlock] = ImageMessage[k*nbBlock] ^ (1 << bit); 
-        printf("!=\n");
+        // printf("!=\n");
       }
       binaryM(ImageMessage[k*nbBlock], "i :");
 
@@ -126,7 +283,41 @@ OCTET* Poid(OCTET * img, OCTET * message, int bit, int nH, int nW, int nHM, int 
   return ImageMessage; 
 }
 
-OCTET* PoidPixel(OCTET * img, OCTET * message, int bit, int nH, int nW, int nHM, int nWM){
+OCTET* insertionEctract(OCTET * img, int bit, int nH, int nW, int nHM, int nWM){
+  OCTET* ImageMessage;
+  allocation_tableau(ImageMessage, OCTET, nHM*nWM);
+
+  int nbBlock = int((nH*nW)/(nHM*nWM*8));
+  for(int i = 0; i <nHM*nWM ;i++){
+    ImageMessage[i] = 0;
+  }
+
+
+  int i = 0;
+  for (int k = 0; k < nHM*nWM; k++){
+    for(int b = 0; b < 8; b++){
+    // for(int b = 7; b >= 0; b--){
+
+      // printf("XXXXXXXXXXXXXXX\n");
+      // binary(img[i*nbBlock]);
+      // binary(ImageMessage[k]);
+      // binary((1 << bit));
+      // binary((1 << b));
+      //binary(message[i]);
+      if(img[i*nbBlock] & (1 << bit))
+      {
+        ImageMessage[k] = ImageMessage[k] ^ (1 << b);
+      }
+      i++;
+      //binary(ImageMessage[k]);
+    }
+  }
+
+  return ImageMessage;
+
+}
+
+OCTET* insertionParPixel(OCTET * img, OCTET * message, int bit, int nH, int nW, int nHM, int nWM){
   OCTET* ImageMessage;
   allocation_tableau(ImageMessage, OCTET, nH*nW);
   int nbBlock = int((nH*nW)/(nHM*nWM));
@@ -141,7 +332,7 @@ OCTET* PoidPixel(OCTET * img, OCTET * message, int bit, int nH, int nW, int nHM,
   return ImageMessage; 
 }
 
-OCTET* PoidPixelEctract(OCTET * img, int bit, int nH, int nW, int nHM, int nWM){
+OCTET* insertionParPixelEctract(OCTET * img, int bit, int nH, int nW, int nHM, int nWM){
   OCTET* ImageMessage2;
   allocation_tableau(ImageMessage2, OCTET, nHM*nWM);
 
@@ -152,38 +343,6 @@ OCTET* PoidPixelEctract(OCTET * img, int bit, int nH, int nW, int nHM, int nWM){
     j++;
   }
   return ImageMessage2;
-}
-
-OCTET* PoidEctract(OCTET * img, int bit, int nH, int nW, int nHM, int nWM){
-  OCTET* ImageMessage;
-  allocation_tableau(ImageMessage, OCTET, nHM*nWM);
-
-  int nbBlock = int((nH*nW)/(nHM*nWM*8));
-  for(int i = 0; i <nHM*nWM ;i++){
-    ImageMessage[i] = 0;
-  }
-
-
-  int i = 0;
-  for (int k = 0; k < nHM*nWM; k++){
-    for(int b = 7; b >= 0; b--){
-      printf("XXXXXXXXXXXXXXX\n");
-      binary(img[i*nbBlock]);
-      binary(ImageMessage[k]);
-      binary((1 << bit));
-      binary((1 << b));
-      //binary(message[i]);
-      if(img[i*nbBlock] & (1 << bit))
-      {
-        ImageMessage[k] = ImageMessage[k] | (1 << b);
-      }
-      i++;
-      binary(ImageMessage[k]);
-    }
-  }
-
-  return ImageMessage;
-
 }
 
 //Extraction

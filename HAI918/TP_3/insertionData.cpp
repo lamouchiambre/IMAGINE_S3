@@ -78,18 +78,32 @@ int main(int argc, char* argv[])
     b = (b +1)%256 ;
   }
 
+ 
   if (strs == "Npremier") 
   {  
     ImgOut = Npremier(ImgIn, ImgInMessage, nH, nW, nHM, nWM);
     ImgOutMessage = NpremierEctract(ImgOut, nH, nW, nHM, nWM); 
-  }else if(strs == "Poid"){
-    ImgOut = Poid(ImgIn, ImgInMessage,7, nH, nW, nHM, nWM);
-    ImgOutMessage = PoidEctract(ImgOut,7, nH, nW, nHM, nWM); 
+  }else if(strs == "inser"){
+    ImgOut = insertion(ImgIn, ImgInMessage,0, nH, nW, nHM, nWM);
+    ImgOutMessage = insertionEctract(ImgOut,0, nH, nW, nHM, nWM); 
   }
-  else if(strs == "PoidPixel"){
-    ImgOut = PoidPixel(ImgIn, ImgInMessage, 7, nH, nW, nHM, nWM);
-    ImgOutMessage = PoidPixelEctract(ImgOut, 7, nH, nW, nHM, nWM); 
-  } else if (strs == "test")
+  else if(strs == "inserPixel"){
+    ImgOut = insertionParPixel(ImgIn, ImgInMessage, 7, nH, nW, nHM, nWM);
+    ImgOutMessage = insertionParPixelEctract(ImgOut, 7, nH, nW, nHM, nWM); 
+  } 
+  else if(strs == "inserSub"){
+    ImgOut = insertionSub(ImgIn, ImgInMessage, 7, nH, nW, nHM, nWM);
+    ImgOutMessage = insertionSubEctract(ImgOut, 7, nH, nW, nHM, nWM); 
+  }   
+  else if(strs == "inserRand"){
+    ImgOut = insertionRand(ImgIn, ImgInMessage, 7, nH, nW, nHM, nWM);
+    ImgOutMessage = insertionRandEctract(ImgOut, 7, nH, nW, nHM, nWM); 
+  }
+  else if(strs == "inserRandMaxi"){
+    ImgOut = insertionRandMaxi(ImgIn, ImgInMessage, 0, nH, nW, nHM, nWM);
+    ImgOutMessage = insertionRandMaxiEctract(ImgOut, 0, nH, nW, nHM, nWM); 
+  }
+  else if (strs == "test")
   {
     for (int i = 0; i < 16*16; i++)
     {
@@ -99,8 +113,28 @@ int main(int argc, char* argv[])
     {
       Img2[i] = 200;
     }
-    Img16Out = PoidPixel(Img16, Img2,7, 16, 16, 2, 2);
-    Img2Out = PoidPixelEctract(Img16Out,7, 16, 16, 2, 2); 
+    Img16Out = insertionParPixel(Img16, Img2,7, 16, 16, 2, 2);
+    Img2Out = insertionParPixelEctract(Img16Out,7, 16, 16, 2, 2); 
+    std::string m = "Img16Out.pgm";
+    std::string n = "Img2Out.pgm";
+    strcpy(cNomImgEcrite, m.c_str());
+    ecrire_image_pgm(cNomImgEcrite, Img16Out, 16, 16); 
+
+    strcpy(cNomImgEcrite, n.c_str());
+    ecrire_image_pgm(cNomImgEcrite, Img2Out, 2, 2); 
+  }
+  else if (strs == "test2")
+  {
+    for (int i = 0; i < 16*16; i++)
+    {
+      Img16[i] = 100;
+    }
+    for (int i = 0; i < 2*2; i++)
+    {
+      Img2[i] = 200;
+    }
+    Img16Out = insertion(Img16, Img2,7, 16, 16, 2, 2);
+    Img2Out = insertionEctract(Img16Out,7, 16, 16, 2, 2); 
     std::string m = "Img16Out.pgm";
     std::string n = "Img2Out.pgm";
     strcpy(cNomImgEcrite, m.c_str());
@@ -113,7 +147,7 @@ int main(int argc, char* argv[])
     printf("mauvais choix\n");
     printf("O_O\n");
   }
-
+ 
 
   printf("PSNR %f\n",PSNR(ImgIn, ImgOut,nH,nW));
   printf("PSNR %f\n",PSNR(ImgIn, ImgIn,nH,nW));
