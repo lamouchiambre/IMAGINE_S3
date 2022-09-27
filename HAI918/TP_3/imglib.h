@@ -111,33 +111,45 @@ OCTET* Poid(OCTET * img, OCTET * message, int bit, int nH, int nW, int nHM, int 
 OCTET* PoidPixel(OCTET * img, OCTET * message, int bit, int nH, int nW, int nHM, int nWM){
   OCTET* ImageMessage;
   allocation_tableau(ImageMessage, OCTET, nH*nW);
-
   int nbBlock = int((nH*nW)/(nHM*nWM));
-  for(int i = 0; i <nH*nW ;i++){
+  for (int i = 0; i < nH*nW; i++){
     ImageMessage[i] = img[i];
+  }
+
+  for(int i = 0; i <nHM*nWM ;i++){
+    // printf("xxxxxxxxxxxxxxxxxxx\n");
+    // printf("%i\n", ImageMessage[i]);
+    ImageMessage[i*nbBlock] = message[i];
+    // printf("%i\n", ImageMessage[i]);
   } 
 
-  int k = 0;
-  for (int i = 0; i < nHM*nWM; i++){
-    ImageMessage[i*nbBlock] = img[i];
-  }
   return ImageMessage; 
-
 }
 
 OCTET* PoidPixelEctract(OCTET * img, int bit, int nH, int nW, int nHM, int nWM){
   OCTET* ImageMessage2;
   allocation_tableau(ImageMessage2, OCTET, nHM*nWM);
 
-  int nbBlock = int((nH*nW)/(nHM*nWM*8));
-
-  int i = 0;
+  int nbBlock = int((nH*nW)/(nHM*nWM));
+  // for (int i = 0; i < nHM*nWM; i++)
+  // {
+  //   printf("%i\n", ImageMessage2[i]);
+  //   //std::cout << ImageMessage2[i] << std::endl;
+  // }
+  // std::cout << "XXXXXXXXXXXXXXXXXXXXXXXXXX" << std::endl;
+  
+  int j = 0;
   for (int k = 0; k < nHM*nWM; k++){
-    ImageMessage2[i] = k%256;// img[i*nbBlock];
+    ImageMessage2[k] = img[j*nbBlock];// img[i*nbBlock];
+    j++;
   }
-
+  // for (int i = 0; i < nHM*nWM; i++)
+  // {
+  //   printf("%i\n", ImageMessage2[i]);
+  //   // std::cout << ImageMessage2[i] << std::endl;
+  // }
+  
   return ImageMessage2;
-
 }
 
 OCTET* PoidEctract(OCTET * img, int bit, int nH, int nW, int nHM, int nWM){

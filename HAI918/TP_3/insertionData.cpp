@@ -27,6 +27,11 @@ int main(int argc, char* argv[])
  
   OCTET *ImgKey, *ImgIn,*ImgInMessage, *ImgOutMessage, *ImgOut, *ImgOutNoise,*ImgDecr, *ImgDecrNoise, *ImgSubCryp,*ImgSubDecryp, *ImgEntropy, *ImgEntropyNtaille; 
   OCTET * Img256;  
+  OCTET * Img16, * Img16Out;
+  OCTET * Img2, * Img2Out;
+
+
+
   lire_nb_lignes_colonnes_image_pgm(cNomImgLue, &nH, &nW);
   nTaille = nH * nW;
   
@@ -43,13 +48,20 @@ int main(int argc, char* argv[])
   allocation_tableau(ImgOutMessage, OCTET, nTailleM);
   allocation_tableau(Img256, OCTET, nTaille);
 
+
+  allocation_tableau(Img16, OCTET, 16*16);
+  allocation_tableau(Img16Out, OCTET, 16*16);
+
+  allocation_tableau(Img2, OCTET, 2*2);
+  allocation_tableau(Img2Out, OCTET, 2*2);
+
   std::string strs(type);
   std::string sNomImgLue = std::string(cNomImgLue);
   std::string sImageMessage = std::string(cNomImageMessage);
  
   std::string ext = ".pgm";
   std::string sNomImgLueMessage = sNomImgLue+"Message"+ext;
-  std::string sNomImgOutMessage = sImageMessage+"Decryp"+ext; 
+  std::string sNomImgOutMessage = sImageMessage+"Decryp"+ext;
 
 
   srand(1);
@@ -63,26 +75,38 @@ int main(int argc, char* argv[])
   {
     Img256[i] = b;
     b = (b +1)%256 ;
-  }
- 
+  } 
+
   if (strs == "Npremier") 
   {  
-    
     ImgOut = Npremier(ImgIn, ImgInMessage, nH, nW, nHM, nWM);
     ImgOutMessage = NpremierEctract(ImgOut, nH, nW, nHM, nWM); 
-
   }else if(strs == "Poid"){
-  
     ImgOut = Poid(Img256, ImgInMessage,1, nH, nW, nHM, nWM);
-    // ImgOut = Poid(ImgIn, ImgInMessage,7, nH, nW, nHM, nWM);
     ImgOutMessage = PoidEctract(ImgOut,1, nH, nW, nHM, nWM); 
   }
   else if(strs == "PoidPixel"){
-    
-    ImgOut = PoidPixel(ImgIn, ImgInMessage,7, nH, nW, nHM, nWM);
+    ImgOut = PoidPixel(ImgIn, ImgInMessage, 7, nH, nW, nHM, nWM);
+    ImgOutMessage = PoidPixelEctract(ImgOut, 7, nH, nW, nHM, nWM); 
+  } else if (strs == "test")
+  {
+    for (int i = 0; i < 16*16; i++)
+    {
+      Img16[i] = 100;
+    }
+    for (int i = 0; i < 2*2; i++)
+    {
+      Img2[i] = 200;
+    }
+    Img16Out = PoidPixel(Img16, Img2,7, 16, 16, 2, 2);
+    Img2Out = PoidPixelEctract(Img16Out,7, 16, 16, 2, 2); 
+    std::string m = "Img16Out.pgm";
+    std::string n = "Img2Out.pgm";
+    strcpy(cNomImgEcrite, m.c_str());
+    ecrire_image_pgm(cNomImgEcrite, Img16Out, 16, 16); 
 
-    // ImgOut = Poid(ImgIn, ImgInMessage,7, nH, nW, nHM, nWM);
-    ImgOutMessage = PoidPixelEctract(ImgOut,7, nH, nW, nHM, nWM); 
+    strcpy(cNomImgEcrite, n.c_str());
+    ecrire_image_pgm(cNomImgEcrite, Img2Out, 2, 2); 
   }
   else{
     printf("mauvais choix\n");
@@ -92,14 +116,11 @@ int main(int argc, char* argv[])
   printf("PSNR %f\n",PSNR(ImgIn, ImgOut,nH,nW));
   printf("PSNR %f\n",PSNR(ImgIn, ImgIn,nH,nW));
 
-  strcpy(cNomImgEcrite, sNomImgLueMessage.c_str());
-  ecrire_image_pgm(cNomImgEcrite, ImgOut, nH, nW);
-  unsigned int num = 255;
-
-
-  strcpy(cNomImgEcrite, sNomImgOutMessage.c_str());
-  ecrire_image_pgm(cNomImgEcrite, ImgOutMessage, nHM, nWM);
-
+  // strcpy(cNomImgEcrite, sNomImgLueMessage.c_str());
+  // ecrire_image_pgm(cNomImgEcrite, ImgOut, nH, nW);
+  // unsigned int num = 255;
+  // strcpy(cNomImgEcrite, sNomImgOutMessage.c_str());
+  // ecrire_image_pgm(cNomImgEcrite, ImgOutMessage, nHM, nWM);
 
    free(ImgIn);
    free(ImgOut);
