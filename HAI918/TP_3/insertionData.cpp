@@ -106,11 +106,16 @@ int main(int argc, char* argv[])
   else if(strs == "attack"){
     ImgOut = insertionRandMaxi(ImgIn, ImgInMessage, 0, 23, nH, nW, nHM, nWM);
     ImgOutMessage = attackExtractionRand(ImgOut, 0, nH, nW, nHM, nWM ); 
-  }
+  } 
   else if(strs == "2LSB"){
     ImgOut = insertion2Bit(ImgIn, ImgInMessage, 7, 5, 23, nH, nW, nHM, nWM);
     ImgOutMessage = insertion2BitEctract(ImgOut, 7, 5, 23, nH, nW, nHM, nWM ); 
   }
+  else if(strs == "3LSB"){ 
+    ImgOut = insertion3Bit(ImgIn, ImgInMessage, 7, 5, 6, 23, nH, nW, nHM, nWM);
+    ImgOutMessage = insertion3BitEctract(ImgOut, 7, 5, 6, 23, nH, nW, nHM, nWM ); 
+  }
+  // insertion3Bit(OCTET * img, OCTET * message, int b1, int b2, int b3, int key, int nH, int nW, int nHM, int nWM)
   else if (strs == "test")
   {
     for (int i = 0; i < 16*16; i++)
@@ -155,10 +160,12 @@ int main(int argc, char* argv[])
     printf("mauvais choix\n");
     printf("O_O\n");
   }
- 
 
-  printf("PSNR %f\n",PSNR(ImgIn, ImgOut,nH,nW));
-  printf("PSNR %f\n",PSNR(ImgIn, ImgIn,nH,nW));
+  printf("PSNR image/image avec tatouage %f\n",PSNR(ImgIn, ImgOut,nH,nW));
+  printf("PSNR message/message decrype %f\n",PSNR(ImgInMessage, ImgOutMessage,nH,nW));
+  printf("ETH message décrype %f bit tout les 1000 bit\n",ETH(ImgInMessage, ImgOutMessage,nTailleM));
+  printf("ETH message avec tatouage %f bit tout les 1000 bit\n",ETH(ImgInMessage, ImgInMessage,nTaille));
+
 
   strcpy(cNomImgEcrite, sNomImgLueMessage.c_str());
   ecrire_image_pgm(cNomImgEcrite, ImgOut, nH, nW);

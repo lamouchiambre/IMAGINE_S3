@@ -311,33 +311,56 @@ OCTET* insertion3Bit(OCTET * img, OCTET * message, int b1, int b2, int b3, int k
   srand(key);
   int k = 0;
   int pos;
-  int nbPixel2 = nHM*nWM - nHM*nWM%3;
+  int nbPixel2 = nHM*nWM ;
+  //- nHM*nWM%3;
   int j = 0;
-  
-  for (int i = 0; i < nbPixel2; i++){
+  int i = 0;
+  // for (int i = 0; i < nbPixel2; i++){
+  while (i < nbPixel2){
     //for(int j = 0; j < 8; j+=3){
 
       pos = rand()%(nH*nW);
       if(get_bit(img[pos], b1) ^ get_bit(message[i], j)){
         ImageMessage[pos] = ImageMessage[pos] ^ (1 << b1); 
       }
-      if(get_bit(img[pos], b2) ^ get_bit(message[i], j + 1)){
+      j++;
+      if (j > 8){
+        j=j%8;
+        i++;
+      }
+      if(i > nbPixel2){
+        break;
+      }
+      if(get_bit(img[pos], b2) ^ get_bit(message[i], j)){
         ImageMessage[pos] = ImageMessage[pos] ^ (1 << b2); 
       }
-      if(get_bit(img[pos], b3) ^ get_bit(message[i], j + 2)){
+      j++;
+      if (j > 8){
+        j=j%8;
+        i++;
+      }
+      if(i > nbPixel2){
+        break;
+      }
+      if(get_bit(img[pos], b3) ^ get_bit(message[i], j)){
         ImageMessage[pos] = ImageMessage[pos] ^ (1 << b3); 
       }
-      //binaryM(ImageMessage[k*nbBlock], "i :");
+      j++;
+      if (j > 8){
+        j=j%8;
+        i++;
+      }
+      if(i > nbPixel2){
+        break;
+      }
       k++;
-    //}
-
-
   }
+  printf("i end : %i\n", i);
 
   return ImageMessage; 
 }
 
-OCTET* insertion2BitEctract(OCTET * img, int b1, int b2 , int key, int nH, int nW, int nHM, int nWM){
+OCTET* insertion3BitEctract(OCTET * img, int b1, int b2 ,int b3 , int key, int nH, int nW, int nHM, int nWM){
   OCTET* ImageMessage;
   allocation_tableau(ImageMessage, OCTET, nHM*nWM);
 
@@ -346,23 +369,81 @@ OCTET* insertion2BitEctract(OCTET * img, int b1, int b2 , int key, int nH, int n
     ImageMessage[i] = 0;
   }
   srand(key);
+  int nbPixel2 = nHM*nWM ;
+  //- nHM*nWM%3;
+  int j = 0;
   int i = 0;
-  for (int k = 0; k < nHM*nWM; k++){
-    for(int b = 0; b < 8; b+=2){
-      int pos = rand()%(nH*nW);
-      if(img[pos] & (1 << b1))
-      {
-        ImageMessage[k] = ImageMessage[k] ^ (1 << b);
+  int pos;
+
+    while (i < nbPixel2){
+    //for(int j = 0; j < 8; j+=3){
+
+      pos = rand()%(nH*nW);
+      if(img[pos] & (1 << b1)){
+        ImageMessage[i] = ImageMessage[i] ^ (1 << j); 
       }
-      if(img[pos] & (1 << b2))
-      {
-        ImageMessage[k] = ImageMessage[k] ^ (1 << b+1);
+      j++;
+      if (j > 8){
+        j=j%8;
+        i++;
       }
-      i++;
+      if(i > nbPixel2){
+        break;
+      }
+      if(img[pos] & (1 << b2)){
+        ImageMessage[i] = ImageMessage[i] ^ (1 << j); 
+      }
+      j++;
+      if (j > 8){
+        j=j%8;
+        i++;
+      }
+      if(i > nbPixel2){
+        break;
+      }
+      if(img[pos] & (1 << b3)){
+        ImageMessage[i] = ImageMessage[i] ^ (1 << j); 
+      }
+      j++;
+      if (j > 8){
+        j=j%8;
+        i++;
+      }
+      if(i > nbPixel2){
+        break;
+      }
+      // k++;
+  }
+
+
+  // int i = 0;
+  // for (int k = 0; k < nHM*nWM; k++){
+  //   for(int b = 0; b < 8; b+=2){
+  //     int pos = rand()%(nH*nW);
+  //     if(img[pos] & (1 << b1))
+  //     {
+  //       ImageMessage[k] = ImageMessage[k] ^ (1 << b);
+  //     }
+  //     if(img[pos] & (1 << b2))
+  //     {
+  //       ImageMessage[k] = ImageMessage[k] ^ (1 << b+1);
+  //     }
+  //     i++;
+  //   }
+  // }
+  return ImageMessage;
+}
+
+float ETH(OCTET* imgA, OCTET* imgB, int nTaille ){
+  float sum = 0;
+  for(int i = 0; i < nTaille; i++){
+    for(int j = 0; j <8; j++){
+      sum += int(get_bit(imgA[i], j) ^get_bit(imgB[i], j));
     }
   }
 
-  return ImageMessage;
+  return (sum/(nTaille*8))*1000;
+
 }
 
 OCTET* attackExtractionRand(OCTET* img, int bit, int nH, int nW, int nHM, int nWM ){
@@ -392,17 +473,8 @@ OCTET* insertion(OCTET * img, OCTET * message, int bit, int nH, int nW, int nHM,
   int k = 0;
   for (int i = 0; i < nHM*nWM; i++){
     for(int j = 0; j < 8; j++){
-      // printf("XXXXXXXXXXXXXXX\n");
-      // binaryM(message[i], "m :");
-      // binaryM(ImageMessage[k*nbBlock], "i :");
-      // binaryM(1 << j, "j :");
-      // binaryM(1 << bit, "b :");
-      // printf("---------------\n");
-      // binaryM(get_bit(ImageMessage[k*nbBlock],bit),"i & b : ");
-      // binaryM(get_bit(message[i],j), "m & j :");
       if(get_bit(img[k*nbBlock],bit) ^ get_bit(message[i],j)){
         ImageMessage[k*nbBlock] = ImageMessage[k*nbBlock] ^ (1 << bit); 
-        // printf("!=\n");
       }
       binaryM(ImageMessage[k*nbBlock], "i :");
 
