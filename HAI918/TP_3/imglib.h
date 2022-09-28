@@ -6,6 +6,29 @@
 #include <bitset>
 #include "AES.h"
 
+
+
+//Extraction
+
+float entropy(OCTET* img, int nH, int nW){
+    int count = 0;
+    int* hist = new int[256];
+    for (int i=0;i<256;i++){
+        hist[i]=0;
+    }
+    for (int i=0; i<nH*nW; i++){
+        hist[img[i]]++;
+        count++;
+    }
+
+    float res = 0.0;
+    for (int i=0; i<256; i++){
+        if (hist[i]){
+            res+=((float)hist[i]/(float)count)*log2((float)hist[i]/(float)count);
+        }
+    }
+    return -res;
+}
 bool get_bit(int num, int position)
 {
 	bool bit = num & (1 << position);
@@ -43,26 +66,7 @@ void binary(unsigned int num){
 
 
 //Insertion de message
-// OCTET* Npremier(OCTET * img, OCTET * message, int nH, int nW, int nHM, int nWM){
-//   OCTET* ImageMessage;
-//   allocation_tableau(ImageMessage, OCTET, nH*nW);
 
-//   int nbBlock = int((nH*nW)/(nHM*nWM));
-//   for(int i = 0; i <nH*nW ;i++){
-//     ImageMessage[i] = img[i];
-//   }
-
-//   printf("%i %i %i ", nH*nW, nHM*nWM, nbBlock);
-
-//   for (int k = 0; k < nHM*nWM; k++){
-//     if(get_bit(ImageMessage[k*nbBlock],0) != get_bit(message[k],7)){
-//     // if(get_bit(message[k],0)){
-//       ImageMessage[k*nbBlock] = set_bit(ImageMessage[k*nbBlock], 0);
-//     }
-//   }
-//   return ImageMessage;
-
-// }
 OCTET* Npremier(OCTET * img, OCTET * message, int nH, int nW, int nHM, int nWM){
   OCTET* ImageMessage;
   allocation_tableau(ImageMessage, OCTET, nH*nW);
@@ -124,7 +128,6 @@ OCTET* insertionSubEctract(OCTET * img, int bit, int nH, int nW, int nHM, int nW
   for(int i = 0; i <nHM*nWM ;i++){
     ImageMessage[i] = 0;
   }
-
 
   int i = 0;
   for (int k = 0; k < nHM*nWM; k++){
@@ -191,18 +194,6 @@ OCTET* insertionRandEctract(OCTET * img, int bit, int nH, int nW, int nHM, int n
 
 }
 
-OCTET* attackExtractionRand(OCTET* img, int bit, int nH, int nW, int nHM, int nWM ){
-  OCTET* ImageMessage;
-  allocation_tableau(ImageMessage, OCTET, nHM*nWM);
-  entropie = 10;
-  int key = 0;
-  while (entropie > 7.9 && key < 256 ){
-    ImageMessage = insertionRandMaxiEctract(img, bit, key, nH, nW, nHM, nWM);
-    entropie = entropy(ImageMessage, nHM*nWM);
-  }
-  printf("entropy %d, key : %i ",entropie, key);
-  return ImageMessage;
-}
 
 OCTET* insertionRandMaxi(OCTET * img, OCTET * message, int bit, int key, int nH, int nW, int nHM, int nWM){
   OCTET* ImageMessage;
@@ -251,8 +242,144 @@ OCTET* insertionRandMaxiEctract(OCTET * img, int bit,int key, int nH, int nW, in
   }
 
   return ImageMessage;
-
 }
+
+OCTET* insertion2Bit(OCTET * img, OCTET * message, int b1, int b2, int key, int nH, int nW, int nHM, int nWM){
+  OCTET* ImageMessage;
+  allocation_tableau(ImageMessage, OCTET, nH*nW);
+
+  int nbBlock = int((nH*nW)/(nHM*nWM*8));
+  for(int i = 0; i <nH*nW ;i++){
+    ImageMessage[i] = img[i];
+  } 
+  srand(key);
+  int k = 0;
+  for (int i = 0; i < nHM*nWM; i++){
+    for(int j = 0; j < 8; j+=2){
+      int pos = rand()%(nH*nW);
+      if(get_bit(img[pos], b1) ^ get_bit(message[i], j)){
+        ImageMessage[pos] = ImageMessage[pos] ^ (1 << b1); 
+      }
+      if(get_bit(img[pos], b2) ^ get_bit(message[i], j + 1)){
+        ImageMessage[pos] = ImageMessage[pos] ^ (1 << b2); 
+      }
+      //binaryM(ImageMessage[k*nbBlock], "i :");
+
+      k++;
+    } 
+  }
+
+  return ImageMessage; 
+}
+
+OCTET* insertion2BitEctract(OCTET * img, int b1, int b2 , int key, int nH, int nW, int nHM, int nWM){
+  OCTET* ImageMessage;
+  allocation_tableau(ImageMessage, OCTET, nHM*nWM);
+
+  int nbBlock = int((nH*nW)/(nHM*nWM*8));
+  for(int i = 0; i <nHM*nWM ;i++){
+    ImageMessage[i] = 0;
+  }
+  srand(key);
+  int i = 0;
+  for (int k = 0; k < nHM*nWM; k++){
+    for(int b = 0; b < 8; b+=2){
+      int pos = rand()%(nH*nW);
+      if(img[pos] & (1 << b1))
+      {
+        ImageMessage[k] = ImageMessage[k] ^ (1 << b);
+      }
+      if(img[pos] & (1 << b2))
+      {
+        ImageMessage[k] = ImageMessage[k] ^ (1 << b+1);
+      }
+      i++;
+    }
+  }
+
+  return ImageMessage;
+}
+
+OCTET* insertion3Bit(OCTET * img, OCTET * message, int b1, int b2, int b3, int key, int nH, int nW, int nHM, int nWM){
+  OCTET* ImageMessage;
+  allocation_tableau(ImageMessage, OCTET, nH*nW);
+
+  int nbBlock = int((nH*nW)/(nHM*nWM*8));
+  for(int i = 0; i <nH*nW ;i++){
+    ImageMessage[i] = img[i];
+  } 
+  srand(key);
+  int k = 0;
+  int pos;
+  int nbPixel2 = nHM*nWM - nHM*nWM%3;
+  int j = 0;
+  
+  for (int i = 0; i < nbPixel2; i++){
+    //for(int j = 0; j < 8; j+=3){
+
+      pos = rand()%(nH*nW);
+      if(get_bit(img[pos], b1) ^ get_bit(message[i], j)){
+        ImageMessage[pos] = ImageMessage[pos] ^ (1 << b1); 
+      }
+      if(get_bit(img[pos], b2) ^ get_bit(message[i], j + 1)){
+        ImageMessage[pos] = ImageMessage[pos] ^ (1 << b2); 
+      }
+      if(get_bit(img[pos], b3) ^ get_bit(message[i], j + 2)){
+        ImageMessage[pos] = ImageMessage[pos] ^ (1 << b3); 
+      }
+      //binaryM(ImageMessage[k*nbBlock], "i :");
+      k++;
+    //}
+
+
+  }
+
+  return ImageMessage; 
+}
+
+OCTET* insertion2BitEctract(OCTET * img, int b1, int b2 , int key, int nH, int nW, int nHM, int nWM){
+  OCTET* ImageMessage;
+  allocation_tableau(ImageMessage, OCTET, nHM*nWM);
+
+  int nbBlock = int((nH*nW)/(nHM*nWM*8));
+  for(int i = 0; i <nHM*nWM ;i++){
+    ImageMessage[i] = 0;
+  }
+  srand(key);
+  int i = 0;
+  for (int k = 0; k < nHM*nWM; k++){
+    for(int b = 0; b < 8; b+=2){
+      int pos = rand()%(nH*nW);
+      if(img[pos] & (1 << b1))
+      {
+        ImageMessage[k] = ImageMessage[k] ^ (1 << b);
+      }
+      if(img[pos] & (1 << b2))
+      {
+        ImageMessage[k] = ImageMessage[k] ^ (1 << b+1);
+      }
+      i++;
+    }
+  }
+
+  return ImageMessage;
+}
+
+OCTET* attackExtractionRand(OCTET* img, int bit, int nH, int nW, int nHM, int nWM ){
+  OCTET* ImageMessage;
+  allocation_tableau(ImageMessage, OCTET, nHM*nWM);
+  double entropie = 10;
+  int key = 0;
+  while (entropie > 7.9 && key < 256 ){ // 
+    ImageMessage = insertionRandMaxiEctract(img, bit, key, nH, nW, nHM, nWM);
+    entropie = entropy(ImageMessage, nHM, nWM);
+    printf("entropy %f, key : %i \n",entropie, key);
+    key++;
+
+  }
+  return ImageMessage;
+}
+
 OCTET* insertion(OCTET * img, OCTET * message, int bit, int nH, int nW, int nHM, int nWM){
   OCTET* ImageMessage;
   allocation_tableau(ImageMessage, OCTET, nH*nW);
@@ -348,27 +475,6 @@ OCTET* insertionParPixelEctract(OCTET * img, int bit, int nH, int nW, int nHM, i
   return ImageMessage2;
 }
 
-//Extraction
-
-float entropy(OCTET* img, int nH, int nW){
-    int count = 0;
-    int* hist = new int[256];
-    for (int i=0;i<256;i++){
-        hist[i]=0;
-    }
-    for (int i=0; i<nH*nW; i++){
-        hist[img[i]]++;
-        count++;
-    }
-
-    float res = 0.0;
-    for (int i=0; i<256; i++){
-        if (hist[i]){
-            res+=((float)hist[i]/(float)count)*log2((float)hist[i]/(float)count);
-        }
-    }
-    return -res;
-}
 int* Histogramme(OCTET *ImgIn, int nW, int nH){
   int * tabHisto;
   allocation_tableau(tabHisto, int, 256);

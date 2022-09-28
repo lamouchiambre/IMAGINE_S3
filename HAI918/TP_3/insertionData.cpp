@@ -100,16 +100,17 @@ int main(int argc, char* argv[])
     ImgOutMessage = insertionRandEctract(ImgOut, 7, nH, nW, nHM, nWM); 
   }
   else if(strs == "inserRandMaxi"){
-    ImgOut = insertionRandMaxi(ImgIn, ImgInMessage, 0, nH, nW, nHM, nWM);
-    ImgOutMessage = insertionRandMaxiEctract(ImgOut, 0, nH, nW, nHM, nWM); 
+    ImgOut = insertionRandMaxi(ImgIn, ImgInMessage, 7, 23, nH, nW, nHM, nWM);
+    ImgOutMessage = insertionRandMaxiEctract(ImgOut, 7, 23, nH, nW, nHM, nWM); 
   }
   else if(strs == "attack"){
-    attackExtractionRand(OCTET* img, int bit, int nH, int nW, int nHM, int nWM )
-    ImgOut = insertionRandMaxi(ImgIn, ImgInMessage, 0, nH, nW, nHM, nWM);
-    ImgOutMessage = insertionRandMaxiEctract(ImgOut, 0, nH, nW, nHM, nWM); 
+    ImgOut = insertionRandMaxi(ImgIn, ImgInMessage, 0, 23, nH, nW, nHM, nWM);
+    ImgOutMessage = attackExtractionRand(ImgOut, 0, nH, nW, nHM, nWM ); 
   }
-
-  
+  else if(strs == "2LSB"){
+    ImgOut = insertion2Bit(ImgIn, ImgInMessage, 7, 5, 23, nH, nW, nHM, nWM);
+    ImgOutMessage = insertion2BitEctract(ImgOut, 7, 5, 23, nH, nW, nHM, nWM ); 
+  }
   else if (strs == "test")
   {
     for (int i = 0; i < 16*16; i++)
