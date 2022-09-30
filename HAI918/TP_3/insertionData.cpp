@@ -78,7 +78,6 @@ int main(int argc, char* argv[])
     b = (b +1)%256 ;
   }
 
- 
   if (strs == "Npremier") 
   {  
     ImgOut = Npremier(ImgIn, ImgInMessage, nH, nW, nHM, nWM);
@@ -101,7 +100,7 @@ int main(int argc, char* argv[])
   }
   else if(strs == "inserRandMaxi"){
     ImgOut = insertionRandMaxi(ImgIn, ImgInMessage, 7, 23, nH, nW, nHM, nWM);
-    ImgOutMessage = insertionRandMaxiEctract(ImgOut, 7, 23, nH, nW, nHM, nWM); 
+    ImgOutMessage = insertionRandMaxiEctract(ImgOut, 7, 23, nH, nW, nHM, nWM);
   }
   else if(strs == "attack"){
     ImgOut = insertionRandMaxi(ImgIn, ImgInMessage, 0, 23, nH, nW, nHM, nWM);
@@ -115,66 +114,118 @@ int main(int argc, char* argv[])
     ImgOut = insertion3Bit(ImgIn, ImgInMessage, 7, 5, 6, 23, nH, nW, nHM, nWM);
     ImgOutMessage = insertion3BitEctract(ImgOut, 7, 5, 6, 23, nH, nW, nHM, nWM ); 
   }
+  else if(strs == "all"){ 
+    // ImgOut = Npremier(ImgIn, ImgInMessage, nH, nW, nHM, nWM);
+    // ImgOutMessage = NpremierEctract(ImgOut, nH, nW, nHM, nWM); 
+
+
+    
+    printf("\n");
+    printf("\n");
+    printf("########### RAND ###########\n");
+
+    for (int i = 0; i < 8; i++)
+    {
+      /* code */
+      printf("\n");
+      printf("Insertion 1 bit du message au bit %i de l'image \n", i);
+      ImgOut = insertionRandMaxi(ImgIn, ImgInMessage, i, 23, nH, nW, nHM, nWM);
+      ImgOutMessage = insertionRandMaxiEctract(ImgOut, i, 23, nH, nW, nHM, nWM);
+      print_result(ImgIn, ImgOut, ImgOutMessage, ImgInMessage,nHM, nWM, nH, nW);
+      
+      sNomImgLueMessage = sNomImgLue+"Rand"+std::to_string(i)+"_"+ext;
+      strcpy(cNomImgEcrite, sNomImgLueMessage.c_str());
+      ecrire_image_pgm(cNomImgEcrite, ImgOut, nH, nW);
+
+      sNomImgOutSub = sNomImgLue+"Sub"+"Rand"+std::to_string(i)+ext;
+      strcpy(cNomImgEcrite, sNomImgOutSub.c_str());
+      ecrire_image_pgm(cNomImgEcrite, substraction(ImgOut, ImgIn, nTaille), nH, nW);
+
+      sNomImgOutMessage = sImageMessage+"Decryp"+"Sub"+"Rand"+std::to_string(i)+ext;
+      strcpy(cNomImgEcrite, sNomImgOutMessage.c_str());
+      ecrire_image_pgm(cNomImgEcrite, ImgOutMessage, nHM, nWM);
+    }
+    
+
+    for (int i = 0; i < 8; i++)
+    {
+      for (int j = i; j < 8; j++)
+      {
+        printf("\n");
+        printf("Insertion 2 bits du message aux bits %i et %i de l'image \n", i,j);
+        ImgOut = insertion2Bit(ImgIn, ImgInMessage, i, j, 23, nH, nW, nHM, nWM);
+        ImgOutMessage = insertion2BitEctract(ImgOut, i, j, 23, nH, nW, nHM, nWM ); 
+        print_result(ImgIn, ImgOut, ImgOutMessage, ImgInMessage,nHM, nWM, nH, nW);
+        
+        sNomImgLueMessage = sNomImgLue+"2bit"+std::to_string(i)+"_"+std::to_string(j)+ext;
+        strcpy(cNomImgEcrite, sNomImgLueMessage.c_str());
+        ecrire_image_pgm(cNomImgEcrite, ImgOut, nH, nW);
+
+        sNomImgOutSub = sNomImgLue+"Sub"+"2bit"+std::to_string(i)+"_"+std::to_string(j)+ext;
+        strcpy(cNomImgEcrite, sNomImgOutSub.c_str());
+        ecrire_image_pgm(cNomImgEcrite, substraction(ImgOut, ImgIn, nTaille), nH, nW);
+
+        sNomImgOutMessage = sImageMessage+"Decryp"+"Sub"+"2bit"+std::to_string(i)+"_"+std::to_string(j)+ext;
+        strcpy(cNomImgEcrite, sNomImgOutMessage.c_str());
+        ecrire_image_pgm(cNomImgEcrite, ImgOutMessage, nHM, nWM);
+      }
+    }
+    printf("\n");
+    printf("\n");
+    printf("########### 3 BIT ###########\n");
+    for (int i = 0; i < 8; i++)
+    {
+      for (int j = i; j < 8; j++)
+      {
+        for (int k = j; k < 8; k++)
+        {
+          printf("\n");
+          printf("Insertion 3 bits du message aux bits %i, %i et %i de l'image \n", i,j, k);
+          ImgOut = insertion3Bit(ImgIn, ImgInMessage, i, j, k, 23, nH, nW, nHM, nWM);
+          ImgOutMessage = insertion3BitEctract(ImgOut, i, j, k, 23, nH, nW, nHM, nWM); 
+          print_result(ImgIn, ImgOut, ImgOutMessage, ImgInMessage,nHM, nWM, nH, nW);
+          
+          sNomImgLueMessage = sNomImgLue+"3bit"+std::to_string(i)+"_"+std::to_string(j)+"_"+std::to_string(k)+ext;
+          strcpy(cNomImgEcrite, sNomImgLueMessage.c_str());
+          ecrire_image_pgm(cNomImgEcrite, ImgOut, nH, nW);
+
+          sNomImgOutSub = sNomImgLue+"Sub"+"3bit"+std::to_string(i)+"_"+std::to_string(j)+"_"+std::to_string(k)+ext;
+          strcpy(cNomImgEcrite, sNomImgOutSub.c_str());
+          ecrire_image_pgm(cNomImgEcrite, substraction(ImgOut, ImgIn, nTaille), nH, nW);
+
+          sNomImgOutMessage = sImageMessage+"Decryp"+"Sub"+"3bit"+std::to_string(i)+"_"+std::to_string(j)+"_"+std::to_string(k)+ext;
+          strcpy(cNomImgEcrite, sNomImgOutMessage.c_str());
+          ecrire_image_pgm(cNomImgEcrite, ImgOutMessage, nHM, nWM);
+        }
+      }
+    }
+  }
   // insertion3Bit(OCTET * img, OCTET * message, int b1, int b2, int b3, int key, int nH, int nW, int nHM, int nWM)
   else if (strs == "test")
   {
-    for (int i = 0; i < 16*16; i++)
-    {
-      Img16[i] = 100;
-    }
-    for (int i = 0; i < 2*2; i++)
-    {
-      Img2[i] = 200;
-    }
-    Img16Out = insertionParPixel(Img16, Img2,7, 16, 16, 2, 2);
-    Img2Out = insertionParPixelEctract(Img16Out,7, 16, 16, 2, 2); 
-    std::string m = "Img16Out.pgm";
-    std::string n = "Img2Out.pgm";
-    strcpy(cNomImgEcrite, m.c_str());
-    ecrire_image_pgm(cNomImgEcrite, Img16Out, 16, 16); 
-
-    strcpy(cNomImgEcrite, n.c_str());
-    ecrire_image_pgm(cNomImgEcrite, Img2Out, 2, 2); 
   }
   else if (strs == "test2")
   {
-    for (int i = 0; i < 16*16; i++)
-    {
-      Img16[i] = 100;
-    }
-    for (int i = 0; i < 2*2; i++)
-    {
-      Img2[i] = 200;
-    }
-    Img16Out = insertion(Img16, Img2,7, 16, 16, 2, 2);
-    Img2Out = insertionEctract(Img16Out,7, 16, 16, 2, 2); 
-    std::string m = "Img16Out.pgm";
-    std::string n = "Img2Out.pgm";
-    strcpy(cNomImgEcrite, m.c_str());
-    ecrire_image_pgm(cNomImgEcrite, Img16Out, 16, 16); 
-
-    strcpy(cNomImgEcrite, n.c_str());
-    ecrire_image_pgm(cNomImgEcrite, Img2Out, 2, 2); 
   }
   else{
     printf("mauvais choix\n");
     printf("O_O\n");
   }
 
-  printf("PSNR image/image avec tatouage %f\n",PSNR(ImgIn, ImgOut,nH,nW));
-  printf("PSNR message/message decrype %f\n",PSNR(ImgInMessage, ImgOutMessage,nH,nW));
-  printf("ETH message décrype %f bit tout les 1000 bit\n",ETH(ImgInMessage, ImgOutMessage,nTailleM));
-  printf("ETH message avec tatouage %f bit tout les 1000 bit\n",ETH(ImgInMessage, ImgInMessage,nTaille));
+  // printf("PSNR image/image avec tatouage %f\n",PSNR(ImgIn, ImgOut,nH,nW));
+  // printf("PSNR message/message decrype %f\n",PSNR(ImgInMessage, ImgOutMessage,nH,nW));
+  // printf("ETH message décrype %f bit tout les 1000 bit\n",ETH(ImgInMessage, ImgOutMessage,nTailleM));
+  // printf("ETH message avec tatouage %f bit tout les 1000 bit\n",ETH(ImgInMessage, ImgInMessage,nTaille));
 
 
-  strcpy(cNomImgEcrite, sNomImgLueMessage.c_str());
-  ecrire_image_pgm(cNomImgEcrite, ImgOut, nH, nW);
+  // strcpy(cNomImgEcrite, sNomImgLueMessage.c_str());
+  // ecrire_image_pgm(cNomImgEcrite, ImgOut, nH, nW);
 
-  strcpy(cNomImgEcrite, sNomImgOutMessage.c_str());
-  ecrire_image_pgm(cNomImgEcrite, ImgOutMessage, nHM, nWM);
+  // strcpy(cNomImgEcrite, sNomImgOutMessage.c_str());
+  // ecrire_image_pgm(cNomImgEcrite, ImgOutMessage, nHM, nWM);
 
-  strcpy(cNomImgEcrite, sNomImgOutSub.c_str());
-  ecrire_image_pgm(cNomImgEcrite,substraction(ImgOut, ImgIn, nTaille), nH, nW);
+  // strcpy(cNomImgEcrite, sNomImgOutSub.c_str());
+  // ecrire_image_pgm(cNomImgEcrite,substraction(ImgOut, ImgIn, nTaille), nH, nW);
 
    free(ImgIn);
    free(ImgOut);

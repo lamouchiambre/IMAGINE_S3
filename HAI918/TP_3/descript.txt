@@ -1,0 +1,1438 @@
+
+
+########### RAND ###########
+
+Insertion 1 bit du message au bit 0 de l'image 
+PSNR entre l'image initiale et l'image avec tatouage : 66.251314 dB
+PSNR entre le message et le message extrait : 23.232434 dB
+Entropie de l'image avec tatouage : 7.031245 bits/pixel
+Entropie du message extrait : 7.352556 bits/pixel
+ETH du message extrait : 15.563965 bits tout les 1000 bits
+ETH du message avec tatouage : 1.926899 bits tout les 1000 bits
+
+Insertion 1 bit du message au bit 1 de l'image 
+PSNR entre l'image initiale et l'image avec tatouage : 60.250103 dB
+PSNR entre le message et le message extrait : 23.131605 dB
+Entropie de l'image avec tatouage : 7.031385 bits/pixel
+Entropie du message extrait : 7.346822 bits/pixel
+ETH du message extrait : 16.418457 bits tout les 1000 bits
+ETH du message avec tatouage : 1.918316 bits tout les 1000 bits
+
+Insertion 1 bit du message au bit 2 de l'image 
+PSNR entre l'image initiale et l'image avec tatouage : 54.188673 dB
+PSNR entre le message et le message extrait : 23.309185 dB
+Entropie de l'image avec tatouage : 7.032199 bits/pixel
+Entropie du message extrait : 7.340714 bits/pixel
+ETH du message extrait : 16.052246 bits tout les 1000 bits
+ETH du message avec tatouage : 1.936436 bits tout les 1000 bits
+
+Insertion 1 bit du message au bit 3 de l'image 
+PSNR entre l'image initiale et l'image avec tatouage : 48.215655 dB
+PSNR entre le message et le message extrait : 23.067627 dB
+Entropie de l'image avec tatouage : 7.034781 bits/pixel
+Entropie du message extrait : 7.358023 bits/pixel
+ETH du message extrait : 16.174316 bits tout les 1000 bits
+ETH du message avec tatouage : 1.915336 bits tout les 1000 bits
+
+Insertion 1 bit du message au bit 4 de l'image 
+PSNR entre l'image initiale et l'image avec tatouage : 42.131461 dB
+PSNR entre le message et le message extrait : 23.344240 dB
+Entropie de l'image avec tatouage : 7.038058 bits/pixel
+Entropie du message extrait : 7.355662 bits/pixel
+ETH du message extrait : 15.502930 bits tout les 1000 bits
+ETH du message avec tatouage : 1.943588 bits tout les 1000 bits
+
+Insertion 1 bit du message au bit 5 de l'image 
+PSNR entre l'image initiale et l'image avec tatouage : 36.063177 dB
+PSNR entre le message et le message extrait : 22.630202 dB
+Entropie de l'image avec tatouage : 7.054261 bits/pixel
+Entropie du message extrait : 7.354870 bits/pixel
+ETH du message extrait : 15.930176 bits tout les 1000 bits
+ETH du message avec tatouage : 1.965046 bits tout les 1000 bits
+
+Insertion 1 bit du message au bit 6 de l'image 
+PSNR entre l'image initiale et l'image avec tatouage : 29.963990 dB
+PSNR entre le message et le message extrait : 22.698577 dB
+Entropie de l'image avec tatouage : 7.093307 bits/pixel
+Entropie du message extrait : 7.351027 bits/pixel
+ETH du message extrait : 15.869141 bits tout les 1000 bits
+ETH du message avec tatouage : 2.000928 bits tout les 1000 bits
+
+Insertion 1 bit du message au bit 7 de l'image 
+PSNR entre l'image initiale et l'image avec tatouage : 24.187108 dB
+PSNR entre le message et le message extrait : 22.850545 dB
+Entropie de l'image avec tatouage : 7.064062 bits/pixel
+Entropie du message extrait : 7.353223 bits/pixel
+ETH du message extrait : 16.479492 bits tout les 1000 bits
+ETH du message avec tatouage : 1.891732 bits tout les 1000 bits
+
+Insertion 2 bits du message aux bits 0 et 0 de l'image 
+PSNR entre l'image initiale et l'image avec tatouage : 70.147949 dB
+PSNR entre le message et le message extrait : 5.859392 dB
+Entropie de l'image avec tatouage : 7.031189 bits/pixel
+Entropie du message extrait : 3.997502 bits/pixel
+ETH du message extrait : 493.896484 bits tout les 1000 bits
+ETH du message avec tatouage : 0.785589 bits tout les 1000 bits
+
+Insertion 2 bits du message aux bits 0 et 1 de l'image 
+PSNR entre l'image initiale et l'image avec tatouage : 61.995457 dB
+PSNR entre le message et le message extrait : 24.471881 dB
+Entropie de l'image avec tatouage : 7.031356 bits/pixel
+Entropie du message extrait : 7.305727 bits/pixel
+ETH du message extrait : 8.209229 bits tout les 1000 bits
+ETH du message avec tatouage : 1.917005 bits tout les 1000 bits
+
+Insertion 2 bits du message aux bits 0 et 2 de l'image 
+PSNR entre l'image initiale et l'image avec tatouage : 56.717196 dB
+PSNR entre le message et le message extrait : 24.487543 dB
+Entropie de l'image avec tatouage : 7.031796 bits/pixel
+Entropie du message extrait : 7.294996 bits/pixel
+ETH du message extrait : 8.331299 bits tout les 1000 bits
+ETH du message avec tatouage : 1.931548 bits tout les 1000 bits
+
+Insertion 2 bits du message aux bits 0 et 3 de l'image 
+PSNR entre l'image initiale et l'image avec tatouage : 51.048024 dB
+PSNR entre le message et le message extrait : 24.881727 dB
+Entropie de l'image avec tatouage : 7.033221 bits/pixel
+Entropie du message extrait : 7.303477 bits/pixel
+ETH du message extrait : 7.720947 bits tout les 1000 bits
+ETH du message avec tatouage : 1.918435 bits tout les 1000 bits
+
+Insertion 2 bits du message aux bits 0 et 4 de l'image 
+PSNR entre l'image initiale et l'image avec tatouage : 45.035008 dB
+PSNR entre le message et le message extrait : 24.449747 dB
+Entropie de l'image avec tatouage : 7.034698 bits/pixel
+Entropie du message extrait : 7.304545 bits/pixel
+ETH du message extrait : 8.209229 bits tout les 1000 bits
+ETH du message avec tatouage : 1.937628 bits tout les 1000 bits
+
+Insertion 2 bits du message aux bits 0 et 5 de l'image 
+PSNR entre l'image initiale et l'image avec tatouage : 39.055189 dB
+PSNR entre le message et le message extrait : 24.953000 dB
+Entropie de l'image avec tatouage : 7.043349 bits/pixel
+Entropie du message extrait : 7.297275 bits/pixel
+ETH du message extrait : 8.087158 bits tout les 1000 bits
+ETH du message avec tatouage : 1.936913 bits tout les 1000 bits
+
+Insertion 2 bits du message aux bits 0 et 6 de l'image 
+PSNR entre l'image initiale et l'image avec tatouage : 32.913083 dB
+PSNR entre le message et le message extrait : 25.386806 dB
+Entropie de l'image avec tatouage : 7.063999 bits/pixel
+Entropie du message extrait : 7.301332 bits/pixel
+ETH du message extrait : 8.087158 bits tout les 1000 bits
+ETH du message avec tatouage : 1.967907 bits tout les 1000 bits
+
+Insertion 2 bits du message aux bits 0 et 7 de l'image 
+PSNR entre l'image initiale et l'image avec tatouage : 27.124184 dB
+PSNR entre le message et le message extrait : 24.125723 dB
+Entropie de l'image avec tatouage : 7.048748 bits/pixel
+Entropie du message extrait : 7.303323 bits/pixel
+ETH du message extrait : 8.453369 bits tout les 1000 bits
+ETH du message avec tatouage : 1.918197 bits tout les 1000 bits
+
+Insertion 2 bits du message aux bits 1 et 1 de l'image 
+PSNR entre l'image initiale et l'image avec tatouage : 64.127349 dB
+PSNR entre le message et le message extrait : 5.700846 dB
+Entropie de l'image avec tatouage : 7.031228 bits/pixel
+Entropie du message extrait : 3.997010 bits/pixel
+ETH du message extrait : 497.619629 bits tout les 1000 bits
+ETH du message avec tatouage : 0.785589 bits tout les 1000 bits
+
+Insertion 2 bits du message aux bits 1 et 2 de l'image 
+PSNR entre l'image initiale et l'image avec tatouage : 55.873097 dB
+PSNR entre le message et le message extrait : 24.600335 dB
+Entropie de l'image avec tatouage : 7.031841 bits/pixel
+Entropie du message extrait : 7.302516 bits/pixel
+ETH du message extrait : 8.148193 bits tout les 1000 bits
+ETH du message avec tatouage : 1.943588 bits tout les 1000 bits
+
+Insertion 2 bits du message aux bits 1 et 3 de l'image 
+PSNR entre l'image initiale et l'image avec tatouage : 50.769073 dB
+PSNR entre le message et le message extrait : 24.524049 dB
+Entropie de l'image avec tatouage : 7.033261 bits/pixel
+Entropie du message extrait : 7.300038 bits/pixel
+ETH du message extrait : 7.537842 bits tout les 1000 bits
+ETH du message avec tatouage : 1.930475 bits tout les 1000 bits
+
+Insertion 2 bits du message aux bits 1 et 4 de l'image 
+PSNR entre l'image initiale et l'image avec tatouage : 44.934972 dB
+PSNR entre le message et le message extrait : 24.394986 dB
+Entropie de l'image avec tatouage : 7.034808 bits/pixel
+Entropie du message extrait : 7.308437 bits/pixel
+ETH du message extrait : 8.026123 bits tout les 1000 bits
+ETH du message avec tatouage : 1.949668 bits tout les 1000 bits
+
+Insertion 2 bits du message aux bits 1 et 5 de l'image 
+PSNR entre l'image initiale et l'image avec tatouage : 39.015827 dB
+PSNR entre le message et le message extrait : 25.259525 dB
+Entropie de l'image avec tatouage : 7.043449 bits/pixel
+Entropie du message extrait : 7.304786 bits/pixel
+ETH du message extrait : 7.904053 bits tout les 1000 bits
+ETH du message avec tatouage : 1.948953 bits tout les 1000 bits
+
+Insertion 2 bits du message aux bits 1 et 6 de l'image 
+PSNR entre l'image initiale et l'image avec tatouage : 32.893668 dB
+PSNR entre le message et le message extrait : 25.339608 dB
+Entropie de l'image avec tatouage : 7.064046 bits/pixel
+Entropie du message extrait : 7.303718 bits/pixel
+ETH du message extrait : 7.904053 bits tout les 1000 bits
+ETH du message avec tatouage : 1.979947 bits tout les 1000 bits
+
+Insertion 2 bits du message aux bits 1 et 7 de l'image 
+PSNR entre l'image initiale et l'image avec tatouage : 27.118867 dB
+PSNR entre le message et le message extrait : 24.375757 dB
+Entropie de l'image avec tatouage : 7.048912 bits/pixel
+Entropie du message extrait : 7.310096 bits/pixel
+ETH du message extrait : 8.270264 bits tout les 1000 bits
+ETH du message avec tatouage : 1.930237 bits tout les 1000 bits
+
+Insertion 2 bits du message aux bits 2 et 2 de l'image 
+PSNR entre l'image initiale et l'image avec tatouage : 58.106749 dB
+PSNR entre le message et le message extrait : 5.655118 dB
+Entropie de l'image avec tatouage : 7.031595 bits/pixel
+Entropie du message extrait : 3.997076 bits/pixel
+ETH du message extrait : 504.943848 bits tout les 1000 bits
+ETH du message avec tatouage : 0.785589 bits tout les 1000 bits
+
+Insertion 2 bits du message aux bits 2 et 3 de l'image 
+PSNR entre l'image initiale et l'image avec tatouage : 49.920606 dB
+PSNR entre le message et le message extrait : 24.727946 dB
+Entropie de l'image avec tatouage : 7.033598 bits/pixel
+Entropie du message extrait : 7.298497 bits/pixel
+ETH du message extrait : 7.293701 bits tout les 1000 bits
+ETH du message avec tatouage : 1.944065 bits tout les 1000 bits
+
+Insertion 2 bits du message aux bits 2 et 4 de l'image 
+PSNR entre l'image initiale et l'image avec tatouage : 44.608124 dB
+PSNR entre le message et le message extrait : 24.380829 dB
+Entropie de l'image avec tatouage : 7.035107 bits/pixel
+Entropie du message extrait : 7.297214 bits/pixel
+ETH du message extrait : 7.781982 bits tout les 1000 bits
+ETH du message avec tatouage : 1.963258 bits tout les 1000 bits
+
+Insertion 2 bits du message aux bits 2 et 5 de l'image 
+PSNR entre l'image initiale et l'image avec tatouage : 38.906236 dB
+PSNR entre le message et le message extrait : 25.413766 dB
+Entropie de l'image avec tatouage : 7.043788 bits/pixel
+Entropie du message extrait : 7.299890 bits/pixel
+ETH du message extrait : 7.659912 bits tout les 1000 bits
+ETH du message avec tatouage : 1.962543 bits tout les 1000 bits
+
+Insertion 2 bits du message aux bits 2 et 6 de l'image 
+PSNR entre l'image initiale et l'image avec tatouage : 32.832846 dB
+PSNR entre le message et le message extrait : 25.519006 dB
+Entropie de l'image avec tatouage : 7.064347 bits/pixel
+Entropie du message extrait : 7.298204 bits/pixel
+ETH du message extrait : 7.659912 bits tout les 1000 bits
+ETH du message avec tatouage : 1.993537 bits tout les 1000 bits
+
+Insertion 2 bits du message aux bits 2 et 7 de l'image 
+PSNR entre l'image initiale et l'image avec tatouage : 27.109502 dB
+PSNR entre le message et le message extrait : 24.214213 dB
+Entropie de l'image avec tatouage : 7.049454 bits/pixel
+Entropie du message extrait : 7.299871 bits/pixel
+ETH du message extrait : 8.026123 bits tout les 1000 bits
+ETH du message avec tatouage : 1.943827 bits tout les 1000 bits
+
+Insertion 2 bits du message aux bits 3 et 3 de l'image 
+PSNR entre l'image initiale et l'image avec tatouage : 52.086149 dB
+PSNR entre le message et le message extrait : 5.759168 dB
+Entropie de l'image avec tatouage : 7.032802 bits/pixel
+Entropie du message extrait : 3.997701 bits/pixel
+ETH du message extrait : 498.046875 bits tout les 1000 bits
+ETH du message avec tatouage : 0.785589 bits tout les 1000 bits
+
+Insertion 2 bits du message aux bits 3 et 4 de l'image 
+PSNR entre l'image initiale et l'image avec tatouage : 43.892407 dB
+PSNR entre le message et le message extrait : 23.937063 dB
+Entropie de l'image avec tatouage : 7.036221 bits/pixel
+Entropie du message extrait : 7.302498 bits/pixel
+ETH du message extrait : 7.781982 bits tout les 1000 bits
+ETH du message avec tatouage : 1.952767 bits tout les 1000 bits
+
+Insertion 2 bits du message aux bits 3 et 5 de l'image 
+PSNR entre l'image initiale et l'image avec tatouage : 38.672689 dB
+PSNR entre le message et le message extrait : 24.909752 dB
+Entropie de l'image avec tatouage : 7.044698 bits/pixel
+Entropie du message extrait : 7.300973 bits/pixel
+ETH du message extrait : 7.659912 bits tout les 1000 bits
+ETH du message avec tatouage : 1.952052 bits tout les 1000 bits
+
+Insertion 2 bits du message aux bits 3 et 6 de l'image 
+PSNR entre l'image initiale et l'image avec tatouage : 32.717375 dB
+PSNR entre le message et le message extrait : 25.161100 dB
+Entropie de l'image avec tatouage : 7.065197 bits/pixel
+Entropie du message extrait : 7.301388 bits/pixel
+ETH du message extrait : 7.659912 bits tout les 1000 bits
+ETH du message avec tatouage : 1.983047 bits tout les 1000 bits
+
+Insertion 2 bits du message aux bits 3 et 7 de l'image 
+PSNR entre l'image initiale et l'image avec tatouage : 27.095779 dB
+PSNR entre le message et le message extrait : 23.869354 dB
+Entropie de l'image avec tatouage : 7.051061 bits/pixel
+Entropie du message extrait : 7.303250 bits/pixel
+ETH du message extrait : 8.026123 bits tout les 1000 bits
+ETH du message avec tatouage : 1.933336 bits tout les 1000 bits
+
+Insertion 2 bits du message aux bits 4 et 4 de l'image 
+PSNR entre l'image initiale et l'image avec tatouage : 46.065549 dB
+PSNR entre le message et le message extrait : 5.558860 dB
+Entropie de l'image avec tatouage : 7.033925 bits/pixel
+Entropie du message extrait : 3.997896 bits/pixel
+ETH du message extrait : 505.981445 bits tout les 1000 bits
+ETH du message avec tatouage : 0.785589 bits tout les 1000 bits
+
+Insertion 2 bits du message aux bits 4 et 5 de l'image 
+PSNR entre l'image initiale et l'image avec tatouage : 37.740847 dB
+PSNR entre le message et le message extrait : 25.006898 dB
+Entropie de l'image avec tatouage : 7.046449 bits/pixel
+Entropie du message extrait : 7.302113 bits/pixel
+ETH du message extrait : 7.659912 bits tout les 1000 bits
+ETH du message avec tatouage : 1.960039 bits tout les 1000 bits
+
+Insertion 2 bits du message aux bits 4 et 6 de l'image 
+PSNR entre l'image initiale et l'image avec tatouage : 32.269372 dB
+PSNR entre le message et le message extrait : 25.256701 dB
+Entropie de l'image avec tatouage : 7.066299 bits/pixel
+Entropie du message extrait : 7.301822 bits/pixel
+ETH du message extrait : 7.659912 bits tout les 1000 bits
+ETH du message avec tatouage : 1.991034 bits tout les 1000 bits
+
+Insertion 2 bits du message aux bits 4 et 7 de l'image 
+PSNR entre l'image initiale et l'image avec tatouage : 27.071712 dB
+PSNR entre le message et le message extrait : 23.839434 dB
+Entropie de l'image avec tatouage : 7.052183 bits/pixel
+Entropie du message extrait : 7.297849 bits/pixel
+ETH du message extrait : 8.026123 bits tout les 1000 bits
+ETH du message avec tatouage : 1.941323 bits tout les 1000 bits
+
+Insertion 2 bits du message aux bits 5 et 5 de l'image 
+PSNR entre l'image initiale et l'image avec tatouage : 40.044949 dB
+PSNR entre le message et le message extrait : 5.616040 dB
+Entropie de l'image avec tatouage : 7.040449 bits/pixel
+Entropie du message extrait : 3.970521 bits/pixel
+ETH du message extrait : 508.972168 bits tout les 1000 bits
+ETH du message avec tatouage : 0.785589 bits tout les 1000 bits
+
+Insertion 2 bits du message aux bits 5 et 6 de l'image 
+PSNR entre l'image initiale et l'image avec tatouage : 30.840454 dB
+PSNR entre le message et le message extrait : 24.904170 dB
+Entropie de l'image avec tatouage : 7.071470 bits/pixel
+Entropie du message extrait : 7.299583 bits/pixel
+ETH du message extrait : 7.965088 bits tout les 1000 bits
+ETH du message avec tatouage : 2.004147 bits tout les 1000 bits
+
+Insertion 2 bits du message aux bits 5 et 7 de l'image 
+PSNR entre l'image initiale et l'image avec tatouage : 27.157430 dB
+PSNR entre le message et le message extrait : 23.909787 dB
+Entropie de l'image avec tatouage : 7.058322 bits/pixel
+Entropie du message extrait : 7.300441 bits/pixel
+ETH du message extrait : 8.331299 bits tout les 1000 bits
+ETH du message avec tatouage : 1.954436 bits tout les 1000 bits
+
+Insertion 2 bits du message aux bits 6 et 6 de l'image 
+PSNR entre l'image initiale et l'image avec tatouage : 34.024349 dB
+PSNR entre le message et le message extrait : 5.550392 dB
+Entropie de l'image avec tatouage : 7.056822 bits/pixel
+Entropie du message extrait : 3.896867 bits/pixel
+ETH du message extrait : 525.329590 bits tout les 1000 bits
+ETH du message avec tatouage : 0.785589 bits tout les 1000 bits
+
+Insertion 2 bits du message aux bits 6 et 7 de l'image 
+PSNR entre l'image initiale et l'image avec tatouage : 26.875483 dB
+PSNR entre le message et le message extrait : 23.708575 dB
+Entropie de l'image avec tatouage : 7.073522 bits/pixel
+Entropie du message extrait : 7.300987 bits/pixel
+ETH du message extrait : 8.758545 bits tout les 1000 bits
+ETH du message avec tatouage : 1.987100 bits tout les 1000 bits
+
+Insertion 2 bits du message aux bits 7 et 7 de l'image 
+PSNR entre l'image initiale et l'image avec tatouage : 28.003749 dB
+PSNR entre le message et le message extrait : 5.780518 dB
+Entropie de l'image avec tatouage : 7.045906 bits/pixel
+Entropie du message extrait : 3.984438 bits/pixel
+ETH du message extrait : 490.051270 bits tout les 1000 bits
+ETH du message avec tatouage : 0.785589 bits tout les 1000 bits
+
+
+########### 3 BIT ###########
+
+Insertion 3 bits du message aux bits 0, 0 et 0 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 71.033826 dB
+PSNR entre le message et le message extrait : 5.803946 dB
+Entropie de l'image avec tatouage : 7.031181 bits/pixel
+Entropie du message extrait : 4.064227 bits/pixel
+ETH du message extrait : 483.459473 bits tout les 1000 bits
+ETH du message avec tatouage : 0.640631 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 0, 0 et 1 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 64.105327 dB
+PSNR entre le message et le message extrait : 8.104405 dB
+Entropie de l'image avec tatouage : 7.031264 bits/pixel
+Entropie du message extrait : 6.062313 bits/pixel
+ETH du message extrait : 357.818604 bits tout les 1000 bits
+ETH du message avec tatouage : 1.217842 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 0, 0 et 2 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 58.701852 dB
+PSNR entre le message et le message extrait : 8.094329 dB
+Entropie de l'image avec tatouage : 7.031571 bits/pixel
+Entropie du message extrait : 6.063445 bits/pixel
+ETH du message extrait : 357.971191 bits tout les 1000 bits
+ETH du message avec tatouage : 1.221061 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 0, 0 et 3 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 52.839685 dB
+PSNR entre le message et le message extrait : 8.090186 dB
+Entropie de l'image avec tatouage : 7.032678 bits/pixel
+Entropie du message extrait : 6.062269 bits/pixel
+ETH du message extrait : 358.215332 bits tout les 1000 bits
+ETH du message avec tatouage : 1.229286 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 0, 0 et 4 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 46.896412 dB
+PSNR entre le message et le message extrait : 8.096211 dB
+Entropie de l'image avec tatouage : 7.033371 bits/pixel
+Entropie du message extrait : 6.061131 bits/pixel
+ETH du message extrait : 358.001709 bits tout les 1000 bits
+ETH du message avec tatouage : 1.221299 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 0, 0 et 5 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 40.922726 dB
+PSNR entre le message et le message extrait : 8.096104 dB
+Entropie de l'image avec tatouage : 7.038600 bits/pixel
+Entropie du message extrait : 6.062047 bits/pixel
+ETH du message extrait : 357.910156 bits tout les 1000 bits
+ETH du message avec tatouage : 1.217365 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 0, 0 et 6 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 34.961523 dB
+PSNR entre le message et le message extrait : 8.092544 dB
+Entropie de l'image avec tatouage : 7.051579 bits/pixel
+Entropie du message extrait : 6.061847 bits/pixel
+ETH du message extrait : 358.062744 bits tout les 1000 bits
+ETH du message avec tatouage : 1.208901 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 0, 0 et 7 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 28.781729 dB
+PSNR entre le message et le message extrait : 8.097664 dB
+Entropie de l'image avec tatouage : 7.043309 bits/pixel
+Entropie du message extrait : 6.059769 bits/pixel
+ETH du message extrait : 358.001709 bits tout les 1000 bits
+ETH du message avec tatouage : 1.233101 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 0, 1 et 1 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 64.427452 dB
+PSNR entre le message et le message extrait : 8.207135 dB
+Entropie de l'image avec tatouage : 7.031240 bits/pixel
+Entropie du message extrait : 6.061286 bits/pixel
+ETH du message extrait : 354.492188 bits tout les 1000 bits
+ETH du message avec tatouage : 1.226664 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 0, 1 et 2 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 57.579582 dB
+PSNR entre le message et le message extrait : 26.923273 dB
+Entropie de l'image avec tatouage : 7.031651 bits/pixel
+Entropie du message extrait : 6.314856 bits/pixel
+ETH du message extrait : 68.145752 bits tout les 1000 bits
+ETH du message avec tatouage : 1.934648 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 0, 1 et 3 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 52.500644 dB
+PSNR entre le message et le message extrait : 26.506643 dB
+Entropie de l'image avec tatouage : 7.032719 bits/pixel
+Entropie du message extrait : 6.316885 bits/pixel
+ETH du message extrait : 68.389893 bits tout les 1000 bits
+ETH du message avec tatouage : 1.942873 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 0, 1 et 4 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 46.783710 dB
+PSNR entre le message et le message extrait : 26.721277 dB
+Entropie de l'image avec tatouage : 7.033480 bits/pixel
+Entropie du message extrait : 6.316792 bits/pixel
+ETH du message extrait : 68.176270 bits tout les 1000 bits
+ETH du message avec tatouage : 1.934886 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 0, 1 et 5 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 40.888236 dB
+PSNR entre le message et le message extrait : 27.032187 dB
+Entropie de l'image avec tatouage : 7.038708 bits/pixel
+Entropie du message extrait : 6.314629 bits/pixel
+ETH du message extrait : 68.084717 bits tout les 1000 bits
+ETH du message avec tatouage : 1.930952 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 0, 1 et 6 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 34.951736 dB
+PSNR entre le message et le message extrait : 26.490944 dB
+Entropie de l'image avec tatouage : 7.051620 bits/pixel
+Entropie du message extrait : 6.313348 bits/pixel
+ETH du message extrait : 68.237305 bits tout les 1000 bits
+ETH du message avec tatouage : 1.922488 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 0, 1 et 7 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 28.774355 dB
+PSNR entre le message et le message extrait : 27.241357 dB
+Entropie de l'image avec tatouage : 7.043467 bits/pixel
+Entropie du message extrait : 6.317808 bits/pixel
+ETH du message extrait : 68.176270 bits tout les 1000 bits
+ETH du message avec tatouage : 1.946688 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 0, 2 et 2 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 59.123893 dB
+PSNR entre le message et le message extrait : 8.262076 dB
+Entropie de l'image avec tatouage : 7.031482 bits/pixel
+Entropie du message extrait : 6.061695 bits/pixel
+ETH du message extrait : 357.025146 bits tout les 1000 bits
+ETH du message avec tatouage : 1.226664 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 0, 2 et 3 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 51.746545 dB
+PSNR entre le message et le message extrait : 26.414317 dB
+Entropie de l'image avec tatouage : 7.032909 bits/pixel
+Entropie du message extrait : 6.314435 bits/pixel
+ETH du message extrait : 68.420410 bits tout les 1000 bits
+ETH du message avec tatouage : 1.955390 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 0, 2 et 4 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 46.499527 dB
+PSNR entre le message et le message extrait : 26.779982 dB
+Entropie de l'image avec tatouage : 7.033659 bits/pixel
+Entropie du message extrait : 6.314583 bits/pixel
+ETH du message extrait : 68.206787 bits tout les 1000 bits
+ETH du message avec tatouage : 1.947403 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 0, 2 et 5 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 40.805951 dB
+PSNR entre le message et le message extrait : 26.989649 dB
+Entropie de l'image avec tatouage : 7.038844 bits/pixel
+Entropie du message extrait : 6.310139 bits/pixel
+ETH du message extrait : 68.115234 bits tout les 1000 bits
+ETH du message avec tatouage : 1.943469 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 0, 2 et 6 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 34.909958 dB
+PSNR entre le message et le message extrait : 26.458792 dB
+Entropie de l'image avec tatouage : 7.051779 bits/pixel
+Entropie du message extrait : 6.310837 bits/pixel
+ETH du message extrait : 68.267822 bits tout les 1000 bits
+ETH du message avec tatouage : 1.935005 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 0, 2 et 7 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 28.769682 dB
+PSNR entre le message et le message extrait : 26.893443 dB
+Entropie de l'image avec tatouage : 7.043858 bits/pixel
+Entropie du message extrait : 6.311392 bits/pixel
+ETH du message extrait : 68.206787 bits tout les 1000 bits
+ETH du message avec tatouage : 1.959205 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 0, 3 et 3 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 53.364852 dB
+PSNR entre le message et le message extrait : 8.239095 dB
+Entropie de l'image avec tatouage : 7.032452 bits/pixel
+Entropie du message extrait : 6.065344 bits/pixel
+ETH du message extrait : 357.940674 bits tout les 1000 bits
+ETH du message avec tatouage : 1.226664 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 0, 3 et 4 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 45.820674 dB
+PSNR entre le message et le message extrait : 27.481775 dB
+Entropie de l'image avec tatouage : 7.034298 bits/pixel
+Entropie du message extrait : 6.318374 bits/pixel
+ETH du message extrait : 68.084717 bits tout les 1000 bits
+ETH du message avec tatouage : 1.941800 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 0, 3 et 5 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 40.600834 dB
+PSNR entre le message et le message extrait : 27.442325 dB
+Entropie de l'image avec tatouage : 7.039321 bits/pixel
+Entropie du message extrait : 6.316026 bits/pixel
+ETH du message extrait : 67.993164 bits tout les 1000 bits
+ETH du message avec tatouage : 1.937866 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 0, 3 et 6 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 34.823702 dB
+PSNR entre le message et le message extrait : 27.150124 dB
+Entropie de l'image avec tatouage : 7.052289 bits/pixel
+Entropie du message extrait : 6.316458 bits/pixel
+ETH du message extrait : 68.145752 bits tout les 1000 bits
+ETH du message avec tatouage : 1.929402 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 0, 3 et 7 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 28.755494 dB
+PSNR entre le message et le message extrait : 27.122060 dB
+Entropie de l'image avec tatouage : 7.045061 bits/pixel
+Entropie du message extrait : 6.315664 bits/pixel
+ETH du message extrait : 68.084717 bits tout les 1000 bits
+ETH du message avec tatouage : 1.953602 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 0, 4 et 4 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 47.383296 dB
+PSNR entre le message et le message extrait : 8.375844 dB
+Entropie de l'image avec tatouage : 7.033161 bits/pixel
+Entropie du message extrait : 6.055158 bits/pixel
+ETH du message extrait : 356.567383 bits tout les 1000 bits
+ETH du message avec tatouage : 1.226664 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 0, 4 et 5 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 39.760034 dB
+PSNR entre le message et le message extrait : 27.550469 dB
+Entropie de l'image avec tatouage : 7.040015 bits/pixel
+Entropie du message extrait : 6.314417 bits/pixel
+ETH du message extrait : 68.145752 bits tout les 1000 bits
+ETH du message avec tatouage : 1.938701 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 0, 4 et 6 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 34.442355 dB
+PSNR entre le message et le message extrait : 27.251564 dB
+Entropie de l'image avec tatouage : 7.052913 bits/pixel
+Entropie du message extrait : 6.315689 bits/pixel
+ETH du message extrait : 68.298340 bits tout les 1000 bits
+ETH du message avec tatouage : 1.930237 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 0, 4 et 7 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 28.750963 dB
+PSNR entre le message et le message extrait : 27.133068 dB
+Entropie de l'image avec tatouage : 7.045326 bits/pixel
+Entropie du message extrait : 6.312318 bits/pixel
+ETH du message extrait : 68.237305 bits tout les 1000 bits
+ETH du message avec tatouage : 1.954436 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 0, 5 et 5 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 41.382588 dB
+PSNR entre le message et le message extrait : 8.418823 dB
+Entropie de l'image avec tatouage : 7.038057 bits/pixel
+Entropie du message extrait : 6.014359 bits/pixel
+ETH du message extrait : 353.454590 bits tout les 1000 bits
+ETH du message avec tatouage : 1.226664 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 0, 5 et 6 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 33.048086 dB
+PSNR entre le message et le message extrait : 28.145811 dB
+Entropie de l'image avec tatouage : 7.056541 bits/pixel
+Entropie du message extrait : 6.312918 bits/pixel
+ETH du message extrait : 67.993164 bits tout les 1000 bits
+ETH du message avec tatouage : 1.926303 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 0, 5 et 7 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 28.883626 dB
+PSNR entre le message et le message extrait : 28.468343 dB
+Entropie de l'image avec tatouage : 7.048499 bits/pixel
+Entropie du message extrait : 6.311585 bits/pixel
+ETH du message extrait : 67.932129 bits tout les 1000 bits
+ETH du message avec tatouage : 1.950502 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 0, 6 et 6 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 35.365910 dB
+PSNR entre le message et le message extrait : 8.829637 dB
+Entropie de l'image avec tatouage : 7.050524 bits/pixel
+Entropie du message extrait : 5.959077 bits/pixel
+ETH du message extrait : 347.442627 bits tout les 1000 bits
+ETH du message avec tatouage : 1.226664 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 0, 6 et 7 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 28.844489 dB
+PSNR entre le message et le message extrait : 28.406445 dB
+Entropie de l'image avec tatouage : 7.056028 bits/pixel
+Entropie du message extrait : 6.314918 bits/pixel
+ETH du message extrait : 67.840576 bits tout les 1000 bits
+ETH du message avec tatouage : 1.932740 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 0, 7 et 7 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 29.350614 dB
+PSNR entre le message et le message extrait : 7.912983 dB
+Entropie de l'image avec tatouage : 7.041874 bits/pixel
+Entropie du message extrait : 6.062372 bits/pixel
+ETH du message extrait : 360.961914 bits tout les 1000 bits
+ETH du message avec tatouage : 1.226664 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 1, 1 et 1 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 64.920479 dB
+PSNR entre le message et le message extrait : 5.805021 dB
+Entropie de l'image avec tatouage : 7.031239 bits/pixel
+Entropie du message extrait : 4.065529 bits/pixel
+ETH du message extrait : 483.673096 bits tout les 1000 bits
+ETH du message avec tatouage : 0.654459 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 1, 1 et 2 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 58.108397 dB
+PSNR entre le message et le message extrait : 8.217514 dB
+Entropie de l'image avec tatouage : 7.031582 bits/pixel
+Entropie du message extrait : 6.066748 bits/pixel
+ETH du message extrait : 356.109619 bits tout les 1000 bits
+ETH du message avec tatouage : 1.221061 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 1, 1 et 3 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 52.680119 dB
+PSNR entre le message et le message extrait : 8.197984 dB
+Entropie de l'image avec tatouage : 7.032668 bits/pixel
+Entropie du message extrait : 6.068833 bits/pixel
+ETH du message extrait : 356.353760 bits tout les 1000 bits
+ETH du message avec tatouage : 1.229286 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 1, 1 et 4 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 46.873513 dB
+PSNR entre le message et le message extrait : 8.210261 dB
+Entropie de l'image avec tatouage : 7.033382 bits/pixel
+Entropie du message extrait : 6.070470 bits/pixel
+ETH du message extrait : 356.140137 bits tout les 1000 bits
+ETH du message avec tatouage : 1.221299 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 1, 1 et 5 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 40.927387 dB
+PSNR entre le message et le message extrait : 8.214167 dB
+Entropie de l'image avec tatouage : 7.038567 bits/pixel
+Entropie du message extrait : 6.069747 bits/pixel
+ETH du message extrait : 356.048584 bits tout les 1000 bits
+ETH du message avec tatouage : 1.217365 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 1, 1 et 6 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 34.964072 dB
+PSNR entre le message et le message extrait : 8.208575 dB
+Entropie de l'image avec tatouage : 7.051574 bits/pixel
+Entropie du message extrait : 6.068788 bits/pixel
+ETH du message extrait : 356.201172 bits tout les 1000 bits
+ETH du message avec tatouage : 1.208901 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 1, 1 et 7 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 28.780625 dB
+PSNR entre le message et le message extrait : 8.211087 dB
+Entropie de l'image avec tatouage : 7.043344 bits/pixel
+Entropie du message extrait : 6.068412 bits/pixel
+ETH du message extrait : 356.140137 bits tout les 1000 bits
+ETH du message avec tatouage : 1.233101 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 1, 2 et 2 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 58.325699 dB
+PSNR entre le message et le message extrait : 8.269264 dB
+Entropie de l'image avec tatouage : 7.031521 bits/pixel
+Entropie du message extrait : 6.059925 bits/pixel
+ETH du message extrait : 356.750488 bits tout les 1000 bits
+ETH du message avec tatouage : 1.227617 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 1, 2 et 3 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 51.605340 dB
+PSNR entre le message et le message extrait : 26.829516 dB
+Entropie de l'image avec tatouage : 7.032911 bits/pixel
+Entropie du message extrait : 6.313889 bits/pixel
+ETH du message extrait : 68.145752 bits tout les 1000 bits
+ETH du message avec tatouage : 1.956344 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 1, 2 et 4 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 46.462227 dB
+PSNR entre le message et le message extrait : 27.126501 dB
+Entropie de l'image avec tatouage : 7.033675 bits/pixel
+Entropie du message extrait : 6.314105 bits/pixel
+ETH du message extrait : 67.932129 bits tout les 1000 bits
+ETH du message avec tatouage : 1.948357 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 1, 2 et 5 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 40.802823 dB
+PSNR entre le message et le message extrait : 27.265858 dB
+Entropie de l'image avec tatouage : 7.038860 bits/pixel
+Entropie du message extrait : 6.310540 bits/pixel
+ETH du message extrait : 67.840576 bits tout les 1000 bits
+ETH du message avec tatouage : 1.944423 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 1, 2 et 6 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 34.912172 dB
+PSNR entre le message et le message extrait : 26.756120 dB
+Entropie de l'image avec tatouage : 7.051797 bits/pixel
+Entropie du message extrait : 6.310379 bits/pixel
+ETH du message extrait : 67.993164 bits tout les 1000 bits
+ETH du message avec tatouage : 1.935959 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 1, 2 et 7 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 28.769680 dB
+PSNR entre le message et le message extrait : 27.237627 dB
+Entropie de l'image avec tatouage : 7.043880 bits/pixel
+Entropie du message extrait : 6.312164 bits/pixel
+ETH du message extrait : 67.932129 bits tout les 1000 bits
+ETH du message avec tatouage : 1.960158 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 1, 3 et 3 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 53.155666 dB
+PSNR entre le message et le message extrait : 8.247620 dB
+Entropie de l'image avec tatouage : 7.032493 bits/pixel
+Entropie du message extrait : 6.061895 bits/pixel
+ETH du message extrait : 357.666016 bits tout les 1000 bits
+ETH du message avec tatouage : 1.227617 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 1, 3 et 4 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 45.787167 dB
+PSNR entre le message et le message extrait : 27.866247 dB
+Entropie de l'image avec tatouage : 7.034346 bits/pixel
+Entropie du message extrait : 6.317030 bits/pixel
+ETH du message extrait : 67.810059 bits tout les 1000 bits
+ETH du message avec tatouage : 1.942754 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 1, 3 et 5 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 40.597371 dB
+PSNR entre le message et le message extrait : 27.725029 dB
+Entropie de l'image avec tatouage : 7.039364 bits/pixel
+Entropie du message extrait : 6.314515 bits/pixel
+ETH du message extrait : 67.718506 bits tout les 1000 bits
+ETH du message avec tatouage : 1.938820 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 1, 3 et 6 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 34.825744 dB
+PSNR entre le message et le message extrait : 27.477321 dB
+Entropie de l'image avec tatouage : 7.052308 bits/pixel
+Entropie du message extrait : 6.315463 bits/pixel
+ETH du message extrait : 67.871094 bits tout les 1000 bits
+ETH du message avec tatouage : 1.930356 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 1, 3 et 7 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 28.755461 dB
+PSNR entre le message et le message extrait : 27.462169 dB
+Entropie de l'image avec tatouage : 7.045079 bits/pixel
+Entropie du message extrait : 6.315623 bits/pixel
+ETH du message extrait : 67.810059 bits tout les 1000 bits
+ETH du message avec tatouage : 1.954556 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 1, 4 et 4 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 47.330010 dB
+PSNR entre le message et le message extrait : 8.382526 dB
+Entropie de l'image avec tatouage : 7.033223 bits/pixel
+Entropie du message extrait : 6.053874 bits/pixel
+ETH du message extrait : 356.292725 bits tout les 1000 bits
+ETH du message avec tatouage : 1.227617 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 1, 4 et 5 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 39.755128 dB
+PSNR entre le message et le message extrait : 28.147046 dB
+Entropie de l'image avec tatouage : 7.040048 bits/pixel
+Entropie du message extrait : 6.313521 bits/pixel
+ETH du message extrait : 67.871094 bits tout les 1000 bits
+ETH du message avec tatouage : 1.939654 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 1, 4 et 6 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 34.443622 dB
+PSNR entre le message et le message extrait : 27.875315 dB
+Entropie de l'image avec tatouage : 7.052958 bits/pixel
+Entropie du message extrait : 6.315051 bits/pixel
+ETH du message extrait : 68.023682 bits tout les 1000 bits
+ETH du message avec tatouage : 1.931190 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 1, 4 et 7 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 28.750766 dB
+PSNR entre le message et le message extrait : 27.754953 dB
+Entropie de l'image avec tatouage : 7.045357 bits/pixel
+Entropie du message extrait : 6.312505 bits/pixel
+ETH du message extrait : 67.962646 bits tout les 1000 bits
+ETH du message avec tatouage : 1.955390 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 1, 5 et 5 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 41.370262 dB
+PSNR entre le message et le message extrait : 8.431372 dB
+Entropie de l'image avec tatouage : 7.038088 bits/pixel
+Entropie du message extrait : 6.014991 bits/pixel
+ETH du message extrait : 353.179932 bits tout les 1000 bits
+ETH du message avec tatouage : 1.227617 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 1, 5 et 6 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 33.048799 dB
+PSNR entre le message et le message extrait : 28.588720 dB
+Entropie de l'image avec tatouage : 7.056560 bits/pixel
+Entropie du message extrait : 6.310767 bits/pixel
+ETH du message extrait : 67.718506 bits tout les 1000 bits
+ETH du message avec tatouage : 1.927257 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 1, 5 et 7 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 28.883345 dB
+PSNR entre le message et le message extrait : 28.968694 dB
+Entropie de l'image avec tatouage : 7.048508 bits/pixel
+Entropie du message extrait : 6.310803 bits/pixel
+ETH du message extrait : 67.657471 bits tout les 1000 bits
+ETH du message avec tatouage : 1.951456 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 1, 6 et 6 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 35.361869 dB
+PSNR entre le message et le message extrait : 8.844754 dB
+Entropie de l'image avec tatouage : 7.050555 bits/pixel
+Entropie du message extrait : 5.960706 bits/pixel
+ETH du message extrait : 347.167969 bits tout les 1000 bits
+ETH du message avec tatouage : 1.227617 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 1, 6 et 7 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 28.843888 dB
+PSNR entre le message et le message extrait : 28.845167 dB
+Entropie de l'image avec tatouage : 7.056026 bits/pixel
+Entropie du message extrait : 6.312902 bits/pixel
+ETH du message extrait : 67.565918 bits tout les 1000 bits
+ETH du message avec tatouage : 1.933694 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 1, 7 et 7 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 29.349630 dB
+PSNR entre le message et le message extrait : 7.916096 dB
+Entropie de l'image avec tatouage : 7.041943 bits/pixel
+Entropie du message extrait : 6.061012 bits/pixel
+ETH du message extrait : 360.687256 bits tout les 1000 bits
+ETH du message avec tatouage : 1.227617 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 2, 2 et 2 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 58.995051 dB
+PSNR entre le message et le message extrait : 5.801582 dB
+Entropie de l'image avec tatouage : 7.031515 bits/pixel
+Entropie du message extrait : 4.065358 bits/pixel
+ETH du message extrait : 483.245850 bits tout les 1000 bits
+ETH du message avec tatouage : 0.640273 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 2, 2 et 3 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 52.045807 dB
+PSNR entre le message et le message extrait : 8.155675 dB
+Entropie de l'image avec tatouage : 7.032831 bits/pixel
+Entropie du message extrait : 6.046865 bits/pixel
+ETH du message extrait : 359.252930 bits tout les 1000 bits
+ETH du message avec tatouage : 1.229286 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 2, 2 et 4 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 46.645186 dB
+PSNR entre le message et le message extrait : 8.147820 dB
+Entropie de l'image avec tatouage : 7.033548 bits/pixel
+Entropie du message extrait : 6.043574 bits/pixel
+ETH du message extrait : 359.039307 bits tout les 1000 bits
+ETH du message avec tatouage : 1.221299 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 2, 2 et 5 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 40.868817 dB
+PSNR entre le message et le message extrait : 8.168381 dB
+Entropie de l'image avec tatouage : 7.038694 bits/pixel
+Entropie du message extrait : 6.046201 bits/pixel
+ETH du message extrait : 358.947754 bits tout les 1000 bits
+ETH du message avec tatouage : 1.217365 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 2, 2 et 6 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 34.934939 dB
+PSNR entre le message et le message extrait : 8.158555 dB
+Entropie de l'image avec tatouage : 7.051736 bits/pixel
+Entropie du message extrait : 6.044759 bits/pixel
+ETH du message extrait : 359.100342 bits tout les 1000 bits
+ETH du message avec tatouage : 1.208901 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 2, 2 et 7 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 28.782441 dB
+PSNR entre le message et le message extrait : 8.158457 dB
+Entropie de l'image avec tatouage : 7.043585 bits/pixel
+Entropie du message extrait : 6.046283 bits/pixel
+ETH du message extrait : 359.039307 bits tout les 1000 bits
+ETH du message avec tatouage : 1.233101 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 2, 3 et 3 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 52.407666 dB
+PSNR entre le message et le message extrait : 8.251908 dB
+Entropie de l'image avec tatouage : 7.032666 bits/pixel
+Entropie du message extrait : 6.063097 bits/pixel
+ETH du message extrait : 358.093262 bits tout les 1000 bits
+ETH du message avec tatouage : 1.227021 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 2, 3 et 4 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 45.608588 dB
+PSNR entre le message et le message extrait : 27.765351 dB
+Entropie de l'image avec tatouage : 7.034614 bits/pixel
+Entropie du message extrait : 6.316389 bits/pixel
+ETH du message extrait : 68.237305 bits tout les 1000 bits
+ETH du message avec tatouage : 1.942158 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 2, 3 et 5 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 40.557109 dB
+PSNR entre le message et le message extrait : 27.491684 dB
+Entropie de l'image avec tatouage : 7.039439 bits/pixel
+Entropie du message extrait : 6.312403 bits/pixel
+ETH du message extrait : 68.145752 bits tout les 1000 bits
+ETH du message avec tatouage : 1.938224 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 2, 3 et 6 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 34.803674 dB
+PSNR entre le message et le message extrait : 27.262697 dB
+Entropie de l'image avec tatouage : 7.052464 bits/pixel
+Entropie du message extrait : 6.313261 bits/pixel
+ETH du message extrait : 68.298340 bits tout les 1000 bits
+ETH du message avec tatouage : 1.929760 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 2, 3 et 7 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 28.760132 dB
+PSNR entre le message et le message extrait : 27.259920 dB
+Entropie de l'image avec tatouage : 7.045281 bits/pixel
+Entropie du message extrait : 6.314112 bits/pixel
+ETH du message extrait : 68.237305 bits tout les 1000 bits
+ETH du message avec tatouage : 1.953959 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 2, 4 et 4 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 47.067155 dB
+PSNR entre le message et le message extrait : 8.377103 dB
+Entropie de l'image avec tatouage : 7.033419 bits/pixel
+Entropie du message extrait : 6.050990 bits/pixel
+ETH du message extrait : 356.719971 bits tout les 1000 bits
+ETH du message avec tatouage : 1.227021 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 2, 4 et 5 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 39.705926 dB
+PSNR entre le message et le message extrait : 28.313938 dB
+Entropie de l'image avec tatouage : 7.040118 bits/pixel
+Entropie du message extrait : 6.314419 bits/pixel
+ETH du message extrait : 68.298340 bits tout les 1000 bits
+ETH du message avec tatouage : 1.939058 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 2, 4 et 6 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 34.418673 dB
+PSNR entre le message et le message extrait : 28.039203 dB
+Entropie de l'image avec tatouage : 7.053090 bits/pixel
+Entropie du message extrait : 6.315571 bits/pixel
+ETH du message extrait : 68.450928 bits tout les 1000 bits
+ETH du message avec tatouage : 1.930594 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 2, 4 et 7 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 28.754149 dB
+PSNR entre le message et le message extrait : 27.927857 dB
+Entropie de l'image avec tatouage : 7.045600 bits/pixel
+Entropie du message extrait : 6.314319 bits/pixel
+ETH du message extrait : 68.389893 bits tout les 1000 bits
+ETH du message avec tatouage : 1.954794 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 2, 5 et 5 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 41.305733 dB
+PSNR entre le message et le message extrait : 8.432644 dB
+Entropie de l'image avec tatouage : 7.038244 bits/pixel
+Entropie du message extrait : 6.015642 bits/pixel
+ETH du message extrait : 353.607178 bits tout les 1000 bits
+ETH du message avec tatouage : 1.227021 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 2, 5 et 6 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 33.029158 dB
+PSNR entre le message et le message extrait : 28.668145 dB
+Entropie de l'image avec tatouage : 7.056712 bits/pixel
+Entropie du message extrait : 6.311096 bits/pixel
+ETH du message extrait : 68.145752 bits tout les 1000 bits
+ETH du message avec tatouage : 1.926661 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 2, 5 et 7 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 28.886242 dB
+PSNR entre le message et le message extrait : 29.073121 dB
+Entropie de l'image avec tatouage : 7.048706 bits/pixel
+Entropie du message extrait : 6.312554 bits/pixel
+ETH du message extrait : 68.084717 bits tout les 1000 bits
+ETH du message avec tatouage : 1.950860 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 2, 6 et 6 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 35.328605 dB
+PSNR entre le message et le message extrait : 8.844065 dB
+Entropie de l'image avec tatouage : 7.050751 bits/pixel
+Entropie du message extrait : 5.960114 bits/pixel
+ETH du message extrait : 347.595215 bits tout les 1000 bits
+ETH du message avec tatouage : 1.227021 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 2, 6 et 7 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 28.840893 dB
+PSNR entre le message et le message extrait : 28.944586 dB
+Entropie de l'image avec tatouage : 7.056273 bits/pixel
+Entropie du message extrait : 6.315293 bits/pixel
+ETH du message extrait : 67.993164 bits tout les 1000 bits
+ETH du message avec tatouage : 1.933098 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 2, 7 et 7 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 29.352778 dB
+PSNR entre le message et le message extrait : 7.914779 dB
+Entropie de l'image avec tatouage : 7.042276 bits/pixel
+Entropie du message extrait : 6.058927 bits/pixel
+ETH du message extrait : 361.114502 bits tout les 1000 bits
+ETH du message avec tatouage : 1.227021 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 3, 3 et 3 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 52.965566 dB
+PSNR entre le message et le message extrait : 5.808247 dB
+Entropie de l'image avec tatouage : 7.032629 bits/pixel
+Entropie du message extrait : 4.062517 bits/pixel
+ETH du message extrait : 483.764648 bits tout les 1000 bits
+ETH du message avec tatouage : 0.641584 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 3, 3 et 4 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 46.112926 dB
+PSNR entre le message et le message extrait : 7.993941 dB
+Entropie de l'image avec tatouage : 7.033982 bits/pixel
+Entropie du message extrait : 6.067025 bits/pixel
+ETH du message extrait : 354.522705 bits tout les 1000 bits
+ETH du message avec tatouage : 1.221299 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 3, 3 et 5 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 40.724382 dB
+PSNR entre le message et le message extrait : 7.998273 dB
+Entropie de l'image avec tatouage : 7.038976 bits/pixel
+Entropie du message extrait : 6.066311 bits/pixel
+ETH du message extrait : 354.431152 bits tout les 1000 bits
+ETH du message avec tatouage : 1.217365 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 3, 3 et 6 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 34.873786 dB
+PSNR entre le message et le message extrait : 7.994033 dB
+Entropie de l'image avec tatouage : 7.052154 bits/pixel
+Entropie du message extrait : 6.067534 bits/pixel
+ETH du message extrait : 354.583740 bits tout les 1000 bits
+ETH du message avec tatouage : 1.208901 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 3, 3 et 7 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 28.780884 dB
+PSNR entre le message et le message extrait : 8.000976 dB
+Entropie de l'image avec tatouage : 7.044554 bits/pixel
+Entropie du message extrait : 6.068088 bits/pixel
+ETH du message extrait : 354.522705 bits tout les 1000 bits
+ETH du message avec tatouage : 1.233101 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 3, 4 et 4 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 46.405735 dB
+PSNR entre le message et le message extrait : 8.364477 dB
+Entropie de l'image avec tatouage : 7.034019 bits/pixel
+Entropie du message extrait : 6.051394 bits/pixel
+ETH du message extrait : 356.445312 bits tout les 1000 bits
+ETH du message avec tatouage : 1.213551 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 3, 4 et 5 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 39.615399 dB
+PSNR entre le message et le message extrait : 27.389873 dB
+Entropie de l'image avec tatouage : 7.040388 bits/pixel
+Entropie du message extrait : 6.317678 bits/pixel
+ETH du message extrait : 68.023682 bits tout les 1000 bits
+ETH du message avec tatouage : 1.925588 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 3, 4 et 6 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 34.376378 dB
+PSNR entre le message et le message extrait : 27.007983 dB
+Entropie de l'image avec tatouage : 7.053489 bits/pixel
+Entropie du message extrait : 6.319540 bits/pixel
+ETH du message extrait : 68.176270 bits tout les 1000 bits
+ETH du message avec tatouage : 1.917124 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 3, 4 et 7 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 28.761102 dB
+PSNR entre le message et le message extrait : 26.891785 dB
+Entropie de l'image avec tatouage : 7.046216 bits/pixel
+Entropie du message extrait : 6.318097 bits/pixel
+ETH du message extrait : 68.115234 bits tout les 1000 bits
+ETH du message avec tatouage : 1.941323 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 3, 5 et 5 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 41.154165 dB
+PSNR entre le message et le message extrait : 8.412712 dB
+Entropie de l'image avec tatouage : 7.038661 bits/pixel
+Entropie du message extrait : 6.014200 bits/pixel
+ETH du message extrait : 353.332520 bits tout les 1000 bits
+ETH du message avec tatouage : 1.213551 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 3, 5 et 6 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 32.999184 dB
+PSNR entre le message et le message extrait : 27.735898 dB
+Entropie de l'image avec tatouage : 7.057055 bits/pixel
+Entropie du message extrait : 6.316275 bits/pixel
+ETH du message extrait : 67.871094 bits tout les 1000 bits
+ETH du message avec tatouage : 1.913190 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 3, 5 et 7 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 28.893714 dB
+PSNR entre le message et le message extrait : 28.023079 dB
+Entropie de l'image avec tatouage : 7.048982 bits/pixel
+Entropie du message extrait : 6.315831 bits/pixel
+ETH du message extrait : 67.810059 bits tout les 1000 bits
+ETH du message avec tatouage : 1.937389 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 3, 6 et 6 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 35.259892 dB
+PSNR entre le message et le message extrait : 8.819672 dB
+Entropie de l'image avec tatouage : 7.051301 bits/pixel
+Entropie du message extrait : 5.956031 bits/pixel
+ETH du message extrait : 347.320557 bits tout les 1000 bits
+ETH du message avec tatouage : 1.213551 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 3, 6 et 7 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 28.840302 dB
+PSNR entre le message et le message extrait : 27.595227 dB
+Entropie de l'image avec tatouage : 7.056646 bits/pixel
+Entropie du message extrait : 6.315935 bits/pixel
+ETH du message extrait : 67.718506 bits tout les 1000 bits
+ETH du message avec tatouage : 1.919627 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 3, 7 et 7 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 29.361901 dB
+PSNR entre le message et le message extrait : 7.907882 dB
+Entropie de l'image avec tatouage : 7.043139 bits/pixel
+Entropie du message extrait : 6.062026 bits/pixel
+ETH du message extrait : 360.839844 bits tout les 1000 bits
+ETH du message avec tatouage : 1.213551 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 4, 4 et 4 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 46.947388 dB
+PSNR entre le message et le message extrait : 5.813162 dB
+Entropie de l'image avec tatouage : 7.033348 bits/pixel
+Entropie du message extrait : 4.066627 bits/pixel
+ETH du message extrait : 483.428955 bits tout les 1000 bits
+ETH du message avec tatouage : 0.641227 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 4, 4 et 5 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 39.990267 dB
+PSNR entre le message et le message extrait : 8.248665 dB
+Entropie de l'image avec tatouage : 7.039680 bits/pixel
+Entropie du message extrait : 6.065422 bits/pixel
+ETH du message extrait : 356.170654 bits tout les 1000 bits
+ETH du message avec tatouage : 1.217365 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 4, 4 et 6 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 34.537471 dB
+PSNR entre le message et le message extrait : 8.242196 dB
+Entropie de l'image avec tatouage : 7.052864 bits/pixel
+Entropie du message extrait : 6.065840 bits/pixel
+ETH du message extrait : 356.323242 bits tout les 1000 bits
+ETH du message avec tatouage : 1.208901 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 4, 4 et 7 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 28.813301 dB
+PSNR entre le message et le message extrait : 8.250407 dB
+Entropie de l'image avec tatouage : 7.044663 bits/pixel
+Entropie du message extrait : 6.067363 bits/pixel
+ETH du message extrait : 356.262207 bits tout les 1000 bits
+ETH du message avec tatouage : 1.233101 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 4, 5 et 5 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 40.303412 dB
+PSNR entre le message et le message extrait : 8.409073 dB
+Entropie de l'image avec tatouage : 7.039408 bits/pixel
+Entropie du message extrait : 6.013603 bits/pixel
+ETH du message extrait : 353.668213 bits tout les 1000 bits
+ETH du message avec tatouage : 1.224399 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 4, 5 et 6 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 32.763537 dB
+PSNR entre le message et le message extrait : 27.677240 dB
+Entropie de l'image avec tatouage : 7.057688 bits/pixel
+Entropie du message extrait : 6.316018 bits/pixel
+ETH du message extrait : 68.206787 bits tout les 1000 bits
+ETH du message avec tatouage : 1.924038 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 4, 5 et 7 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 28.919669 dB
+PSNR entre le message et le message extrait : 28.169966 dB
+Entropie de l'image avec tatouage : 7.048997 bits/pixel
+Entropie du message extrait : 6.315145 bits/pixel
+ETH du message extrait : 68.145752 bits tout les 1000 bits
+ETH du message avec tatouage : 1.948237 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 4, 6 et 6 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 34.889416 dB
+PSNR entre le message et le message extrait : 8.818990 dB
+Entropie de l'image avec tatouage : 7.052035 bits/pixel
+Entropie du message extrait : 5.956142 bits/pixel
+ETH du message extrait : 347.656250 bits tout les 1000 bits
+ETH du message avec tatouage : 1.224399 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 4, 6 et 7 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 28.824096 dB
+PSNR entre le message et le message extrait : 27.727966 dB
+Entropie de l'image avec tatouage : 7.056497 bits/pixel
+Entropie du message extrait : 6.315537 bits/pixel
+ETH du message extrait : 68.054199 bits tout les 1000 bits
+ETH du message avec tatouage : 1.930475 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 4, 7 et 7 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 29.380686 dB
+PSNR entre le message et le message extrait : 7.909329 dB
+Entropie de l'image avec tatouage : 7.043554 bits/pixel
+Entropie du message extrait : 6.062834 bits/pixel
+ETH du message extrait : 361.175537 bits tout les 1000 bits
+ETH du message avec tatouage : 1.224399 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 5, 5 et 5 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 41.002532 dB
+PSNR entre le message et le message extrait : 5.811672 dB
+Entropie de l'image avec tatouage : 7.038298 bits/pixel
+Entropie du message extrait : 4.068169 bits/pixel
+ETH du message extrait : 483.306885 bits tout les 1000 bits
+ETH du message avec tatouage : 0.630140 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 5, 5 et 6 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 33.285303 dB
+PSNR entre le message et le message extrait : 8.547945 dB
+Entropie de l'image avec tatouage : 7.056504 bits/pixel
+Entropie du message extrait : 6.020323 bits/pixel
+ETH du message extrait : 352.691650 bits tout les 1000 bits
+ETH du message avec tatouage : 1.208901 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 5, 5 et 7 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 28.970687 dB
+PSNR entre le message et le message extrait : 8.546089 dB
+Entropie de l'image avec tatouage : 7.047560 bits/pixel
+Entropie du message extrait : 6.015299 bits/pixel
+ETH du message extrait : 352.630615 bits tout les 1000 bits
+ETH du message avec tatouage : 1.233101 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 5, 6 et 6 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 33.480579 dB
+PSNR entre le message et le message extrait : 8.834112 dB
+Entropie de l'image avec tatouage : 7.055949 bits/pixel
+Entropie du message extrait : 5.958321 bits/pixel
+ETH du message extrait : 347.381592 bits tout les 1000 bits
+ETH du message avec tatouage : 1.212835 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 5, 6 et 7 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 28.790161 dB
+PSNR entre le message et le message extrait : 28.569957 dB
+Entropie de l'image avec tatouage : 7.056946 bits/pixel
+Entropie du message extrait : 6.314709 bits/pixel
+ETH du message extrait : 67.779541 bits tout les 1000 bits
+ETH du message avec tatouage : 1.918912 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 5, 7 et 7 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 29.559600 dB
+PSNR entre le message et le message extrait : 7.916223 dB
+Entropie de l'image avec tatouage : 7.046592 bits/pixel
+Entropie du message extrait : 6.060097 bits/pixel
+ETH du message extrait : 360.900879 bits tout les 1000 bits
+ETH du message avec tatouage : 1.212835 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 6, 6 et 6 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 35.067391 dB
+PSNR entre le message et le message extrait : 5.816961 dB
+Entropie de l'image avec tatouage : 7.051095 bits/pixel
+Entropie du message extrait : 4.067331 bits/pixel
+ETH du message extrait : 483.245850 bits tout les 1000 bits
+ETH du message avec tatouage : 0.617862 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 6, 6 et 7 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 28.956815 dB
+PSNR entre le message et le message extrait : 8.808059 dB
+Entropie de l'image avec tatouage : 7.054428 bits/pixel
+Entropie du message extrait : 5.978079 bits/pixel
+ETH du message extrait : 346.771240 bits tout les 1000 bits
+ETH du message avec tatouage : 1.233101 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 6, 7 et 7 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 29.541721 dB
+PSNR entre le message et le message extrait : 7.915321 dB
+Entropie de l'image avec tatouage : 7.053961 bits/pixel
+Entropie du message extrait : 6.060923 bits/pixel
+ETH du message extrait : 360.839844 bits tout les 1000 bits
+ETH du message avec tatouage : 1.204610 bits tout les 1000 bits
+
+Insertion 3 bits du message aux bits 7, 7 et 7 de l'image 
+i end : 4096
+PSNR entre l'image initiale et l'image avec tatouage : 28.734051 dB
+PSNR entre le message et le message extrait : 5.793176 dB
+Entropie de l'image avec tatouage : 7.043642 bits/pixel
+Entropie du message extrait : 4.064736 bits/pixel
+ETH du message extrait : 483.398438 bits tout les 1000 bits
+ETH du message avec tatouage : 0.663996 bits tout les 1000 bits

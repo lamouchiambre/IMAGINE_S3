@@ -415,22 +415,6 @@ OCTET* insertion3BitEctract(OCTET * img, int b1, int b2 ,int b3 , int key, int n
       // k++;
   }
 
-
-  // int i = 0;
-  // for (int k = 0; k < nHM*nWM; k++){
-  //   for(int b = 0; b < 8; b+=2){
-  //     int pos = rand()%(nH*nW);
-  //     if(img[pos] & (1 << b1))
-  //     {
-  //       ImageMessage[k] = ImageMessage[k] ^ (1 << b);
-  //     }
-  //     if(img[pos] & (1 << b2))
-  //     {
-  //       ImageMessage[k] = ImageMessage[k] ^ (1 << b+1);
-  //     }
-  //     i++;
-  //   }
-  // }
   return ImageMessage;
 }
 
@@ -498,20 +482,11 @@ OCTET* insertionEctract(OCTET * img, int bit, int nH, int nW, int nHM, int nWM){
   int i = 0;
   for (int k = 0; k < nHM*nWM; k++){
     for(int b = 0; b < 8; b++){
-    // for(int b = 7; b >= 0; b--){
-
-      // printf("XXXXXXXXXXXXXXX\n");
-      // binary(img[i*nbBlock]);
-      // binary(ImageMessage[k]);
-      // binary((1 << bit));
-      // binary((1 << b));
-      //binary(message[i]);
       if(img[i*nbBlock] & (1 << bit))
       {
         ImageMessage[k] = ImageMessage[k] ^ (1 << b);
       }
       i++;
-      //binary(ImageMessage[k]);
     }
   }
 
@@ -573,7 +548,6 @@ OCTET* entropyBlock16Ntaille(OCTET* img, int nTaille){
   int tailleEntropyBox;
   float min=256;
   float max=-1;
-
 
   allocation_tableau(entropyBox, OCTET, int(nTaille/16));
   allocation_tableau(entropyBoxImg, OCTET, nTaille);
@@ -705,7 +679,7 @@ OCTET* addNoise(OCTET* img, int nTaille){
     if(indBlockNoise[ibn]==i){
       valRand = i*16 + rand()%16;
       imgNoise[valRand] = set_bit(img[valRand], rand()%8);
-      //imgNoise[valRand] = rand()%256;     
+   
       ibn++;
       }
     }
@@ -735,5 +709,17 @@ double PSNR(OCTET *ImgA, OCTET *ImgB, int nH, int nW){
 
 }
 
+void print_result(OCTET* ImgIn, OCTET* ImgOut,OCTET* ImgOutMessage,OCTET* ImgInMessage,int nHM, int nWM, int nH, int nW){
+  int nTaille = nW*nH;
+  int nTailleM = nWM*nHM;
+  printf("PSNR entre l'image initiale et l'image avec tatouage : %f dB\n",PSNR(ImgIn, ImgOut,nH,nW));
+  printf("PSNR entre le message et le message extrait : %f dB\n",PSNR(ImgInMessage, ImgOutMessage,nHM,nWM));
+  
+  printf("Entropie de l'image avec tatouage : %f bits/pixel\n", entropy(ImgOut, nH, nW));
+  printf("Entropie du message extrait : %f bits/pixel\n", entropy(ImgOutMessage, nHM, nWM));
+  
+  printf("ETH du message extrait : %f bits tout les 1000 bits\n",ETH(ImgInMessage, ImgOutMessage, nTailleM));
+  printf("ETH du message avec tatouage : %f bits tout les 1000 bits\n",ETH(ImgIn, ImgOut, nTaille));
+}
 
 #endif
