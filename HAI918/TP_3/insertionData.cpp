@@ -41,11 +41,20 @@ int main(int argc, char* argv[])
   lire_nb_lignes_colonnes_image_pgm(cNomImageMessage, &nHM, &nWM);
   nTailleM = nHM * nWM;
   lire_image_pgm(cNomImageMessage, ImgInMessage, nHM * nWM);
+
+  //lire_nb_lignes_colonnes_image_pgm(cNomImageMessage, &nH, &nW);
+  //nTailleM = nH * nWM;
+  allocation_tableau(ImgKey, OCTET, nTaille);
+  std::string sPika = "key.pgm";
+  strcpy(cNomImgEcrite, sPika.c_str());
+  lire_image_pgm(cNomImgEcrite, ImgKey, nH * nW);
  
   allocation_tableau(ImgOut, OCTET, nTaille);
+  allocation_tableau(ImgDecr, OCTET, nTaille);
   allocation_tableau(ImgOutMessage, OCTET, nTailleM);
   allocation_tableau(Img256, OCTET, nTaille);
 
+  allocation_tableau(ImgOutNoise, OCTET, nTaille);
 
   allocation_tableau(Img16, OCTET, 16*16);
   allocation_tableau(Img16Out, OCTET, 16*16);
@@ -102,9 +111,62 @@ int main(int argc, char* argv[])
     ImgOut = insertionRandMaxi(ImgIn, ImgInMessage, 7, 23, nH, nW, nHM, nWM);
     ImgOutMessage = insertionRandMaxiEctract(ImgOut, 7, 23, nH, nW, nHM, nWM);
   }
+  else if(strs == "XOR"){
+    aes.XorBlocks(ImgIn, ImgKey, ImgOutNoise, nTaille);//cryptage  
+    ImgOut = insertionRandMaxi(ImgOutNoise, ImgInMessage, 0, 23, nH, nW, nHM, nWM);
+    aes.XorBlocks(ImgKey, ImgOut, ImgDecr, nTaille);
+    ImgOutMessage = insertionRandMaxiEctract(ImgOut, 0, 23, nH, nW, nHM, nWM);
+    printf("PSNR entre le message et le message extrait : %f dB\n",PSNR(ImgInMessage, ImgOutMessage,nHM,nWM));
+    printf("PSNR entre l'image initial et l'image déchiffrée : %f dB\n",PSNR(ImgInMessage, ImgDecr,nHM,nWM));
+  
+    printf("Entropie de l'image chiffrée : %f bits/pixel\n", entropy(ImgOutNoise, nH, nW));
+    printf("Entropie de l'image chiffrée avec tatouage : %f bits/pixel\n", entropy(ImgOut, nH, nW));
+    printf("Entropie de l'image déchiffrer avec tatouage : %f bits/pixel\n", entropy(ImgDecr, nH, nW));
+    printf("Entropie du message extrait : %f bits/pixel\n", entropy(ImgOutMessage, nHM, nWM));
+
+
+    std::string name_tmp = "ImgOut.pgm";
+    strcpy(cNomImgEcrite, name_tmp.c_str());
+    ecrire_image_pgm(cNomImgEcrite, ImgOut, nH, nW);
+
+    name_tmp = "ImgOutNoise.pgm";
+    strcpy(cNomImgEcrite, name_tmp.c_str());
+    ecrire_image_pgm(cNomImgEcrite, ImgOutNoise, nH, nW);
+
+    name_tmp = "ImgDecr.pgm";
+    strcpy(cNomImgEcrite, name_tmp.c_str());
+    ecrire_image_pgm(cNomImgEcrite, ImgDecr, nH, nW);
+
+    name_tmp = "ImgOutMessage.pgm";
+    strcpy(cNomImgEcrite, name_tmp.c_str());
+    ecrire_image_pgm(cNomImgEcrite, ImgOutMessage, nHM, nWM);
+  }
   else if(strs == "attack"){
+    // ImgOut = insertionRandMaxi(ImgIn, ImgInMessage, 0, 23, nH, nW, nHM, nWM);
+    ImgOutMessage = attackExtractionRand(ImgIn, 0, nH, nW, nHM, nWM ); 
+    //print_result(ImgIn, ImgOut, ImgOutMessage, ImgInMessage,nHM, nWM, nH, nW);
+    //printf("PSNR entre l'image initiale et l'image avec tatouage : %f dB\n",PSNR(ImgIn, ImgOut,nH,nW));
+    
+    printf("PSNR entre le message et le message extrait : %f dB\n",PSNR(ImgInMessage, ImgOutMessage,nHM,nWM));
+  
+    printf("Entropie de l'image avec tatouage : %f bits/pixel\n", entropy(ImgIn, nH, nW));
+    printf("Entropie du message extrait : %f bits/pixel\n", entropy(ImgOutMessage, nHM, nWM));
+  
+    //printf("ETH du message extrait : %f bits tout les 1000 bits\n",ETH(ImgInMessage, ImgOutMessage, nTailleM));
+    //printf("ETH du message avec tatouage : %f bits tout les 1000 bits\n",ETH(ImgIn, ImgOut, nTaille));
+
+    strcpy(cNomImgEcrite, sNomImgOutMessage.c_str());
+    ecrire_image_pgm(cNomImgEcrite,ImgOutMessage, nHM, nWM);
+
+    strcpy(cNomImgEcrite, sNomImgOutSub.c_str());
+    ecrire_image_pgm(cNomImgEcrite, substraction(ImgOut, ImgIn, nTaille), nHM, nWM);
+  } 
+  else if(strs == "test_attack"){
     ImgOut = insertionRandMaxi(ImgIn, ImgInMessage, 0, 23, nH, nW, nHM, nWM);
     ImgOutMessage = attackExtractionRand(ImgOut, 0, nH, nW, nHM, nWM ); 
+    
+    strcpy(cNomImgEcrite, sNomImgOutMessage.c_str());
+    ecrire_image_pgm(cNomImgEcrite,ImgOutMessage, nHM, nWM);
   } 
   else if(strs == "2LSB"){
     ImgOut = insertion2Bit(ImgIn, ImgInMessage, 7, 5, 23, nH, nW, nHM, nWM);

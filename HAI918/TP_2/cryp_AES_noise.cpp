@@ -54,9 +54,9 @@ int main(int argc, char* argv[])
   std::string sNomImgDecrypNoise = sNomImgLue+strs+"Decryp"+"Noise"+ext;
   std::string sNomImgDecrypSub = sNomImgLue+strs+"Decryp"+"Sub"+"DecrypNoise"+ext;
   std::string sNomImgCrypSub = sNomImgLue+strs+"Cryp"+"Sub"+"CrypNoise"+ext;
-  std::string sNomImgKey = "img_in/15.pgm";
-  strcpy(cNomImgKey, sNomImgKey.c_str());
-  lire_image_pgm(cNomImgKey, ImgKey, nH * nW);
+  // std::string sNomImgKey = "img_in/15.pgm";
+  // strcpy(cNomImgKey, sNomImgKey.c_str());
+  // lire_image_pgm(cNomImgKey, ImgKey, nH * nW);
 
   srand(1);
   OCTET key[] = { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f };
