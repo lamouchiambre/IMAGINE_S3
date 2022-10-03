@@ -3,9 +3,9 @@ CXX_FLAGS	= -Wall -g -O0 -ansi -pedantic -std=c99
 
 LD_FLAGS 	=
 
-PROGS		= insertionData#histogramme #couleur #histogram3c #seuillage4p 
+PROGS		= run_nn #histogramme #couleur #histogram3c #seuillage4p 
 
-SOURCES		= insertionData.cpp AES.cpp#histogramme.cpp  #test.cpp test_couleur.cpp #histogram3c.cpp # seuillage4p.cpp 
+SOURCES		= main.cpp AES.cpp#histogramme.cpp  #test.cpp test_couleur.cpp #histogram3c.cpp # seuillage4p.cpp 
 
 HEADERS		= imglib.h image_ppm.h AES.h# 
 
