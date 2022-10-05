@@ -24,6 +24,7 @@ OCTET * maxPooling(OCTET* ImgIn, int nH, int nW, int s1, int s2){
     OCTET * ImgMaxPool;
     OCTET * list_tmp;
     int len_maxPool = (nH*nW)/(s1*s2);
+    printf("taille initial %i, taille maxpool %i",nH*nW, len_maxPool);
     allocation_tableau(ImgMaxPool, OCTET, len_maxPool);
     allocation_tableau(list_tmp, OCTET, s1*s2);
 

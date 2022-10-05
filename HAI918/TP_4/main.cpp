@@ -3,6 +3,8 @@
 #include <iostream>
 #include <string>
 
+using namespace std;
+
 constexpr unsigned int str2int(const char* str, int h = 0)
 {
     return !str[h] ? 5381 : (str2int(str, h+1) * 33) ^ str[h];
@@ -13,7 +15,6 @@ int main(int argc, char* argv[])
   char cNomImgLue[250], cNomImgEcrite[250];
   int nH, nW, nTaille, S;
 
-
   if (argc != 2) 
      {
        printf("Usage: ImageIn.pgm \n"); 
@@ -21,31 +22,74 @@ int main(int argc, char* argv[])
      } 
 
   sscanf (argv[1],"%s",cNomImgLue) ;
-
  
-  OCTET *ImgIn,*ImgMaxPool;
-
-  allocation_tableau(ImgMaxPool, OCTET, 128*128);
-
+  OCTET *ImgIn, *ImgMaxPool1, *ImgMaxPool2, *ImgMaxPool3, *ImgConv1, *ImgConv2, *ImgConv3,*ImgConv11, *ImgConv21, *ImgConv31 ;
+  std::string sNomImgLue = std::string(cNomImgLue);
+  std::string ext = ".pgm";
+  std::string sNomImgOutSub = sNomImgLue+"Sub"+ext;
+  std::string sNomImgLueMessage = sNomImgLue+"Message"+ext;
   lire_nb_lignes_colonnes_image_pgm(cNomImgLue, &nH, &nW);
   nTaille = nH * nW;
+
+  printf("hello\n");
+  
+  double Prewitt_H[9] = {-1, 0, 1, -1, 0, 1, -1, 0, 1};
+  double Laplacian[9] = {-1, -1, -1, -1, 8, -1, -1, -1, -1};
+  double Identitee[9] = {0, 0, 0, 0, 1, 0, 0, 0, 0};
+  double Nettete[9] = {0, -1, 0, -1, 5, -1, 0,-1, 0};
+  double Flou[9] = {0.11, 0.11, 0.11, 0.11, 0.11, 0.11, 0.11, 0.11, 0.11};
+   
+  printf("%f %f %f %f %f %f %f %f %f\n", Identitee[0], Identitee[1], Identitee[2], Identitee[3], Identitee[4], Identitee[5], Identitee[6], Identitee[7], Identitee[8]);
  
   allocation_tableau(ImgIn, OCTET, nTaille);
   lire_image_pgm(cNomImgLue, ImgIn, nH * nW);
+ 
+  allocation_tableau(ImgMaxPool1, OCTET, 127*127);
+  allocation_tableau(ImgMaxPool2, OCTET, 127*127);
+  allocation_tableau(ImgMaxPool3, OCTET, 127*127);
 
-  ImgMaxPool = maxPooling(ImgIn, nH, nW, 2, 2);
-
-  std::string sNomImgLue = std::string(cNomImgLue);
-
-  std::string ext = ".pgm";
+  allocation_tableau(ImgConv1, OCTET, (nH-2)*(nW-2));
+  allocation_tableau(ImgConv2, OCTET, (nH-2)*(nW-2));
+  allocation_tableau(ImgConv3, OCTET, (nH-2)*(nW-2));
   
-  std::string sNomImgOutSub = sNomImgLue+"Sub"+ext;
-  std::string sNomImgLueMessage = sNomImgLue+"Message"+ext;
+  allocation_tableau(ImgConv11, OCTET, (127-2)*(127-2));
+  allocation_tableau(ImgConv21, OCTET, (127-2)*(127-2));
+  allocation_tableau(ImgConv31, OCTET, (127-2)*(127-2));
+  
+  //First conv
+  ImgConv1 = conv3x3(ImgIn, nH, nW, Prewitt_H);
+  ImgConv2 = conv3x3(ImgIn, nH, nW, Flou);
+  ImgConv3 = conv3x3(ImgIn, nH, nW, Laplacian);
 
-   
+
+  //First MaxPool
+  ImgMaxPool1 = maxPooling2x2(ImgConv1, nH-2, nW-2);
+  ImgMaxPool2 = maxPooling2x2(ImgConv1, nH-2, nW-2);
+  ImgMaxPool3 = maxPooling2x2(ImgConv1, nH-2, nW-2);
+
+  //Second conv
+  ImgConv11 = conv3x3(ImgMaxPool1, 125, 125, Prewitt_H);
+  ImgConv21 = conv3x3(ImgMaxPool1, 125, 125, Flou);
+  ImgConv31 = conv3x3(ImgMaxPool1, 125, 125, Laplacian);
+
+  vector flatten_img = flatten(ImgIn, nTaille);
+  // cout << "v1 = ";
+  // for (auto& v : flatten_img){
+  //   cout << v << " ";
+  // }
+  // cout << endl;
+
   sNomImgLueMessage = sNomImgLue+"_maxpool"+ext;
   strcpy(cNomImgEcrite, sNomImgLueMessage.c_str());
-  ecrire_image_pgm(cNomImgEcrite, ImgMaxPool, 128, 128);
+  ecrire_image_pgm(cNomImgEcrite, ImgMaxPool1, 127, 127);
+
+  sNomImgLueMessage = sNomImgLue+"Conv11"+ext;
+  strcpy(cNomImgEcrite, sNomImgLueMessage.c_str());
+  ecrire_image_pgm(cNomImgEcrite, ImgConv11, 125, 125);
+
+  sNomImgLueMessage = sNomImgLue+"_Filter1"+ext;
+  strcpy(cNomImgEcrite, sNomImgLueMessage.c_str());
+  ecrire_image_pgm(cNomImgEcrite, ImgConv1, nH-2, nW-2);
     
    return 1;
 }

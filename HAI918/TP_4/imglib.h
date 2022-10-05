@@ -5,7 +5,7 @@
 #include "image_ppm.h"
 #include <bitset>
 #include "AES.h"
-
+using namespace std;
 
 //fonction un neuronne
 // https://blog.paperspace.com/filters-in-convolutional-neural-networks/
@@ -28,6 +28,7 @@ OCTET * maxPooling(OCTET* ImgIn, int nH, int nW, int s1, int s2){
     int len_maxPool = (nH*nW)/(s1*s2);
     allocation_tableau(ImgMaxPool, OCTET, len_maxPool);
     allocation_tableau(list_tmp, OCTET, s1*s2);
+    printf("taille initial %i, taille maxpool %i",nH*nW, len_maxPool);
 
 
     for (int i = 0; i < len_maxPool; i++){
@@ -94,8 +95,15 @@ OCTET* filter(int type){
 
 }
 */
+vector<double> flatten(OCTET * ImgIn, int nTaille){
+  vector<double> flatten_img;
+  for(int i = 0; i < nTaille; i++){
+    flatten_img.push_back(ImgIn[i]);
+  }
+  return flatten_img;
+}
 
-OCTET* conv3x3(OCTET* ImgIn,int nH, int nW, OCTET* filter){
+OCTET* conv3x3(OCTET* ImgIn,int nH, int nW, double filter[9]){
     //int w = s1;
     OCTET * ImgMaxPool;
     OCTET * list_tmp;
@@ -105,27 +113,28 @@ OCTET* conv3x3(OCTET* ImgIn,int nH, int nW, OCTET* filter){
     
     allocation_tableau(ImgMaxPool, OCTET, len_maxPool);
     allocation_tableau(list_tmp, OCTET, 9);
+    printf("%f %f %f %f %f %f %f %f %f\n", filter[0], filter[1], filter[2], filter[3], filter[4], filter[5], filter[6], filter[7], filter[8]);
+    int k = 0;
+    for (int i = 1; i < nW - 1; i++){
+        for (int j = 1; j < nH - 1; j++){
 
+            unsigned int p =abs(int(
+                double(ImgIn[(i-1)*nW+(j-1)]) * filter[0] +
+                double(ImgIn[i*nW+(j-1)]) * filter[1]+
+                double(ImgIn[(i+1)*nW+(j-1)]) * filter[2]+
 
-    for (int i = 1; i < len_maxPool - 1; i++){
-        for (int j = 1; j < len_maxPool - 1; j++){
+                double(ImgIn[(i-1)*nW+j]) * filter[3] +
+                double(ImgIn[i*nW+j]) * filter[4]+
+                double(ImgIn[(i+1)*nW+j]) * filter[5]+
 
-            int p = (
-                ImgIn[(i-1)*nW+(j-1)] * filter[0] +
-                ImgIn[i*nW+(j-1)] * filter[1]+
-                ImgIn[(i+1)*nW+(j-1)] * filter[2]+
+                double(ImgIn[(i-1)*nW+(j+1)]) * filter[6] +
+                double(ImgIn[i*nW+(j+1)]) * filter[7]+
+                double(ImgIn[(i+1)*nW+(j+1)]) * filter[8]
+            ));
+            //printf("p = %i\n", p);
 
-                ImgIn[(i-1)*nW+j] * filter[3] +
-                ImgIn[i*nW+j] * filter[4]+
-                ImgIn[(i+1)*nW+j] * filter[5]+
-
-                ImgIn[(i-1)*nW+(j+1)] * filter[6] +
-                ImgIn[i*nW+(j+1)] * filter[7]+
-                ImgIn[(i+1)*nW+(j+1)] * filter[8]
-
-            );
-
-            ImgMaxPool[i] = p;
+            ImgMaxPool[k] = p;
+            k++;
         
         }
 
@@ -134,6 +143,23 @@ OCTET* conv3x3(OCTET* ImgIn,int nH, int nW, OCTET* filter){
     return ImgMaxPool;
 
     
+}
+
+double g(vector<double>n_in, vector<double>weights){
+  double sum = 0; 
+  for(int i = 0; i < n_in.size(); i++){
+    sum += n_in.at(i)*weights.at(i);
+  }
+  return sum;
+}
+
+vector<double>gForLayer(vector<double>n_in, vector<vector<double>>weights){
+  vector<double>n_out;
+  for (auto& v : weights){
+        n_out.push_back(g(n_in, v));
+  }
+  return n_out;
+
 }
 //Extraction
 
