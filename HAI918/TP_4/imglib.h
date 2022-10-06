@@ -9,7 +9,7 @@ using namespace std;
 
 //fonction un neuronne
 // https://blog.paperspace.com/filters-in-convolutional-neural-networks/
-
+// https://hal.archives-ouvertes.fr/hal-00512280v1/document
 double Relu(double f){
     return f> 0.0 ? f : 0.0;
 }
@@ -51,18 +51,36 @@ OCTET * maxPooling(OCTET* ImgIn, int nH, int nW, int s1, int s2){
 OCTET * maxPooling2x2(OCTET* ImgIn, int nH, int nW){
     OCTET * ImgMaxPool;
     OCTET * list_tmp;
-    int len_maxPool = (nH*nW)/(2*2);
+    int len_maxPool = int(nH/2)*int(nW/2);
+    // int len_maxPool = int((nH*nW)/);
+    
+    printf("len maxPool %i %f \n", len_maxPool, sqrt(len_maxPool));
     allocation_tableau(ImgMaxPool, OCTET, len_maxPool);
     allocation_tableau(list_tmp, OCTET, 2*2);
+
+    nH = (nH%2) == 0 ? nH : nH-1;
+    nW = (nW%2) == 0 ? nW : nW-1;
+    printf("block = %i \n", nH*nW/len_maxPool);
     int k = 0;
     for (int i = 0; i < nH ; i += 2){
         for (int j = 0; j < nW ; j +=2){
         ImgMaxPool[k] = std::max(std::max(ImgIn[i*nW+j],ImgIn[i*nW+j+1]), std::max( ImgIn[(i+1)*nW+j],ImgIn[(i+1)*nW+j+1] )) ;//max(list_tmp, s1*s2);
+        // printf("k : %i\n", k);
         k++;
         }
     }
+    printf("END\n");
 
     return ImgMaxPool;
+}
+
+vector<double> tab_to_vect(OCTET * tab, int nTaille){
+  vector<double> vec;
+  for (int i = 0; i < nTaille; i++)
+  {
+    vec.push_back(tab[i]);
+  }
+  return vec;
 }
 /*
 OCTET* filter(int type){
@@ -156,6 +174,7 @@ double g(vector<double>n_in, vector<double>weights){
   }
   return Relu(sum);
 }
+
 double g3(double n_in, vector<double>weights){
   double sum = 0; 
   for(int i = 0; i < weights.size(); i++){
@@ -163,6 +182,7 @@ double g3(double n_in, vector<double>weights){
   }
   return Relu(sum);
 }
+
 double g2(vector<double>n_in, vector<double>weights){
   double sum = 0; 
   for(int i = 0; i < n_in.size(); i++){
@@ -191,6 +211,18 @@ vector<double>gForLayer3(vector<double>n_in, vector<vector<double>>weights){
   for (int i = 0; i < n_in.size(); i++)
   {
     n_out.push_back(g3(n_in[i], weights[i]));
+  }
+
+  return n_out;
+}
+
+vector<double>gForLayer4(vector<double>n_in, vector<vector<double>>weights){
+  vector<double>n_out;
+
+  for (int i = 0; i < weights.size(); i++)
+  {
+    cout << g(n_in, weights[i]) << endl;
+    n_out.push_back(g(n_in, weights[i]));
   }
 
   return n_out;
