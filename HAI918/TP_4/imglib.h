@@ -14,6 +14,10 @@ double Relu(double f){
     return f> 0.0 ? f : 0.0;
 }
 
+double Relu_deriv(double f){
+    return f> 0.0 ? 1.0 : 0.0;
+}
+
 int max(OCTET* list, int len){
     int max = list[0];
     for (int i = 0; i < len; i++){
@@ -28,7 +32,7 @@ OCTET * maxPooling(OCTET* ImgIn, int nH, int nW, int s1, int s2){
     int len_maxPool = (nH*nW)/(s1*s2);
     allocation_tableau(ImgMaxPool, OCTET, len_maxPool);
     allocation_tableau(list_tmp, OCTET, s1*s2);
-    printf("taille initial %i, taille maxpool %i",nH*nW, len_maxPool);
+    //printf("taille initial %i, taille maxpool %i",nH*nW, len_maxPool);
 
 
     for (int i = 0; i < len_maxPool; i++){
@@ -113,7 +117,7 @@ OCTET* conv3x3(OCTET* ImgIn,int nH, int nW, double filter[9]){
     
     allocation_tableau(ImgMaxPool, OCTET, len_maxPool);
     allocation_tableau(list_tmp, OCTET, 9);
-    printf("%f %f %f %f %f %f %f %f %f\n", filter[0], filter[1], filter[2], filter[3], filter[4], filter[5], filter[6], filter[7], filter[8]);
+    //printf("%f %f %f %f %f %f %f %f %f\n", filter[0], filter[1], filter[2], filter[3], filter[4], filter[5], filter[6], filter[7], filter[8]);
     int k = 0;
     for (int i = 1; i < nW - 1; i++){
         for (int j = 1; j < nH - 1; j++){
@@ -150,9 +154,29 @@ double g(vector<double>n_in, vector<double>weights){
   for(int i = 0; i < n_in.size(); i++){
     sum += n_in.at(i)*weights.at(i);
   }
-  return sum;
+  return Relu(sum);
 }
-
+double g3(double n_in, vector<double>weights){
+  double sum = 0; 
+  for(int i = 0; i < weights.size(); i++){
+    sum += n_in*weights.at(i);
+  }
+  return Relu(sum);
+}
+double g2(vector<double>n_in, vector<double>weights){
+  double sum = 0; 
+  for(int i = 0; i < n_in.size(); i++){
+    sum += n_in.at(i)*weights.at(i);
+  }
+  return Relu(sum);
+}
+double g_deriv(vector<double>n_in, vector<double>weights){
+  double sum = 0; 
+  for(int i = 0; i < n_in.size(); i++){
+    sum += n_in.at(i)*weights.at(i);
+  }
+  return sum > 0.0 ? 1.0 : 0.0;
+}
 vector<double>gForLayer(vector<double>n_in, vector<vector<double>>weights){
   vector<double>n_out;
   for (auto& v : weights){
@@ -161,7 +185,36 @@ vector<double>gForLayer(vector<double>n_in, vector<vector<double>>weights){
   return n_out;
 
 }
+vector<double>gForLayer3(vector<double>n_in, vector<vector<double>>weights){
+  vector<double>n_out;
+
+  for (int i = 0; i < n_in.size(); i++)
+  {
+    n_out.push_back(g3(n_in[i], weights[i]));
+  }
+
+  return n_out;
+}
+
 //Extraction
+double ei_sortie(double hi, double ti, double yi){
+  return Relu_deriv(hi)*(ti-yi);
+}
+
+double ei(double hi, double ti, vector<double>w, vector<double>e){
+  double sum = 0.0;
+  for (int i = 0; i < w.size(); i++)
+  {
+    sum += w[i]*e[i];
+  }
+  
+  return Relu_deriv(hi)*sum;
+}
+
+//correction des poids
+double correction_poids(double w, double e, double x, double lambda){
+  return w + lambda*e*x;
+}
 
 float entropy(OCTET* img, int nH, int nW){
     int count = 0;

@@ -30,7 +30,7 @@ int main(int argc, char* argv[])
   std::string sNomImgLueMessage = sNomImgLue+"Message"+ext;
   lire_nb_lignes_colonnes_image_pgm(cNomImgLue, &nH, &nW);
   nTaille = nH * nW;
-
+ 
   printf("hello\n");
   
   double Prewitt_H[9] = {-1, 0, 1, -1, 0, 1, -1, 0, 1};
@@ -73,11 +73,56 @@ int main(int argc, char* argv[])
   ImgConv31 = conv3x3(ImgMaxPool1, 125, 125, Laplacian);
 
   vector flatten_img = flatten(ImgIn, nTaille);
-  // cout << "v1 = ";
-  // for (auto& v : flatten_img){
-  //   cout << v << " ";
-  // }
-  // cout << endl;
+  vector<vector<double>> vect_all;
+  vector<vector<double>> w1;
+  vector<vector<double>> w2;
+
+  //vector<double> vect1 = {1.0, 1.0, 1.0};
+
+  vector<double> nn1 = {1.0, 2.0};
+  vector<double> nn2 = {0.0, 0.0, 0.8};
+  vector<double> nn3 = {1.2, 0.16};
+
+
+  double n1 = 1;
+  vector<double> w11 = {0.5, -1.5, 0.2};
+  vector<double> w12 = {-0.5, -2.5, 0.3};
+
+  vector<double> w21 = {0.3, 0.5};
+  vector<double> w22 = {-0.5, 0.3};
+  vector<double> w23 = {1.5, 0.2};
+
+
+  w1.push_back(w11);
+  w1.push_back(w12);
+  
+  w2.push_back(w21);
+  w2.push_back(w22);
+  w2.push_back(w23);
+
+  cout << 1.0/6.0 <<endl;
+  //cout << "g vect1 w1 : "<<g(vect1, w1) <<endl;
+  cout << "g3 n1 w1 : "<<g3(n1, w11) <<endl;
+  cout << "g3 n1 w1 : "<<g3(n1, w12) <<endl;
+  cout << "g3 n1 w1 : "<<g3(n1, w21) <<endl;
+  cout << "g3 n1 w1 : "<<g3(n1, w22) <<endl;
+  cout << "g3 n1 w1 : "<<g3(n1, w23) <<endl;
+
+  vector<double> v_nn2 = gForLayer3(nn1, w1);
+  vector<double> v_nn3 = gForLayer3(v_nn2, w2);
+  
+ 
+  cout << "v_nn2 = ";
+  for (auto& v : v_nn2){
+     cout << v << " ";
+  }
+  cout << endl;
+
+  cout << "v_nn3 = ";
+  for (auto& v : v_nn3){
+     cout << v << " ";
+  }
+  cout << endl;
 
   sNomImgLueMessage = sNomImgLue+"_maxpool"+ext;
   strcpy(cNomImgEcrite, sNomImgLueMessage.c_str());
