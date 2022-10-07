@@ -35,6 +35,7 @@ int main(int argc, char* argv[])
   OCTET *ImgMaxPool13, *ImgMaxPool23, *ImgMaxPool33, *ImgMaxPool43, *ImgMaxPool53 ;
   OCTET *ImgMaxPool14, *ImgMaxPool24, *ImgMaxPool34, *ImgMaxPool44, *ImgMaxPool54 ;
   OCTET *ImgMaxPool15, *ImgMaxPool25, *ImgMaxPool35, *ImgMaxPool45, *ImgMaxPool55 ;
+  OCTET *ImgFlat;
 
   std::string sNomImgLue = std::string(cNomImgLue);
   std::string ext = ".pgm";
@@ -55,6 +56,7 @@ int main(int argc, char* argv[])
   allocation_tableau(ImgIn, OCTET, nTaille);
   lire_image_pgm(cNomImgLue, ImgIn, nH * nW);
  
+  allocation_tableau(ImgFlat, OCTET, (315)*(315));
   allocation_tableau(ImgConv1, OCTET, (nH-2)*(nW-2));
   allocation_tableau(ImgConv2, OCTET, (nH-2)*(nW-2));
   allocation_tableau(ImgConv3, OCTET, (nH-2)*(nW-2));
@@ -99,16 +101,16 @@ int main(int argc, char* argv[])
 
   //maxpooling 2
   allocation_tableau(ImgMaxPool11, OCTET, (63)*(63));
-  allocation_tableau(ImgMaxPool21, OCTET, (62)*(62));
-  allocation_tableau(ImgMaxPool31, OCTET, (62)*(62));
-  allocation_tableau(ImgMaxPool41, OCTET, (62)*(62));
-  allocation_tableau(ImgMaxPool51, OCTET, (62)*(62));
+  allocation_tableau(ImgMaxPool21, OCTET, (63)*(63));
+  allocation_tableau(ImgMaxPool31, OCTET, (63)*(63));
+  allocation_tableau(ImgMaxPool41, OCTET, (63)*(63));
+  allocation_tableau(ImgMaxPool51, OCTET, (63)*(63));
 
   allocation_tableau(ImgMaxPool12, OCTET, (63)*(63));
-  allocation_tableau(ImgMaxPool22, OCTET, (62)*(62));
-  allocation_tableau(ImgMaxPool32, OCTET, (62)*(62));
-  allocation_tableau(ImgMaxPool42, OCTET, (62)*(62));
-  allocation_tableau(ImgMaxPool52, OCTET, (62)*(62));
+  allocation_tableau(ImgMaxPool22, OCTET, (63)*(63));
+  allocation_tableau(ImgMaxPool32, OCTET, (63)*(63));
+  allocation_tableau(ImgMaxPool42, OCTET, (63)*(63));
+  allocation_tableau(ImgMaxPool52, OCTET, (63)*(63));
 
   allocation_tableau(ImgMaxPool12, OCTET, (63)*(63));
   allocation_tableau(ImgMaxPool22, OCTET, (63)*(63));
@@ -303,7 +305,25 @@ int main(int argc, char* argv[])
   vector flatten_img(flat_img);
 
   vector<vector<double>> vect_all;
-  vector<vector<double>> w1;
+  vector<vector<double>> w1; // poids de la couche flatten_img à la premiere couche de 5 neurones ligne = 5, colone = N
+  vector<vector<double>> w2; // couche de 5 neurones 
+  vector<vector<double>> w_out; // poid de la couche 2 de 5 neurone a la sortie 2 neurones ligne 2 colone 5
+  for (int i = 0; i < 5; i++){
+    vector<double> tmp;
+    for(int j = 0; j < flatten_img.size(); j++ ){
+      ImgFlat[j] = flatten_img[j];
+      tmp.push_back(1.0/flat_img.size());
+    }
+    w1.push_back(tmp);
+  }
+
+  for (int i = 0; i < 2; i++){
+    vector<double> tmp;
+    for(int j = 0; j < 5; j++ ){
+      tmp.push_back(1.0/5);
+    }
+    w_out.push_back(tmp);
+  }
 
 
 
@@ -314,6 +334,21 @@ int main(int argc, char* argv[])
 
 
 
+
+
+
+  
+
+  // cout << "flatten Image = ";
+  // for (auto& v : flatten_img){
+  //    cout << v << " ";
+  // }
+  // cout << endl;
+
+  cout << "size v_nn2 " << flatten_img.size() << "size w1 " <<  w1.size() << endl;
+  vector<double> v_nn2 = gForLayer4(flatten_img, w1);
+  cout << "size v_nn2 " << v_nn2.size() << " size w_out " <<  w_out.size() << endl;
+  vector<double> v_nn3 = gForLayer4(v_nn2, w_out);
 
 
 
@@ -360,13 +395,17 @@ int main(int argc, char* argv[])
   // }
   // cout << endl;
 
+  sNomImgLueMessage = sNomImgLue+"_Fatten"+ext;
+  strcpy(cNomImgEcrite, sNomImgLueMessage.c_str());
+  ecrire_image_pgm(cNomImgEcrite, ImgFlat, 315, 315);
+
   sNomImgLueMessage = sNomImgLue+"_MaxPool1"+ext;
   strcpy(cNomImgEcrite, sNomImgLueMessage.c_str());
   ecrire_image_pgm(cNomImgEcrite, ImgMaxPool1, 127, 127);
 
-  sNomImgLueMessage = sNomImgLue+"_MaxPool11"+ext;
+  sNomImgLueMessage = sNomImgLue+"_MaxPool32"+ext;
   strcpy(cNomImgEcrite, sNomImgLueMessage.c_str());
-  ecrire_image_pgm(cNomImgEcrite, ImgMaxPool11, 63, 63);
+  ecrire_image_pgm(cNomImgEcrite, ImgMaxPool32, 63, 63);
 
   sNomImgLueMessage = sNomImgLue+"_Conv11"+ext;
   strcpy(cNomImgEcrite, sNomImgLueMessage.c_str());

@@ -1,1 +1,0 @@
-stereo.o: stereo.cpp CImg.h

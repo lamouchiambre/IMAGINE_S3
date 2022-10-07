@@ -3,11 +3,11 @@ CXX_FLAGS	= -Wall -g -O0 -ansi -pedantic -std=c99
 
 LD_FLAGS 	=
 
-PROGS		= stereo#histogramme #couleur #histogram3c #seuillage4p 
+PROGS		= cible #histogramme #couleur #histogram3c #seuillage4p 
 
-SOURCES		= stereo.cpp #histogramme.cpp  #test.cpp test_couleur.cpp #histogram3c.cpp # seuillage4p.cpp 
+SOURCES		= cible.cpp #histogramme.cpp  #test.cpp test_couleur.cpp #histogram3c.cpp # seuillage4p.cpp 
 
-HEADERS		= CImg.h# CImg.h # 
+HEADERS		= CImg.h  #TraitementImage.h # 
 
 DEPFILE		= .depend
 
