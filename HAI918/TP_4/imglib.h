@@ -10,12 +10,20 @@ using namespace std;
 //fonction un neuronne
 // https://blog.paperspace.com/filters-in-convolutional-neural-networks/
 // https://hal.archives-ouvertes.fr/hal-00512280v1/document
+
 double Relu(double f){
     return f> 0.0 ? f : 0.0;
 }
 
 double Relu_deriv(double f){
     return f> 0.0 ? 1.0 : 0.0;
+}
+template<typename T>
+vector<T> create_copy(std::vector<T> const &vec)
+{
+    vector<T> v(vec.size());
+    copy(vec.begin(), vec.end(), v.begin());
+    return v;
 }
 
 int max(OCTET* list, int len){
@@ -24,6 +32,54 @@ int max(OCTET* list, int len){
         max  = max > list[i] ? max : list[i];
     }
     return max;
+}
+
+OCTET * mean_img(vector<OCTET *>list, int nH, int nW){
+    // cout << "mean img " << endl;
+    OCTET * ImgMean;
+    int sum = 0;
+    allocation_tableau(ImgMean, OCTET, nH*nW);
+      for (int i = 0; i < nH*nW ; i++)
+      {
+        sum = 0;
+        // for (auto& v : list){
+        //   sum += v[i];
+        //   cout << "sum : " << sum << endl;
+        // }        
+        for (int j = 0; j < list.size(); j++){
+          sum += list[j][i];
+          // cout << "sum : " << sum << endl;
+        }        
+        ImgMean[i] = int(sum)/list.size();
+        // printf("_______\n");
+      }
+    // cout << endl;
+    return ImgMean;
+
+}
+
+OCTET * mean_imgV(vector<vector<OCTET>>list, int nH, int nW){
+    // cout << "mean img " << endl;
+    OCTET * ImgMean;
+    int sum = 0;
+    allocation_tableau(ImgMean, OCTET, nH*nW);
+      for (int i = 0; i < nH*nW ; i++)
+      {
+        sum = 0;
+        // for (auto& v : list){
+        //   sum += v[i];
+        //   cout << "sum : " << sum << endl;
+        // }        
+        for (int j = 0; j < list.size(); j++){
+          sum += list[j][i];
+          // cout << "sum : " << sum << endl;
+        }        
+        ImgMean[i] = int(sum)/list.size();
+        // printf("_______\n");
+      }
+    // cout << endl;
+    return ImgMean;
+
 }
 
 OCTET * maxPooling(OCTET* ImgIn, int nH, int nW, int s1, int s2){
@@ -49,29 +105,38 @@ OCTET * maxPooling(OCTET* ImgIn, int nH, int nW, int s1, int s2){
 }
 
 OCTET * maxPooling2x2(OCTET* ImgIn, int nH, int nW){
+    // printf("MAXPOOLING\n");
+
     OCTET * ImgMaxPool;
     OCTET * list_tmp;
     int len_maxPool = int(nH/2)*int(nW/2);
     // int len_maxPool = int((nH*nW)/);
-    
-    printf("len maxPool %i %f \n", len_maxPool, sqrt(len_maxPool));
     allocation_tableau(ImgMaxPool, OCTET, len_maxPool);
     allocation_tableau(list_tmp, OCTET, 2*2);
 
     nH = (nH%2) == 0 ? nH : nH-1;
     nW = (nW%2) == 0 ? nW : nW-1;
-    printf("block = %i \n", nH*nW/len_maxPool);
+    // printf("block = %i \n", nH*nW/len_maxPool);
     int k = 0;
     for (int i = 0; i < nH ; i += 2){
         for (int j = 0; j < nW ; j +=2){
-        ImgMaxPool[k] = std::max(std::max(ImgIn[i*nW+j],ImgIn[i*nW+j+1]), std::max( ImgIn[(i+1)*nW+j],ImgIn[(i+1)*nW+j+1] )) ;//max(list_tmp, s1*s2);
-        // printf("k : %i\n", k);
+        ImgMaxPool[k] = std::max(std::max(ImgIn[i*nW+j],ImgIn[i*nW+j+1]),
+                                 std::max(ImgIn[(i+1)*nW+j],ImgIn[(i+1)*nW+j+1]) );
+        if (ImgMaxPool[k] != 0)
+        {
+          /* code */
+          // printf("ImgMaxPool ImgMaxPool[%i] %i\n",k,  ImgMaxPool[k]);
+        }
+        
         k++;
         }
     }
-    printf("END\n");
 
-    return ImgMaxPool;
+    // printf("k : %i\n", k);
+    // printf("len_maxpool : %i nH :  %i nW : %i int(nH/2): %i int(nW/2): %i \n", len_maxPool, nH, nW, int(nH/2), int(nW/2));
+    // printf("END\n");
+
+  return ImgMaxPool;
 }
 
 vector<double> tab_to_vect(OCTET * tab, int nTaille){
@@ -82,41 +147,16 @@ vector<double> tab_to_vect(OCTET * tab, int nTaille){
   }
   return vec;
 }
-/*
-OCTET* filter(int type){
-    OCTET Prewitt_H[9] =  [-1, 0, 1,
-                        -1, 0, 1,
-                        -1, 0, 1];
 
-    OCTET Prewitt_V[9] = [1, 1, 1,
-                       0, 0, 0,
-                      -1, -1, -1];
-    
-    OCTET Sobel_H[9] =  [-1, 0, 1,
-                      -2, 0, 2,
-                      -1, 0, 1];
-
-    OCTET Sobel_V[9] = [1, 2, 1,
-                     0, 0, 0,
-                    -1, -2, -1];
-
-    OCTET Laplacian[9] = [-1, -1, -1,
-                       -1, 8, -1,
-                       -1, -1, -1];
-
-    //Robinson Compass Masks
-    OCTET north_west[9] = [-2, -1, 0,
-                        -1,  0, 1,
-                         0,  1, 2];
-
-    OCTET north[9] = [-2, -1, 0,
-                   -1,  0, 1,
-                     0,  1, 2];
-
-    return north;
-
+vector<OCTET> tab_to_vectO(OCTET * tab, int nTaille){
+  vector<OCTET> vec;
+  for (int i = 0; i < nTaille; i++)
+  {
+    vec.push_back(tab[i]);
+  }
+  return vec;
 }
-*/
+
 vector<double> flatten(OCTET * ImgIn, int nTaille){
   vector<double> flatten_img;
   for(int i = 0; i < nTaille; i++){
@@ -140,7 +180,7 @@ OCTET* conv3x3(OCTET* ImgIn,int nH, int nW, double filter[9]){
     for (int i = 1; i < nW - 1; i++){
         for (int j = 1; j < nH - 1; j++){
 
-            unsigned int p =abs(int(
+            unsigned int p =int(Relu(
                 double(ImgIn[(i-1)*nW+(j-1)]) * filter[0] +
                 double(ImgIn[i*nW+(j-1)]) * filter[1]+
                 double(ImgIn[(i+1)*nW+(j-1)]) * filter[2]+
@@ -151,16 +191,28 @@ OCTET* conv3x3(OCTET* ImgIn,int nH, int nW, double filter[9]){
 
                 double(ImgIn[(i-1)*nW+(j+1)]) * filter[6] +
                 double(ImgIn[i*nW+(j+1)]) * filter[7]+
-                double(ImgIn[(i+1)*nW+(j+1)]) * filter[8]
+                double(ImgIn[(i+1)*nW+(j+1)])*filter[8]
             ));
             //printf("p = %i\n", p);
+                        
+              /* code */
+              //printf("p = %i\n", p);
+            
+            
+            //printf("p = %i\n", p);
+
 
             ImgMaxPool[k] = p;
+            if (ImgMaxPool[k] != 0)
+            {
+              // printf("conv3x3 conv3x3[%i] %i\n",k,  ImgMaxPool[k]);
+            }
             k++;
         
         }
 
     }
+   
 
     return ImgMaxPool;
 
@@ -221,7 +273,7 @@ vector<double>gForLayer4(vector<double>n_in, vector<vector<double>>weights){
 
   for (int i = 0; i < weights.size(); i++)
   {
-    cout << g(n_in, weights[i]) << endl;
+    // cout << g(n_in, weights[i]) << endl;
     n_out.push_back(g(n_in, weights[i]));
   }
 
@@ -233,7 +285,7 @@ double ei_sortie(double hi, double ti, double yi){
   return Relu_deriv(hi)*(ti-yi);
 }
 
-double ei(double hi, double ti, vector<double>w, vector<double>e){
+double ei(double hi, vector<double>w, vector<double>e){
   double sum = 0.0;
   for (int i = 0; i < w.size(); i++)
   {
@@ -449,8 +501,6 @@ OCTET* insertionRandMaxi(OCTET * img, OCTET * message, int bit, int key, int nH,
       if(get_bit(img[pos],bit) ^ get_bit(message[i],j)){
         ImageMessage[pos] = ImageMessage[pos] ^ (1 << bit); 
       }
-      //binaryM(ImageMessage[k*nbBlock], "i :");
-
       k++;
     } 
   }

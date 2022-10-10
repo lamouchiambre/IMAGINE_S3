@@ -2,7 +2,9 @@
 #include "imglib.h"
 #include <iostream>
 #include <string>
+#include <filesystem>
 
+namespace fs = std::filesystem;
 using namespace std;
 
 constexpr unsigned int str2int(const char* str, int h = 0)
@@ -35,7 +37,7 @@ int main(int argc, char* argv[])
   OCTET *ImgMaxPool13, *ImgMaxPool23, *ImgMaxPool33, *ImgMaxPool43, *ImgMaxPool53 ;
   OCTET *ImgMaxPool14, *ImgMaxPool24, *ImgMaxPool34, *ImgMaxPool44, *ImgMaxPool54 ;
   OCTET *ImgMaxPool15, *ImgMaxPool25, *ImgMaxPool35, *ImgMaxPool45, *ImgMaxPool55 ;
-  OCTET *ImgFlat;
+  OCTET *ImgFlat, *ImgFlatMean;
 
   std::string sNomImgLue = std::string(cNomImgLue);
   std::string ext = ".pgm";
@@ -43,20 +45,22 @@ int main(int argc, char* argv[])
   std::string sNomImgLueMessage = sNomImgLue+"Message"+ext;
   lire_nb_lignes_colonnes_image_pgm(cNomImgLue, &nH, &nW);
   nTaille = nH * nW;
- 
-  printf("hello\n");
-  
-  double Prewitt_H[9] = {-1, 0, 1, -1, 0, 1, -1, 0, 1};//contour
-  double Prewitt_V[9] = {1, 1, 1, 0, 0, 0, -1, -1, 1};//contour
+
+  double Prewitt_H[9] = {-1, 0, 1, -1, 0, 1, -1, 0, 1};//contours
+  double Prewitt_V[9] = {1, 1, 1, 0, 0, 0, -1, -1, -1};//contours
   double Laplacian[9] = {-1, -1, -1, -1, 8, -1, -1, -1, -1};//
   double Identitee[9] = {0, 0, 0, 0, 1, 0, 0, 0, 0};
   double Nettete[9] = {0, -1, 0, -1, 5, -1, 0,-1, 0};
-  double Flou[9] = {0.11, 0.11, 0.11, 0.11, 0.11, 0.11, 0.11, 0.11, 0.11};//passe bas
+  // double Flou[9] = {0.111, 0.111, 0.111, 0.111, 0.111, 0.111, 0.111, 0.111, 0.111};//passe bas
+  double Flou[9] = {1.0/16.0, 2.0/16.0, 1.0/16.0, 2.0/16.0, 4.0/16.0, 2.0/16.0, 1.0/16.0, 2.0/16.0, 1.0/16.0};//passe bas
+
    
   allocation_tableau(ImgIn, OCTET, nTaille);
   lire_image_pgm(cNomImgLue, ImgIn, nH * nW);
  
   allocation_tableau(ImgFlat, OCTET, (315)*(315));
+  allocation_tableau(ImgFlatMean, OCTET, (315)*(315));
+
   allocation_tableau(ImgConv1, OCTET, (nH-2)*(nW-2));
   allocation_tableau(ImgConv2, OCTET, (nH-2)*(nW-2));
   allocation_tableau(ImgConv3, OCTET, (nH-2)*(nW-2));
@@ -135,18 +139,30 @@ int main(int argc, char* argv[])
   allocation_tableau(ImgMaxPool35, OCTET, (63)*(63));
   allocation_tableau(ImgMaxPool45, OCTET, (63)*(63));
   allocation_tableau(ImgMaxPool55, OCTET, (63)*(63));
+
+// std::string path = "../../../archive/Shoe_vs_Sandal_vs_Boot_Dataset/Sandal";
+std::string path = "img_in2/";
+
+vector<OCTET*> list_img_flatten;
+vector<vector<OCTET>> list_img_flattenV;
+
+
+for (const auto & entry : fs::directory_iterator(path)){
+    // std::cout << entry.path() << std::endl;
+    strcpy(cNomImgLue, entry.path().c_str());
+    sNomImgLue = std::string(cNomImgLue);
+    lire_image_pgm(cNomImgLue, ImgIn, nH * nW);
   
   //First conv
-  printf("First conv\n");
+  // printf("First conv\n");
   ImgConv1 = conv3x3(ImgIn, nH, nW, Prewitt_H);
   ImgConv2 = conv3x3(ImgIn, nH, nW, Prewitt_V);
   ImgConv3 = conv3x3(ImgIn, nH, nW, Flou);
   ImgConv4 = conv3x3(ImgIn, nH, nW, Nettete);
   ImgConv5 = conv3x3(ImgIn, nH, nW, Laplacian);
-
  
   //First MaxPool
-  printf("First MaxPool\n");
+  // printf("First MaxPool\n");
 
   ImgMaxPool1 = maxPooling2x2(ImgConv1, nH-2, nW-2);
   ImgMaxPool2 = maxPooling2x2(ImgConv2, nH-2, nW-2);
@@ -156,43 +172,42 @@ int main(int argc, char* argv[])
 
 
   //Second conv
-  printf("Second conv\n");
+  // printf("Second conv\n");
 
-  ImgConv11 = conv3x3(ImgMaxPool1, 125, 125, Prewitt_H);
-  ImgConv21 = conv3x3(ImgMaxPool2, 125, 125, Prewitt_H);
-  ImgConv31 = conv3x3(ImgMaxPool3, 125, 125, Prewitt_H);
-  ImgConv41 = conv3x3(ImgMaxPool4, 125, 125, Prewitt_H);
-  ImgConv51 = conv3x3(ImgMaxPool5, 125, 125, Prewitt_H);
+  ImgConv11 = conv3x3(ImgMaxPool1, 127, 127, Prewitt_H);
+  ImgConv21 = conv3x3(ImgMaxPool2, 127, 127, Prewitt_H);
+  ImgConv31 = conv3x3(ImgMaxPool3, 127, 127, Prewitt_H);
+  ImgConv41 = conv3x3(ImgMaxPool4, 127, 127, Prewitt_H);
+  ImgConv51 = conv3x3(ImgMaxPool5, 127, 127, Prewitt_H);
 
-  ImgConv12 = conv3x3(ImgMaxPool1, 125, 125, Prewitt_V);
-  ImgConv22 = conv3x3(ImgMaxPool2, 125, 125, Prewitt_V);
-  ImgConv32 = conv3x3(ImgMaxPool3, 125, 125, Prewitt_V);
-  ImgConv42 = conv3x3(ImgMaxPool4, 125, 125, Prewitt_V);
-  ImgConv52 = conv3x3(ImgMaxPool5, 125, 125, Prewitt_V);
+  ImgConv12 = conv3x3(ImgMaxPool1, 127, 127, Prewitt_V);
+  ImgConv22 = conv3x3(ImgMaxPool2, 127, 127, Prewitt_V);
+  ImgConv32 = conv3x3(ImgMaxPool3, 127, 127, Prewitt_V);
+  ImgConv42 = conv3x3(ImgMaxPool4, 127, 127, Prewitt_V);
+  ImgConv52 = conv3x3(ImgMaxPool5, 127, 127, Prewitt_V);
 
-  ImgConv13 = conv3x3(ImgMaxPool1, 125, 125, Flou);
-  ImgConv23 = conv3x3(ImgMaxPool2, 125, 125, Flou);
-  ImgConv33 = conv3x3(ImgMaxPool3, 125, 125, Flou);
-  ImgConv43 = conv3x3(ImgMaxPool4, 125, 125, Flou);
-  ImgConv53 = conv3x3(ImgMaxPool5, 125, 125, Flou);
+  ImgConv13 = conv3x3(ImgMaxPool1, 127, 127, Flou);
+  ImgConv23 = conv3x3(ImgMaxPool2, 127, 127, Flou);
+  ImgConv33 = conv3x3(ImgMaxPool3, 127, 127, Flou);
+  ImgConv43 = conv3x3(ImgMaxPool4, 127, 127, Flou);
+  ImgConv53 = conv3x3(ImgMaxPool5, 127, 127, Flou);
 
-  ImgConv14 = conv3x3(ImgMaxPool1, 125, 125, Laplacian);
-  ImgConv24 = conv3x3(ImgMaxPool2, 125, 125, Laplacian);
-  ImgConv34 = conv3x3(ImgMaxPool3, 125, 125, Laplacian);
-  ImgConv44 = conv3x3(ImgMaxPool4, 125, 125, Laplacian);
-  ImgConv54 = conv3x3(ImgMaxPool5, 125, 125, Laplacian);
+  ImgConv14 = conv3x3(ImgMaxPool1, 127, 127, Laplacian);
+  ImgConv24 = conv3x3(ImgMaxPool2, 127, 127, Laplacian);
+  ImgConv34 = conv3x3(ImgMaxPool3, 127, 127, Laplacian);
+  ImgConv44 = conv3x3(ImgMaxPool4, 127, 127, Laplacian);
+  ImgConv54 = conv3x3(ImgMaxPool5, 127, 127, Laplacian);
 
-  ImgConv15 = conv3x3(ImgMaxPool1, 125, 125, Nettete);
-  ImgConv25 = conv3x3(ImgMaxPool2, 125, 125, Nettete);
-  ImgConv35 = conv3x3(ImgMaxPool3, 125, 125, Nettete);
-  ImgConv45 = conv3x3(ImgMaxPool4, 125, 125, Nettete);
-  ImgConv55 = conv3x3(ImgMaxPool5, 125, 125, Nettete);
+  ImgConv15 = conv3x3(ImgMaxPool1, 127, 127, Nettete);
+  ImgConv25 = conv3x3(ImgMaxPool2, 127, 127, Nettete);
+  ImgConv35 = conv3x3(ImgMaxPool3, 127, 127, Nettete);
+  ImgConv45 = conv3x3(ImgMaxPool4, 127, 127, Nettete);
+  ImgConv55 = conv3x3(ImgMaxPool5, 127, 127, Nettete);
 
   //2 second maxpooling
   //ImgMaxPool1 = maxPooling2x2(ImgConv1, nH-2, nW-2); 
-  printf("Second MaxPool\n");
+  // printf("Second MaxPool\n");
 
-  
   ImgMaxPool11 = maxPooling2x2(ImgConv11, 125, 125);
   ImgMaxPool21 = maxPooling2x2(ImgConv21, 125, 125);
   ImgMaxPool31 = maxPooling2x2(ImgConv31, 125, 125);
@@ -223,7 +238,11 @@ int main(int argc, char* argv[])
   ImgMaxPool45 = maxPooling2x2(ImgConv45, 125, 125);
   ImgMaxPool55 = maxPooling2x2(ImgConv55, 125, 125);
 
-  vector<double> flat_img(tab_to_vect(ImgMaxPool11, 63*63));
+  // vector<double> flat_img(tab_to_vect(ImgMaxPool11, 63*63));
+  vector<OCTET> flat_img(tab_to_vectO(ImgMaxPool11, 63*63));
+
+  // vector<double> flat_img0(tab_to_vect(ImgMaxPool11, 63*63));
+
 // flat_img.end();
   vector<double> tmp(tab_to_vect(ImgMaxPool21, 63*63));
   flat_img.insert( flat_img.end(), tmp.begin(), tmp.end());
@@ -252,7 +271,7 @@ int main(int argc, char* argv[])
 
   tmp  = tab_to_vect(ImgMaxPool52, 63*63);
   flat_img.insert( flat_img.end(), tmp.begin(), tmp.end());
-
+ 
 
   tmp  = tab_to_vect(ImgMaxPool13, 63*63);
   flat_img.insert( flat_img.end(), tmp.begin(), tmp.end());
@@ -301,13 +320,14 @@ int main(int argc, char* argv[])
   tmp  = tab_to_vect(ImgMaxPool55, 63*63);
   flat_img.insert( flat_img.end(), tmp.begin(), tmp.end());
 
-  cout << flat_img.size() << endl;
+  // cout << flat_img.size() << endl;
   vector flatten_img(flat_img);
 
   vector<vector<double>> vect_all;
   vector<vector<double>> w1; // poids de la couche flatten_img à la premiere couche de 5 neurones ligne = 5, colone = N
   vector<vector<double>> w2; // couche de 5 neurones 
   vector<vector<double>> w_out; // poid de la couche 2 de 5 neurone a la sortie 2 neurones ligne 2 colone 5
+
   for (int i = 0; i < 5; i++){
     vector<double> tmp;
     for(int j = 0; j < flatten_img.size(); j++ ){
@@ -323,34 +343,112 @@ int main(int argc, char* argv[])
       tmp.push_back(1.0/5);
     }
     w_out.push_back(tmp);
-  }
+  } 
 
 
+  // cout << "size v_nn2 " << flatten_img.size() << "size w1 " <<  w1.size() << endl;
+  // vector<double> v_nn2 = gForLayer4(flatten_img, w1);
+  // cout << "size v_nn2 " << v_nn2.size() << " size w_out " <<  w_out.size() << endl;
+  // vector<double> v_nn3 = gForLayer4(v_nn2, w_out);
 
 
+  sNomImgLueMessage = sNomImgLue+"_Fatten"+ext;
+  strcpy(cNomImgEcrite, sNomImgLueMessage.c_str());
+  ecrire_image_pgm(cNomImgEcrite, ImgFlat, 315, 315);
 
+  OCTET * tab_tmp;
+  allocation_tableau(tab_tmp, OCTET, (315)*(315));
 
+  tab_tmp = ImgFlat;
 
+  // copy(vect1.begin(), vect1.end(), back_inserter(vect2)); 
 
-
-
-
-
-
+  list_img_flattenV.push_back(create_copy(flatten_img));
   
+
+  sNomImgLueMessage = sNomImgLue+"_MaxPool1"+ext;
+  strcpy(cNomImgEcrite, sNomImgLueMessage.c_str());
+  ecrire_image_pgm(cNomImgEcrite, ImgMaxPool1, 127, 127);
+
+
+
+  sNomImgLueMessage = sNomImgLue+"_MaxPool3"+ext;
+  strcpy(cNomImgEcrite, sNomImgLueMessage.c_str());
+  ecrire_image_pgm(cNomImgEcrite, ImgMaxPool3, 127, 127);
+
+  sNomImgLueMessage = sNomImgLue+"_MaxPool31"+ext;
+  strcpy(cNomImgEcrite, sNomImgLueMessage.c_str());
+  ecrire_image_pgm(cNomImgEcrite, ImgMaxPool31, 63, 63);
+
+  sNomImgLueMessage = sNomImgLue+"_MaxPool32"+ext;
+  strcpy(cNomImgEcrite, sNomImgLueMessage.c_str());
+  ecrire_image_pgm(cNomImgEcrite, ImgMaxPool32, 63, 63);
+
+  sNomImgLueMessage = sNomImgLue+"_MaxPool21"+ext;
+  strcpy(cNomImgEcrite, sNomImgLueMessage.c_str());
+  ecrire_image_pgm(cNomImgEcrite, ImgMaxPool21, 63, 63);
+
+  sNomImgLueMessage = sNomImgLue+"_Conv11"+ext;
+  strcpy(cNomImgEcrite, sNomImgLueMessage.c_str());
+  ecrire_image_pgm(cNomImgEcrite, ImgConv11, 125, 125);
+
+  sNomImgLueMessage = sNomImgLue+"_Conv21"+ext;
+  strcpy(cNomImgEcrite, sNomImgLueMessage.c_str());
+  ecrire_image_pgm(cNomImgEcrite, ImgConv21, 125, 125);
+
+
+  sNomImgLueMessage = sNomImgLue+"_Conv1"+ext;
+  strcpy(cNomImgEcrite, sNomImgLueMessage.c_str());
+  ecrire_image_pgm(cNomImgEcrite, ImgConv1, nH-2, nW-2);
+
+  sNomImgLueMessage = sNomImgLue+"_Conv2"+ext;
+  strcpy(cNomImgEcrite, sNomImgLueMessage.c_str());
+  ecrire_image_pgm(cNomImgEcrite, ImgConv2, nH-2, nW-2);
+
+  sNomImgLueMessage = sNomImgLue+"_Conv3"+ext;
+  strcpy(cNomImgEcrite, sNomImgLueMessage.c_str());
+  ecrire_image_pgm(cNomImgEcrite, ImgConv3, nH-2, nW-2);
+
+  sNomImgLueMessage = sNomImgLue+"_Conv4"+ext;
+  strcpy(cNomImgEcrite, sNomImgLueMessage.c_str());
+  ecrire_image_pgm(cNomImgEcrite, ImgConv4, nH-2, nW-2);
+
+  sNomImgLueMessage = sNomImgLue+"_Conv5"+ext;
+  strcpy(cNomImgEcrite, sNomImgLueMessage.c_str());
+  ecrire_image_pgm(cNomImgEcrite, ImgConv5, nH-2, nW-2);
+
+}
+  
+  // cout << "flatten Image = "; 
+  // int indice = 0;
+  // for (auto& v : list_img_flattenV){
+  //    cout << v << " ";
+  //     sNomImgLueMessage = "Boot_Fat"+to_string(indice)+ext;
+  //     strcpy(cNomImgEcrite, sNomImgLueMessage.c_str());
+  //     ImgFlatMean = mean_imgV(list_img_flattenV, 315, 315);
+  //     ecrire_image_pgm(cNomImgEcrite, v, 315, 315);
+  //     indice ++;
+
+  // }
+  // cout << endl;
+
+ 
+  
+  // sNomImgLueMessage = "Sandal_FattenAll"+ext;
+  // strcpy(cNomImgEcrite, sNomImgLueMessage.c_str());
+  // ImgFlatMean = mean_imgV(list_img_flattenV, 315, 315);
+  // ecrire_image_pgm(cNomImgEcrite, ImgFlatMean, 315, 315);
+
+
+// printf("size %li \n",list_img_flatten.size());
+
+
 
   // cout << "flatten Image = ";
   // for (auto& v : flatten_img){
   //    cout << v << " ";
   // }
   // cout << endl;
-
-  cout << "size v_nn2 " << flatten_img.size() << "size w1 " <<  w1.size() << endl;
-  vector<double> v_nn2 = gForLayer4(flatten_img, w1);
-  cout << "size v_nn2 " << v_nn2.size() << " size w_out " <<  w_out.size() << endl;
-  vector<double> v_nn3 = gForLayer4(v_nn2, w_out);
-
-
 
   // vector flatten_img = flatten(ImgIn, nTaille);
   // vector<vector<double>> vect_all;
@@ -395,25 +493,49 @@ int main(int argc, char* argv[])
   // }
   // cout << endl;
 
-  sNomImgLueMessage = sNomImgLue+"_Fatten"+ext;
-  strcpy(cNomImgEcrite, sNomImgLueMessage.c_str());
-  ecrire_image_pgm(cNomImgEcrite, ImgFlat, 315, 315);
 
-  sNomImgLueMessage = sNomImgLue+"_MaxPool1"+ext;
-  strcpy(cNomImgEcrite, sNomImgLueMessage.c_str());
-  ecrire_image_pgm(cNomImgEcrite, ImgMaxPool1, 127, 127);
+ 
+  // sNomImgLueMessage = sNomImgLue+"_Fatten"+ext;
+  // strcpy(cNomImgEcrite, sNomImgLueMessage.c_str());
+  // ecrire_image_pgm(cNomImgEcrite, ImgFlat, 315, 315);
 
-  sNomImgLueMessage = sNomImgLue+"_MaxPool32"+ext;
-  strcpy(cNomImgEcrite, sNomImgLueMessage.c_str());
-  ecrire_image_pgm(cNomImgEcrite, ImgMaxPool32, 63, 63);
+  // sNomImgLueMessage = sNomImgLue+"_MaxPool1"+ext;
+  // strcpy(cNomImgEcrite, sNomImgLueMessage.c_str());
+  // ecrire_image_pgm(cNomImgEcrite, ImgMaxPool1, 127, 127);
 
-  sNomImgLueMessage = sNomImgLue+"_Conv11"+ext;
-  strcpy(cNomImgEcrite, sNomImgLueMessage.c_str());
-  ecrire_image_pgm(cNomImgEcrite, ImgConv11, 125, 125);
 
-  sNomImgLueMessage = sNomImgLue+"_Conv1"+ext;
-  strcpy(cNomImgEcrite, sNomImgLueMessage.c_str());
-  ecrire_image_pgm(cNomImgEcrite, ImgConv1, nH-2, nW-2);
+
+  // sNomImgLueMessage = sNomImgLue+"_MaxPool3"+ext;
+  // strcpy(cNomImgEcrite, sNomImgLueMessage.c_str());
+  // ecrire_image_pgm(cNomImgEcrite, ImgMaxPool3, 127, 127);
+
+  // sNomImgLueMessage = sNomImgLue+"_MaxPool31"+ext;
+  // strcpy(cNomImgEcrite, sNomImgLueMessage.c_str());
+  // ecrire_image_pgm(cNomImgEcrite, ImgMaxPool31, 63, 63);
+
+  // sNomImgLueMessage = sNomImgLue+"_MaxPool32"+ext;
+  // strcpy(cNomImgEcrite, sNomImgLueMessage.c_str());
+  // ecrire_image_pgm(cNomImgEcrite, ImgMaxPool32, 63, 63);
+
+  // sNomImgLueMessage = sNomImgLue+"_MaxPool21"+ext;
+  // strcpy(cNomImgEcrite, sNomImgLueMessage.c_str());
+  // ecrire_image_pgm(cNomImgEcrite, ImgMaxPool21, 63, 63);
+
+  // sNomImgLueMessage = sNomImgLue+"_Conv11"+ext;
+  // strcpy(cNomImgEcrite, sNomImgLueMessage.c_str());
+  // ecrire_image_pgm(cNomImgEcrite, ImgConv11, 125, 125);
+
+  // sNomImgLueMessage = sNomImgLue+"_Conv21"+ext;
+  // strcpy(cNomImgEcrite, sNomImgLueMessage.c_str());
+  // ecrire_image_pgm(cNomImgEcrite, ImgConv21, 125, 125);
+
+  // sNomImgLueMessage = sNomImgLue+"_Conv1"+ext;
+  // strcpy(cNomImgEcrite, sNomImgLueMessage.c_str());
+  // ecrire_image_pgm(cNomImgEcrite, ImgConv1, nH-2, nW-2);
+
+  // sNomImgLueMessage = sNomImgLue+"_Conv2"+ext;
+  // strcpy(cNomImgEcrite, sNomImgLueMessage.c_str());
+  // ecrire_image_pgm(cNomImgEcrite, ImgConv2, nH-2, nW-2);
   
    return 1;
 }
