@@ -113,7 +113,7 @@ int main(int argc, char *argv[])
 			// selection du motif
 			
 			nombre_de_points = Max(nombre_de_points,3) ;
-			// au moins trois point pour dÃ©finir un carre
+			// au moins trois point pour définir un carre
 			
 			while (!Image_disp.is_closed() && n<nombre_de_points)
 			{
@@ -233,4 +233,3 @@ int main(int argc, char *argv[])
 	return 0 ;
 
 }
-

@@ -246,7 +246,8 @@ void draw () {
     glColor3f(0.8,0.8,1);
     drawPointSet(positions , normals);
 
-    glColor3f(1,0.5,0.5);
+    glPointSize(2); // for example...
+    glColor3f(1,0,0);
     drawPointSet(positions2 , normals2);
 }
 
@@ -352,30 +353,64 @@ Vec3 project(Vec3 input_point, Vec3 point_plane, Vec3 normal_plane)
     return input_point - d * normal_plane;
 }
 
-void HPSS(Vec3 & inputPoint, Vec3 & outputPoint, //point d'entrée
- Vec3 & outputNormal ,  std::vector<Vec3> const & positions , //la position et la normale obtenue dans la projection
-   std::vector<Vec3> const & normals , 
-   BasicANNkdTree const & kdtree , int kernel_type , 
-   float h, // taille du noyau
-   unsigned int nbIterations=10 , unsigned int knn = 20 ){
+void HPSS(Vec3 & inputPoint, Vec3 & outputPoint, Vec3 & outputNormal, std::vector<Vec3> const & positions, std::vector<Vec3> const & normals, BasicANNkdTree const & kdtree, int kernel_type, float h, unsigned int nbIterations=10, unsigned int knn = 20 ){
+
     //fonction de projection sur un plan (un point et une normal)
     //realisation d'une iteration de i de 0 à nbIterations
     ANNidxArray id_nearest_neighbors = new ANNidx[knn];
     ANNdistArray square_distances_to_neighbors = new ANNdist[knn];
-    kdtree.knearest(inputPoint , knn , id_nearest_neighbors , square_distances_to_neighbors);
+    Vec3 x = inputPoint;
+
+
+    for (int k = 0; k < nbIterations; k++)
+    {
+        /* code */
+
+        kdtree.knearest(inputPoint , knn , id_nearest_neighbors , square_distances_to_neighbors);
+
+        Vec3 c(0,0,0);
+        Vec3 n(0,0,0);
+
+        // Vec3 cov(0,0,0);
+
+        for (int i = 0; i < knn; i++)
+        {
+            // std::cout << "inputPoint" << inputPoint << "id_nearest_neighbors" <<  positions[id_nearest_neighbors[i]]<<std::endl;
+            c += positions[id_nearest_neighbors[i]];
+            n += normals[id_nearest_neighbors[i]];;
+        }
+        c /= knn;
+
+        // for (int i = 0; i < knn; i++)
+        // {
+        //     // std::cout << "inputPoint" << inputPoint << "id_nearest_neighbors" <<  positions[id_nearest_neighbors[i]]<<std::endl;
+        //     // c += positions[id_nearest_neighbors[i]];
+        //     cov += (positions[id_nearest_neighbors[i]] - c)*(positions[id_nearest_neighbors[i]] - c) ;
+        //     printf("____\n");
+        // }
+        x = c;
+        outputPoint = c;
+        outputNormal = n;
+    }
+
+
+    
     std::vector<Vec3> projectP = std::vector<Vec3>();
     //faire la projection sur la moyenne des voisins
-    outputPoint = inputPoint;
-    for(int i = 0; i< knn; i++){
-    projectP.push_back(project(outputPoint, id_nearest_neighbors[i], square_distances_to_neighbors[i]));
+    for(int i = 0; i < knn; i++){
     
-    // for(int i = 0; i < knn; i++){
-    //             nearest_neighbors_position.push_back();
-    //         }
+        // outputPoint = inputPoint+inputPoint.Rand(0.1);
 
-    // delete [] id_nearest_neighbors;
-    // delete [] square_distances_to_neighbors;
+        //projectP.push_back(project(outputPoint, id_nearest_neighbors[i square_distances_to_neighbors[i]));
+    
+        // for(int i = 0; i < knn; i++){
+        //             nearest_neighbors_position.push_back();
+        //         }
 
+        // delete [] id_nearest_neighbors;
+        // delete [] square_distances_to_neighbors;
+
+    }
 }
 
 int main (int argc, char ** argv) {
@@ -399,7 +434,9 @@ int main (int argc, char ** argv) {
 
     {
         // Load a first pointset, and build a kd-tree:
-        loadPN("pointsets/igea.pn" , positions , normals);
+        // loadPN("pointsets/igea_subsampled_extreme.pn" , positions , normals);
+        loadPN("pointsets/igea_subsampled_extreme.pn" , positions , normals);
+
 
         BasicANNkdTree kdtree;
         kdtree.build(positions);
@@ -422,7 +459,7 @@ int main (int argc, char ** argv) {
         for( unsigned int pIt = 0 ; pIt < positions2.size() ; ++pIt ) {
             // Vec3 outputPoint; 
             // Vec3 outPutNormal;
-            HPSS( positions2[pIt], positions2[pIt], normals2[pIt],  positions, normals, kdtree, 0 , 2);
+            HPSS(positions2[pIt], positions2[pIt], normals2[pIt],  positions, normals, kdtree, 0 , 2);
             // positions2[pIt] = outputPoint;
             // normals2[pIt] = outPutNormal;
 

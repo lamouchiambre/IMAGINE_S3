@@ -92,7 +92,6 @@ int Intersection( double L[3], int Dx, int Dy, int x_inter[2], int y_inter[2] )
 }
 
 
-
 int main(int argc, char *argv[])
 {
 	int nombre_de_points = 2, n=0 ;
@@ -106,62 +105,53 @@ int main(int argc, char *argv[])
 		return 0 ;
 	}
 	
-	// Chargement des deux images dont les noms ont Ã©tÃ© passÃ©s au programme principal
+	// Chargement des deux images dont les noms ont été passés au programme principal
 	CImg<unsigned char> imageD(argv[1]),imageG(argv[2]) ;
 	// Definition des couleurs de trace (rouge, vert, bleu)
 	const unsigned char red[] = { 255,0,0 }, green[] = { 0,255,0 }, blue[] = { 0,0,255 };
 	// Creation des objets d'affichage
 	CImgDisplay Droite_disp(imageD,"Image droite"), Gauche_disp(imageG,"Image gauche");
 	
-	// // Selection de nombre_de_points paires de points (en commencant par l'image droite
-	// while (!Droite_disp.is_closed() && !Gauche_disp.is_closed() && n<nombre_de_points) 
-	// {
-	// 	switch (droite_gaughe) 
-	// 	{
-	// 		case 'd' :
-  	// 	Gauche_disp.set_title("%s","Image gauche");
-	// 	  Droite_disp.set_title("%s","Cliquez ici") ;
-	// 			Droite_disp.wait();
-	// 			if (Droite_disp.button() && Droite_disp.mouse_y()>=0) 
-	// 			{
-	// 				yd[n] = Droite_disp.mouse_y();
-	// 				xd[n] = Droite_disp.mouse_x();
-	// 				imageD.draw_circle(xd[n],yd[n],3,red,1.0,1).display(Droite_disp);
-	// 				droite_gaughe = 'g' ;
-	// 			} break ;
-	// 		case 'g' :
-	// 	  Droite_disp.set_title("%s","Image droite") ;
-	// 			Gauche_disp.set_title("%s","Cliquez ici");
-	// 			Gauche_disp.wait();
-	// 			if (Gauche_disp.button() && Gauche_disp.mouse_y()>=0) 
-	// 			{
-	// 				yg[n] = Gauche_disp.mouse_y();
-	// 				xg[n] = Gauche_disp.mouse_x();
-	// 				imageG.draw_circle(xg[n],yg[n],3,blue,1.0,1).display(Gauche_disp);
-	// 				droite_gaughe = 'd' ; n++ ;
-	// 			} break ;
-	// 		default : break;
-	// 	}		
-	// }
+	// Selection de nombre_de_points paires de points (en commencant par l'image droite
+	while (!Droite_disp.is_closed() && !Gauche_disp.is_closed() && n<nombre_de_points) 
+	{
+		switch (droite_gaughe) 
+		{
+			case 'd' :
+  		Gauche_disp.set_title("%s","Image gauche");
+		  Droite_disp.set_title("%s","Cliquez ici") ;
+				Droite_disp.wait();
+				if (Droite_disp.button() && Droite_disp.mouse_y()>=0) 
+				{
+					yd[n] = Droite_disp.mouse_y();
+					xd[n] = Droite_disp.mouse_x();
+					imageD.draw_circle(xd[n],yd[n],3,red,1.0,1).display(Droite_disp);
+					droite_gaughe = 'g' ;
+				} break ;
+			case 'g' :
+		  Droite_disp.set_title("%s","Image droite") ;
+				Gauche_disp.set_title("%s","Cliquez ici");
+				Gauche_disp.wait();
+				if (Gauche_disp.button() && Gauche_disp.mouse_y()>=0) 
+				{
+					yg[n] = Gauche_disp.mouse_y();
+					xg[n] = Gauche_disp.mouse_x();
+					imageG.draw_circle(xg[n],yg[n],3,blue,1.0,1).display(Gauche_disp);
+					droite_gaughe = 'd' ; n++ ;
+				} break ;
+			default : break;
+		}		
+	}
 	
-	// // Affichage de tous les points en vert
-	// for(n=0 ; n<nombre_de_points ; n++) 
-	// {
-	// 	imageD.draw_circle(xd[n],yd[n],3,green,1.0,1).display(Droite_disp);
-	// 	imageG.draw_circle(xg[n],yg[n],3,green,1.0,1).display(Gauche_disp);
-	// }
+	// Affichage de tous les points en vert
+	for(n=0 ; n<nombre_de_points ; n++) 
+	{
+		imageD.draw_circle(xd[n],yd[n],3,green,1.0,1).display(Droite_disp);
+		imageG.draw_circle(xg[n],yg[n],3,green,1.0,1).display(Gauche_disp);
+	}
 	
 	// Selection de deux points dans l'image droite et affichage de la droite passant par ces deux points
-	int nbPoint = 3;
-    for (int i = 0; i < nbPoint; i++){
-        	yd[rand()%imageD.height()] = Droite_disp.mouse_y();
-			xd[rand()%imageD.width()] = Droite_disp.mouse_x();
-			imageD.draw_circle(xd[n],yd[n],3,red,1.0,1).display(Droite_disp);
-			imageG.draw_circle(xd[n],yd[n],3,red,1.0,1).display(Droite_disp);
-
-    }
-    
-    n=0 ;
+	n=0 ;
 	double delta, L[3] ;
 	int x_inter[2], y_inter[2] ;
 	while (!Droite_disp.is_closed() && !Gauche_disp.is_closed() && n<2) 
@@ -250,7 +240,7 @@ int main(int argc, char *argv[])
 		printf("\n") ;
 	}
 	
-	// Attente de la fermeture d'une des images pour arrÃªter le programme
+	// Attente de la fermeture d'une des images pour arrêter le programme
 	while (!Droite_disp.is_closed() && !Gauche_disp.is_closed()) ;
 	
 	return 0;
