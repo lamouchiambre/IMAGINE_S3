@@ -257,8 +257,8 @@ void drawPointSet( std::vector< Vec3 > const & i_positions , std::vector< Vec3 >
 void draw () {
     glPointSize(2); // for example...
 
-    glColor3f(0.8,0.8,1);
-    drawPointSet(positions , normals);
+    // glColor3f(0.8,0.8,1);
+    // drawPointSet(positions , normals);
 
     glPointSize(5); // for example...
     glColor3f(1,0,0);
@@ -367,7 +367,7 @@ void reshape(int w, int h) {
 
 Vec3 project(Vec3 input_point, Vec3 point_plane, Vec3 normal_plane)
 {
-    float d = Vec3::dot(input_point - point_plane, normal_plane);
+    float d = Vec3::dot(input_point - point_plane, normal_plane)/normal_plane.length();
     return input_point - d * normal_plane;
 }
 
@@ -412,7 +412,7 @@ void APSS(Vec3 & inputPoint, Vec3 & outputPoint, Vec3 & outputNormal, std::vecto
     
 }
 
-void HPSS(Vec3 & inputPoint, Vec3 & outputPoint, Vec3 & outputNormal, std::vector<Vec3> const & positions, std::vector<Vec3> const & normals, BasicANNkdTree const & kdtree, int kernel_type, float h, unsigned int nbIterations=10, unsigned int knn = 20 ){
+void HPSS(Vec3 & inputPoint, Vec3 & outputPoint, Vec3 & outputNormal, std::vector<Vec3> const & positions, std::vector<Vec3> const & normals, BasicANNkdTree const & kdtree, int kernel_type, float h, unsigned int nbIterations=1, unsigned int knn = 20 ){
 
     //fonction de projection sur un plan (un point et une normal)
     //realisation d'une iteration de i de 0 à nbIterations
@@ -487,14 +487,16 @@ int main (int argc, char ** argv) {
     {
         // Load a first pointset, and build a kd-tree:
         // loadPN("pointsets/igea_subsampled_extreme.pn" , positions , normals);
-        loadPN("pointsets/igea.pn" , positions , normals);
+        // loadPN("pointsets/dino_subsampled_extreme.pn" , positions , normals);
+        loadPN("pointsets/dino.pn" , positions , normals);
+
 
 
         BasicANNkdTree kdtree;
         kdtree.build(positions);
 
         // Create a second pointset that is artificial, and project it on pointset1 using MLS techniques:
-        positions2.resize( 2000 );
+        positions2.resize( 20000 );
         normals2.resize(positions2.size());
         for( unsigned int pIt = 0 ; pIt < positions2.size() ; ++pIt ) {
             positions2[pIt] = Vec3(
