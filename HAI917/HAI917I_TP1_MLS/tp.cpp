@@ -213,14 +213,28 @@ void init () {
     glEnable(GL_COLOR_MATERIAL);
 }
 
+void drawGrid(float size, float nblock){
+    glBegin(GL_POINTS);
+    for(int x = 0; x<size; x++){
+        for(int y = 0; y<size; y++){
+            for(int z = 0; z<size; z++){
+            glVertex3f( x*nblock, y*nblock, z*nblock);
+
+            }
+        }
+    }
+
+    glEnd();
+
+}
 
 
 void drawTriangleMesh( std::vector< Vec3 > const & i_positions , std::vector< unsigned int > const & i_triangles ) {
     glBegin(GL_TRIANGLES);
     for(unsigned int tIt = 0 ; tIt < i_triangles.size() / 3 ; ++tIt) {
-        Vec3 p0 = i_positions[3*tIt];
-        Vec3 p1 = i_positions[3*tIt+1];
-        Vec3 p2 = i_positions[3*tIt+2];
+        Vec3 p0 = i_positions[i_triangles[3*tIt]];
+        Vec3 p1 = i_positions[i_triangles[3*tIt+1]];
+        Vec3 p2 = i_positions[i_triangles[3*tIt+2]];
         Vec3 n = Vec3::cross(p1-p0 , p2-p0);
         n.normalize();
         glNormal3f( n[0] , n[1] , n[2] );
@@ -249,6 +263,10 @@ void draw () {
     glPointSize(5); // for example...
     glColor3f(1,0,0);
     drawPointSet(positions2 , normals2);
+
+    glPointSize(5); // for example...
+    glColor3f(1,1,1);
+    drawGrid(10, 0.1);
 }
 
 
