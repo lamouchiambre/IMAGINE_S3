@@ -427,6 +427,14 @@ void addVerticesToCurrentHandle() {
     setTagForVerticesInRectangle( rectangleSelectionTool.isAdding );
 }
 
+void addVerticesToCurrentHandleMouse() {
+    // look at the rectangle rectangleSelectionTool, and see which vertices fall into the region.
+    if( activeHandle < 0 || activeHandle >= numberOfHandles)
+        return;
+
+    setTagForVerticesInShere( int x, int y);
+}
+
 void finalizeEditingOfCurrentHandle() {
     for( unsigned int v = 0 ; v < mesh.V.size() ; ++v ) {
         Vec3 const & p = mesh.V[ v ].p;
@@ -648,7 +656,7 @@ void drawSphere(float x,float y,float z,float radius,int slices,int stacks)
     glEnable(GL_POLYGON_OFFSET_LINE);
     glBegin(GL_TRIANGLES);
     // glBegin(GL_LINE_STRIP);
-    glColor3f(r,v,b);
+    glColor3f(0,1,0);
     for(int i=1; i<=slices; i++)
     {
         k1 = i;
@@ -900,6 +908,84 @@ void key (unsigned char keyPressed, int x, int y) {
 }
 
 void setTagForVerticesInShere( int x, int y) {
+    //, bool tagToSet
+    float z = 0.0f;
+    printf("GLUT_UP x %i, y %i\n", x, y);
+
+    GLint viewport[4];
+    glGetIntegerv(GL_VIEWPORT,viewport);
+    GLdouble modelview[16];  glGetDoublev(GL_MODELVIEW_MATRIX , modelview);
+    GLdouble projection[16]; glGetDoublev(GL_PROJECTION_MATRIX , projection);
+    GLdouble xi, yi, zi;
+    float realy = viewport[3] - (GLint)y - 1;
+
+    glReadPixels((GLint) x, (GLint) realy, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &z );
+    // printf("z = %f\n");
+
+    gluUnProject((float)x, (float)realy, (float)z, modelview, projection, viewport, &xi, &yi, &zi);
+
+    
+    // if(pow(xi - x,2) + pow(yi - y,2) + pow(zi - z,2) -0.1 == 0) {
+    //     printf("alors ? %f %f %f\n",xi, yi, zi);
+    //     // verticesAreMarkedForCurrentHandle[ v ] = true;
+    // }
+
+    for( unsigned int v = 0 ; v < mesh.V.size() ; ++v ) {
+        Vec3 const & p = mesh.V[v].p;
+        // printf("------------------\n");
+        // printf("GLUT_UP x %i, y %i, z %i\n", x, y, z);
+        // printf("GLUT_UP xi %f, yi %f, zi %f\n", xi, yi, zi);
+        // printf("GLUT_UP p[0] %f, p[1] %f, p[2] %f\n", p[0], p[1], p[2]);
+
+        if(pow(p[0] - xi,2) + pow(p[1] - yi,2) + pow(p[2] - zi,2) - pow(0.1,2) <= 0){
+            verticesAreMarkedForCurrentHandle[ v ] = true;
+            printf("Youhouu \n");
+            }else{
+                verticesAreMarkedForCurrentHandle[ v ] = false;
+            }
+        //tagToSet
+    }
+
+
+
+    // float modelview[16];  glGetFloatv(GL_MODELVIEW_MATRIX , modelview);
+    // float projection[16]; glGetFloatv(GL_PROJECTION_MATRIX , projection);
+
+    // for( unsigned int v = 0 ; v < mesh.V.size() ; ++v ) {
+    //     Vec3 const & p = mesh.V[v].p;
+
+    //     float x = modelview[0] * p[0] + modelview[4] * p[1] + modelview[8] * p[2] + modelview[12];
+    //     float y = modelview[1] * p[0] + modelview[5] * p[1] + modelview[9] * p[2] + modelview[13];
+    //     float z = modelview[2] * p[0] + modelview[6] * p[1] + modelview[10] * p[2] + modelview[14];
+    //     float w = modelview[3] * p[0] + modelview[7] * p[1] + modelview[11] * p[2] + modelview[15];
+    //     x /= w; y /= w; z /= w; w = 1.f;
+
+    //     float xx = projection[0] * x + projection[4] * y + projection[8] * z + projection[12] * w;
+    //     float yy = projection[1] * x + projection[5] * y + projection[9] * z + projection[13] * w;
+    //     float ww = projection[3] * x + projection[7] * y + projection[11] * z + projection[15] * w;
+    //     xx /= ww; yy /= ww;
+
+    //     xx = ( xx + 1.f ) / 2.f;
+    //     yy = ( yy + 1.f ) / 2.f;
+
+    //     // if( rectangleSelectionTool.contains( xx , yy ) ) verticesAreMarkedForCurrentHandle[ v ] = tagToSet;
+    //     if(pow(xx - x,2) + pow(yy - y,2) + pow(ww - z,2) -0.1 == 0) {
+    //         printf("%f %f %f\n",xx, yy, ww);
+    //         verticesAreMarkedForCurrentHandle[ v ] = true;
+    //     }
+    // }
+
+        // if( viewerState == ViewerState_EDITINGHANDLE ) {
+        //     viewerState = ViewerState_NORMAL;
+        //     finalizeEditingOfCurrentHandle();
+        // }
+    
+}
+
+void mouseCircle (int button, int state, int x, int y) {
+    if (button == GLUT_RIGHT_BUTTON && state == GLUT_UP ) {
+    setTagForVerticesInShere(x, y);
+
     float z = 0.0f;
     printf("GLUT_UP x %i, y %i\n", x, y);
 
@@ -914,46 +1000,18 @@ void setTagForVerticesInShere( int x, int y) {
     printf("z = %f\n");
 
     gluUnProject((float)x, (float)realy, (float)z, modelview, projection, viewport, &xi, &yi, &zi);
-    
-    printf("GLUT_UP xi %f, yi %f, zi %f\n", xi, yi, zi);
-    for( unsigned int v = 0 ; v < mesh.V.size() ; ++v ) {
-        if( pow(x,2) ) verticesAreMarkedForCurrentHandle[ v ] = tagToSet;
-    }
-    
-/////////////////////
 
-    float modelview[16];  glGetFloatv(GL_MODELVIEW_MATRIX , modelview);
-    float projection[16]; glGetFloatv(GL_PROJECTION_MATRIX , projection);
+    // pointSelect
+    pointSelect[0] = xi;
+    pointSelect[1] = yi;
+    pointSelect[2] = zi;
 
-    for( unsigned int v = 0 ; v < mesh.V.size() ; ++v ) {
-        Vec3 const & p = mesh.V[v].p;
+    if( viewerState == ViewerState_NORMAL ) {
+            viewerState = ViewerState_EDITINGHANDLE;
+            ++numberOfHandles;
+            activeHandle = numberOfHandles - 1; // last handle
+        }
 
-        float x = modelview[0] * p[0] + modelview[4] * p[1] + modelview[8] * p[2] + modelview[12];
-        float y = modelview[1] * p[0] + modelview[5] * p[1] + modelview[9] * p[2] + modelview[13];
-        float z = modelview[2] * p[0] + modelview[6] * p[1] + modelview[10] * p[2] + modelview[14];
-        float w = modelview[3] * p[0] + modelview[7] * p[1] + modelview[11] * p[2] + modelview[15];
-        x /= w; y /= w; z /= w; w = 1.f;
-
-        float xx = projection[0] * x + projection[4] * y + projection[8] * z + projection[12] * w;
-        float yy = projection[1] * x + projection[5] * y + projection[9] * z + projection[13] * w;
-        float ww = projection[3] * x + projection[7] * y + projection[11] * z + projection[15] * w;
-        xx /= ww; yy /= ww;
-
-        xx = ( xx + 1.f ) / 2.f;
-        yy = ( yy + 1.f ) / 2.f;
-
-        // if( rectangleSelectionTool.contains( xx , yy ) ) verticesAreMarkedForCurrentHandle[ v ] = tagToSet;
-    }
-}
-
-void mouseCircle (int button, int state, int x, int y) {
-    if (button == GLUT_RIGHT_BUTTON && state == GLUT_UP ) {
-
-
-        // pointSelect
-        pointSelect[0] = xi;
-        pointSelect[1] = yi;
-        pointSelect[2] = zi;
     }
         // moving the camera:
         if (state == GLUT_UP) {
