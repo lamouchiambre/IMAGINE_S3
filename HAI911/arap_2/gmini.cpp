@@ -53,6 +53,9 @@ static int lastX=0, lastY=0, lastZoom=0;
 static unsigned int FPS = 0;
 static bool fullScreen = false;
 
+double Rayon = 0.1;
+
+
 enum ViewerState {
     ViewerState_NORMAL ,
     ViewerState_EDITINGHANDLE ,
@@ -367,6 +370,7 @@ void glNormal(Vec3 const & p) {
 }
 
 bool activeHandleIsValid() {
+    printf("activeHandelIsValid = %i \n", activeHandle >= 0  &&  activeHandle < numberOfHandles);
     return activeHandle >= 0  &&  activeHandle < numberOfHandles;
 }
 
@@ -419,6 +423,24 @@ void setTagForVerticesInRectangle( bool tagToSet ) {
     }
 }
 
+void setTagForVerticesInShere() {
+
+    GLdouble xi = pointSelect[0];
+    GLdouble yi = pointSelect[1]; 
+    GLdouble zi = pointSelect[2];
+
+    for( unsigned int v = 0 ; v < mesh.V.size() ; ++v ) {
+        Vec3 const & p = mesh.V[v].p;
+
+        if(pow(p[0] - xi,2) + pow(p[1] - yi,2) + pow(p[2] - zi,2) - pow(Rayon,2) <= 0){
+            verticesAreMarkedForCurrentHandle[ v ] = true;
+            verticesHandles[v] = activeHandle;
+            }
+    }
+    
+}
+
+
 void addVerticesToCurrentHandle() {
     // look at the rectangle rectangleSelectionTool, and see which vertices fall into the region.
     if( activeHandle < 0 || activeHandle >= numberOfHandles)
@@ -432,7 +454,7 @@ void addVerticesToCurrentHandleMouse() {
     if( activeHandle < 0 || activeHandle >= numberOfHandles)
         return;
 
-    setTagForVerticesInShere( int x, int y);
+    setTagForVerticesInShere();
 }
 
 void finalizeEditingOfCurrentHandle() {
@@ -723,12 +745,16 @@ void drawHandles() {
                 calc_RGB( handleIdx , 0 , numberOfHandles , r , g  , b );
                 if(handleIdx != activeHandle) {
                     r *= 0.5;  g *= 0.5;  b *= 0.5;
+                    // printf("I'm in handleIdx %f %f %f\n",r,g,b);
+
                 }
                 glColor3f(r,g,b);
                 drawSphere( p[0] , p[1] , p[2] , spheresSize , 10 , 10 );
             }
         }
     }
+    // printf("End handleIdx\n");
+
 }
 
 
@@ -739,7 +765,7 @@ void draw () {
     glDisable(GL_BLEND);
     glColor3f(0.4,0.4,0.8);
     mesh.draw();
-    drawSphereSelection(pointSelect[0] ,pointSelect[1] ,pointSelect[2], 0.1,10,10);
+    drawSphereSelection(pointSelect[0] ,pointSelect[1] ,pointSelect[2], Rayon,10,10);
     drawHandles();
     rectangleSelectionTool.draw();
 }
@@ -851,7 +877,6 @@ void key (unsigned char keyPressed, int x, int y) {
             }
         }
         break;
-
     case 'w':
         if( viewerState == ViewerState_NORMAL ) {
             GLint polygonMode[2];
@@ -907,109 +932,53 @@ void key (unsigned char keyPressed, int x, int y) {
     idle ();
 }
 
-void setTagForVerticesInShere( int x, int y) {
-    //, bool tagToSet
-    float z = 0.0f;
-    printf("GLUT_UP x %i, y %i\n", x, y);
-
-    GLint viewport[4];
-    glGetIntegerv(GL_VIEWPORT,viewport);
-    GLdouble modelview[16];  glGetDoublev(GL_MODELVIEW_MATRIX , modelview);
-    GLdouble projection[16]; glGetDoublev(GL_PROJECTION_MATRIX , projection);
-    GLdouble xi, yi, zi;
-    float realy = viewport[3] - (GLint)y - 1;
-
-    glReadPixels((GLint) x, (GLint) realy, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &z );
-    // printf("z = %f\n");
-
-    gluUnProject((float)x, (float)realy, (float)z, modelview, projection, viewport, &xi, &yi, &zi);
-
-    
-    // if(pow(xi - x,2) + pow(yi - y,2) + pow(zi - z,2) -0.1 == 0) {
-    //     printf("alors ? %f %f %f\n",xi, yi, zi);
-    //     // verticesAreMarkedForCurrentHandle[ v ] = true;
-    // }
-
-    for( unsigned int v = 0 ; v < mesh.V.size() ; ++v ) {
-        Vec3 const & p = mesh.V[v].p;
-        // printf("------------------\n");
-        // printf("GLUT_UP x %i, y %i, z %i\n", x, y, z);
-        // printf("GLUT_UP xi %f, yi %f, zi %f\n", xi, yi, zi);
-        // printf("GLUT_UP p[0] %f, p[1] %f, p[2] %f\n", p[0], p[1], p[2]);
-
-        if(pow(p[0] - xi,2) + pow(p[1] - yi,2) + pow(p[2] - zi,2) - pow(0.1,2) <= 0){
-            verticesAreMarkedForCurrentHandle[ v ] = true;
-            printf("Youhouu \n");
-            }else{
-                verticesAreMarkedForCurrentHandle[ v ] = false;
-            }
-        //tagToSet
-    }
-
-
-
-    // float modelview[16];  glGetFloatv(GL_MODELVIEW_MATRIX , modelview);
-    // float projection[16]; glGetFloatv(GL_PROJECTION_MATRIX , projection);
-
-    // for( unsigned int v = 0 ; v < mesh.V.size() ; ++v ) {
-    //     Vec3 const & p = mesh.V[v].p;
-
-    //     float x = modelview[0] * p[0] + modelview[4] * p[1] + modelview[8] * p[2] + modelview[12];
-    //     float y = modelview[1] * p[0] + modelview[5] * p[1] + modelview[9] * p[2] + modelview[13];
-    //     float z = modelview[2] * p[0] + modelview[6] * p[1] + modelview[10] * p[2] + modelview[14];
-    //     float w = modelview[3] * p[0] + modelview[7] * p[1] + modelview[11] * p[2] + modelview[15];
-    //     x /= w; y /= w; z /= w; w = 1.f;
-
-    //     float xx = projection[0] * x + projection[4] * y + projection[8] * z + projection[12] * w;
-    //     float yy = projection[1] * x + projection[5] * y + projection[9] * z + projection[13] * w;
-    //     float ww = projection[3] * x + projection[7] * y + projection[11] * z + projection[15] * w;
-    //     xx /= ww; yy /= ww;
-
-    //     xx = ( xx + 1.f ) / 2.f;
-    //     yy = ( yy + 1.f ) / 2.f;
-
-    //     // if( rectangleSelectionTool.contains( xx , yy ) ) verticesAreMarkedForCurrentHandle[ v ] = tagToSet;
-    //     if(pow(xx - x,2) + pow(yy - y,2) + pow(ww - z,2) -0.1 == 0) {
-    //         printf("%f %f %f\n",xx, yy, ww);
-    //         verticesAreMarkedForCurrentHandle[ v ] = true;
-    //     }
-    // }
-
-        // if( viewerState == ViewerState_EDITINGHANDLE ) {
-        //     viewerState = ViewerState_NORMAL;
-        //     finalizeEditingOfCurrentHandle();
-        // }
-    
-}
 
 void mouseCircle (int button, int state, int x, int y) {
+    if (button == 3 ) {
+        printf("UPPP\n");
+        Rayon+=0.1;
+    }
+    if (button == 4 ) {
+        printf("Downn\n");
+        Rayon = (Rayon == 0 ? 0 :  Rayon - 0.1);
+    }
+
     if (button == GLUT_RIGHT_BUTTON && state == GLUT_UP ) {
-    setTagForVerticesInShere(x, y);
 
-    float z = 0.0f;
-    printf("GLUT_UP x %i, y %i\n", x, y);
-
-    GLint viewport[4];
-    glGetIntegerv(GL_VIEWPORT,viewport);
-    GLdouble modelview[16];  glGetDoublev(GL_MODELVIEW_MATRIX , modelview);
-    GLdouble projection[16]; glGetDoublev(GL_PROJECTION_MATRIX , projection);
-    GLdouble xi, yi, zi;
-    float realy = viewport[3] - (GLint)y - 1;
-
-    glReadPixels((GLint) x, (GLint) realy, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &z );
-    printf("z = %f\n");
-
-    gluUnProject((float)x, (float)realy, (float)z, modelview, projection, viewport, &xi, &yi, &zi);
-
-    // pointSelect
-    pointSelect[0] = xi;
-    pointSelect[1] = yi;
-    pointSelect[2] = zi;
-
-    if( viewerState == ViewerState_NORMAL ) {
+        if( viewerState == ViewerState_NORMAL ) {
             viewerState = ViewerState_EDITINGHANDLE;
             ++numberOfHandles;
             activeHandle = numberOfHandles - 1; // last handle
+            printf("numberOfHandles %i\n", numberOfHandles);
+        }
+        float z = 0.0f;
+
+        GLint viewport[4];
+        glGetIntegerv(GL_VIEWPORT,viewport);
+        GLdouble modelview[16];  glGetDoublev(GL_MODELVIEW_MATRIX , modelview);
+        GLdouble projection[16]; glGetDoublev(GL_PROJECTION_MATRIX , projection);
+        GLdouble xi, yi, zi;
+
+        float realy = viewport[3] - (GLint)y - 1;
+
+        glReadPixels((GLint) x, (GLint) realy, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &z );
+        gluUnProject((float)x, (float)realy, (float)z, modelview, projection, viewport, &xi, &yi, &zi);
+
+        // pointSelect
+        pointSelect[0] = xi;
+        pointSelect[1] = yi;
+        pointSelect[2] = zi;
+
+        addVerticesToCurrentHandleMouse();
+
+        // setTagForVerticesInShere(x, y);
+        
+
+        if( viewerState == ViewerState_EDITINGHANDLE ) {
+            viewerState = ViewerState_NORMAL;
+            finalizeEditingOfCurrentHandle();
+            printf("END %i\n", numberOfHandles);
+
         }
 
     }
