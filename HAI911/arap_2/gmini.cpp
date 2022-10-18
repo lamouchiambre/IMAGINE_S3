@@ -23,6 +23,7 @@
 
 #include <algorithm>
 #include <GL/glut.h>
+#include <queue>
 #include "src/Vec3.h"
 #include "src/Camera.h"
 #include "src/Mesh.h"
@@ -423,6 +424,130 @@ void setTagForVerticesInRectangle( bool tagToSet ) {
     }
 }
 
+void collectOneRing (vector<MeshVertex> const & vertices,
+                       vector<MeshTriangle> const & triangles,
+                       vector<vector<unsigned int> > & oneRing) {
+    //one-ring of each vertex, i.e. a list of vertices with which it shares an edge
+    //Initialiser le vecteur de o_one_ring de la taille du vecteur vertices
+    oneRing.clear();
+    oneRing.resize(vertices.size());
+    //Parcourir les triangles et ajouter les voisins dans le 1-voisinage
+    for (unsigned int i = 0; i < triangles.size(); ++i) {
+        for (unsigned int j = 0; j < 3; ++j) { //sommet courant
+            for (unsigned int k = 0; k < 3; ++k) { //sommets voisins
+                if(j != k) {
+                    if(std::find(oneRing[triangles[i][j]].begin(), oneRing[triangles[i][j]].end(), triangles[i][k]) == oneRing[triangles[i][j]].end()) {
+                        oneRing[triangles[i][j]].push_back(triangles[i][k]);
+                    }
+                }
+            }
+        }
+    }
+} 
+
+std::priority_queue <pair<float, int>> getHandleSurface( Vec3 center){
+    vector<vector<unsigned int> > oneRing;
+    vector<int> visite;
+    visite.resize(mesh.V.size());
+    fill(visite.begin(), visite.end(), 0);
+
+    collectOneRing (mesh.V,
+                       mesh.T,
+                       oneRing);
+    std::priority_queue <pair<float, int>> queue_vextex;
+    
+    int i = 0;
+    for(auto &v : mesh.V){
+        vector<MeshVertex> file;
+        for(auto &f : oneRing[i]){
+            if(visite[f] != 1){
+                pair<float, int>tmp;
+                tmp.first = (center - mesh.V[f]).length();
+                tmp.second = f;
+
+                queue_vextex.push(tmp);
+                visite[f] = 1;
+
+            }
+        } 
+        i++;
+    }
+    return queue_vextex;
+}
+
+pair<float, int> getPlusProche(Vec3 center){
+    Vec3 min = mesh.V[0];
+    int indice = 0;
+    for(int i = 0; i <mesh.V.size(); i++){
+        if(min > mesh.V[i]){
+            min = mesh.V[i];
+            indice = i;
+        }
+    }
+    // Vec3 min = *min_element(mesh.V.begin(), mesh.V.end());
+    return pair<float, int>(0.0, indice);
+}
+
+std::priority_queue <pair<float, int>> getHandleSurface2( Vec3 center){
+    Vec3 min = getPlusProche(center);
+    vector<vector<unsigned int> > oneRing;
+    vector<int> visite;
+    visite.resize(mesh.V.size());
+    fill(visite.begin(), visite.end(), 0);
+
+    collectOneRing (mesh.V,
+                       mesh.T,
+                       oneRing);
+    std::priority_queue<pair<float, int>> queue_vextex;
+    queue_vextex.push(getPlusProche(center));
+    while(queue_vextex.size() > 0){
+        
+    }
+
+    int i = 0;
+    for(auto &v : mesh.V){
+        vector<MeshVertex> file;
+        for(auto &f : oneRing[i]){
+            if(visite[f] != 1){
+                pair<float, int>tmp;
+                tmp.first = (center - mesh.V[f]).length();
+                tmp.second = f;
+
+                queue_vextex.push(tmp);
+                visite[f] = 1;
+
+            }
+        } 
+        i++;
+    }
+    return queue_vextex;
+}
+
+
+void setTagForVerticesInSurface() {
+    GLdouble xi = pointSelect[0];
+    GLdouble yi = pointSelect[1]; 
+    GLdouble zi = pointSelect[2];
+
+    Vec3 center = Vec3(xi, yi, zi);
+    priority_queue <pair<float, int>> queue_vextex =  getHandleSurface(center);
+    printf("size priority_queue %i %i\n", queue_vextex.size(), mesh.V.size());
+
+
+    for( unsigned int v = 0 ; v < mesh.V.size() ; ++v ) {
+        pair<float, int> tmpPaire = queue_vextex.top();
+        queue_vextex.pop();
+        // Vec3 const & p = mesh.V[v].p;
+        Vec3 const & p = mesh.V[tmpPaire.second].p;
+
+        if(pow(p[0] - xi,2) + pow(p[1] - yi,2) + pow(p[2] - zi,2) - pow(Rayon,2) <= 0){
+            verticesAreMarkedForCurrentHandle[ tmpPaire.second ] = true;
+            printf("HHHHHEY\n");
+            verticesHandles[v] = activeHandle;
+        }
+    }
+    
+}
 void setTagForVerticesInShere() {
 
     GLdouble xi = pointSelect[0];
@@ -455,6 +580,14 @@ void addVerticesToCurrentHandleMouse() {
         return;
 
     setTagForVerticesInShere();
+}
+
+void addVerticesToCurrentHandleMouse2() {
+    // look at the rectangle rectangleSelectionTool, and see which vertices fall into the region.
+    if( activeHandle < 0 || activeHandle >= numberOfHandles)
+        return;
+
+    setTagForVerticesInSurface();
 }
 
 void finalizeEditingOfCurrentHandle() {
@@ -520,6 +653,7 @@ void init () {
 
     testlinearSystem();
 }
+
 
 
 
@@ -982,6 +1116,45 @@ void mouseCircle (int button, int state, int x, int y) {
         }
 
     }
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_UP ) {
+
+        if( viewerState == ViewerState_NORMAL ) {
+            viewerState = ViewerState_EDITINGHANDLE;
+            ++numberOfHandles;
+            activeHandle = numberOfHandles - 1; // last handle
+            printf("numberOfHandles %i\n", numberOfHandles);
+        }
+        float z = 0.0f;
+
+        GLint viewport[4];
+        glGetIntegerv(GL_VIEWPORT,viewport);
+        GLdouble modelview[16];  glGetDoublev(GL_MODELVIEW_MATRIX , modelview);
+        GLdouble projection[16]; glGetDoublev(GL_PROJECTION_MATRIX , projection);
+        GLdouble xi, yi, zi;
+
+        float realy = viewport[3] - (GLint)y - 1;
+
+        glReadPixels((GLint) x, (GLint) realy, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &z );
+        gluUnProject((float)x, (float)realy, (float)z, modelview, projection, viewport, &xi, &yi, &zi);
+
+        // pointSelect
+        pointSelect[0] = xi;
+        pointSelect[1] = yi;
+        pointSelect[2] = zi;
+
+        addVerticesToCurrentHandleMouse2();
+
+        // setTagForVerticesInShere(x, y);
+        
+
+        if( viewerState == ViewerState_EDITINGHANDLE ) {
+            viewerState = ViewerState_NORMAL;
+            finalizeEditingOfCurrentHandle();
+            printf("END %i\n", numberOfHandles);
+
+        }
+
+    }
         // moving the camera:
         if (state == GLUT_UP) {
             mouseMovePressed = false;
@@ -1116,6 +1289,15 @@ int main (int argc, char ** argv) {
     edgeAndVertexWeights.buildClippedCotangentWeightsOfTriangleMesh( mesh.V , mesh.T );
     Eigen::MatrixXd idMatrix(3,3);
     idMatrix(0,0) = 1.0;   idMatrix(1,1) = 1.0;   idMatrix(2,2) = 1.0;
+    
+    idMatrix(0,1) = 0.0;   
+    idMatrix(0,2) = 0.0;   
+
+    idMatrix(1,0) = 0.0;
+    idMatrix(1,2) = 0.0;
+    idMatrix(2,1) = 0.0;
+    idMatrix(2,0) = 0.0;
+
     vertexRotationMatrices.resize( mesh.V.size() , idMatrix );
 
     glutMainLoop ();
