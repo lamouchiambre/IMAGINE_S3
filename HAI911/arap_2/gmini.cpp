@@ -118,7 +118,7 @@ void testlinearSystem() {
         Eigen::VectorXd X;
         mySystem.solve(X);
 
-        std::cout << X[0] << "  " << X[1] << "  " << X[2] << std::endl;
+        // std::cout << X[0] << "  " << X[1] << "  " << X[2] << std::endl;
     }
 }
 //------------------------------------------------------------------------------------------------------//
@@ -371,7 +371,6 @@ void glNormal(Vec3 const & p) {
 }
 
 bool activeHandleIsValid() {
-    printf("activeHandelIsValid = %i \n", activeHandle >= 0  &&  activeHandle < numberOfHandles);
     return activeHandle >= 0  &&  activeHandle < numberOfHandles;
 }
 
@@ -424,17 +423,14 @@ void setTagForVerticesInRectangle( bool tagToSet ) {
     }
 }
 
-void collectOneRing (vector<MeshVertex> const & vertices,
-                       vector<MeshTriangle> const & triangles,
-                       vector<vector<unsigned int> > & oneRing) {
-    //one-ring of each vertex, i.e. a list of vertices with which it shares an edge
-    //Initialiser le vecteur de o_one_ring de la taille du vecteur vertices
+void collectOneRing (vector<MeshVertex> const & vertices, vector<MeshTriangle> const & triangles, vector<vector<unsigned int> > & oneRing) {
+
     oneRing.clear();
     oneRing.resize(vertices.size());
-    //Parcourir les triangles et ajouter les voisins dans le 1-voisinage
+
     for (unsigned int i = 0; i < triangles.size(); ++i) {
-        for (unsigned int j = 0; j < 3; ++j) { //sommet courant
-            for (unsigned int k = 0; k < 3; ++k) { //sommets voisins
+        for (unsigned int j = 0; j < 3; ++j) { 
+            for (unsigned int k = 0; k < 3; ++k) { 
                 if(j != k) {
                     if(std::find(oneRing[triangles[i][j]].begin(), oneRing[triangles[i][j]].end(), triangles[i][k]) == oneRing[triangles[i][j]].end()) {
                         oneRing[triangles[i][j]].push_back(triangles[i][k]);
@@ -479,17 +475,16 @@ pair<float, int> getPlusProche(Vec3 center){
     Vec3 min = mesh.V[0];
     int indice = 0;
     for(int i = 0; i <mesh.V.size(); i++){
-        if(min > mesh.V[i]){
-            min = mesh.V[i];
+        if((center-min).length() > mesh.V[i].p.length()){
+            min = mesh.V[i].p;
             indice = i;
         }
     }
-    // Vec3 min = *min_element(mesh.V.begin(), mesh.V.end());
     return pair<float, int>(0.0, indice);
 }
 
-std::priority_queue <pair<float, int>> getHandleSurface2( Vec3 center){
-    Vec3 min = getPlusProche(center);
+void getHandleSurface2( Vec3 center){
+    pair<float, int> min = getPlusProche(center);
     vector<vector<unsigned int> > oneRing;
     vector<int> visite;
     visite.resize(mesh.V.size());
@@ -498,29 +493,36 @@ std::priority_queue <pair<float, int>> getHandleSurface2( Vec3 center){
     collectOneRing (mesh.V,
                        mesh.T,
                        oneRing);
+
     std::priority_queue<pair<float, int>> queue_vextex;
-    queue_vextex.push(getPlusProche(center));
+    queue_vextex.push(min);
+
+    pair<float, int> vj = min;
+
     while(queue_vextex.size() > 0){
-        
-    }
 
-    int i = 0;
-    for(auto &v : mesh.V){
-        vector<MeshVertex> file;
-        for(auto &f : oneRing[i]){
-            if(visite[f] != 1){
-                pair<float, int>tmp;
-                tmp.first = (center - mesh.V[f]).length();
-                tmp.second = f;
+        for(auto &a : oneRing[vj.second]){
 
+            if (visite[a] == 0)
+            {
+                pair<float, int> tmp;
+                tmp.first = (center - mesh.V[a].p).length();
+                tmp.second = a;
                 queue_vextex.push(tmp);
-                visite[f] = 1;
 
+                visite[a] = 1;
             }
-        } 
-        i++;
+
+        }
+        vj = queue_vextex.top();
+        queue_vextex.pop();
+        if (vj.first <= Rayon)
+        {
+            verticesAreMarkedForCurrentHandle[ vj.second ] = true;
+            verticesHandles[vj.second] = activeHandle;
+        }
     }
-    return queue_vextex;
+
 }
 
 
@@ -531,8 +533,6 @@ void setTagForVerticesInSurface() {
 
     Vec3 center = Vec3(xi, yi, zi);
     priority_queue <pair<float, int>> queue_vextex =  getHandleSurface(center);
-    printf("size priority_queue %i %i\n", queue_vextex.size(), mesh.V.size());
-
 
     for( unsigned int v = 0 ; v < mesh.V.size() ; ++v ) {
         pair<float, int> tmpPaire = queue_vextex.top();
@@ -542,12 +542,33 @@ void setTagForVerticesInSurface() {
 
         if(pow(p[0] - xi,2) + pow(p[1] - yi,2) + pow(p[2] - zi,2) - pow(Rayon,2) <= 0){
             verticesAreMarkedForCurrentHandle[ tmpPaire.second ] = true;
-            printf("HHHHHEY\n");
             verticesHandles[v] = activeHandle;
         }
     }
     
 }
+
+void setTagForVerticesInSurface2() {
+    GLdouble xi = pointSelect[0];
+    GLdouble yi = pointSelect[1]; 
+    GLdouble zi = pointSelect[2];
+    Vec3 center = Vec3(xi, yi, zi);
+    getHandleSurface2(center);
+
+    
+}
+
+void setTagForVerticesInSurface3() {
+    GLdouble xi = pointSelect[0];
+    GLdouble yi = pointSelect[1]; 
+    GLdouble zi = pointSelect[2];
+    Vec3 center = Vec3(xi, yi, zi);
+    pair<float, int> min = getPlusProche(center);
+    verticesAreMarkedForCurrentHandle[  min.second ] = true;
+    verticesHandles[ min.second] = activeHandle;
+    
+}
+
 void setTagForVerticesInShere() {
 
     GLdouble xi = pointSelect[0];
@@ -587,7 +608,14 @@ void addVerticesToCurrentHandleMouse2() {
     if( activeHandle < 0 || activeHandle >= numberOfHandles)
         return;
 
-    setTagForVerticesInSurface();
+    setTagForVerticesInSurface2();
+}
+
+void addVerticesToCurrentHandleMouse3() {
+    // look at the rectangle rectangleSelectionTool, and see which vertices fall into the region.
+    if( activeHandle < 0 || activeHandle >= numberOfHandles)
+        return;
+    setTagForVerticesInSurface3();
 }
 
 void finalizeEditingOfCurrentHandle() {
@@ -879,16 +907,12 @@ void drawHandles() {
                 calc_RGB( handleIdx , 0 , numberOfHandles , r , g  , b );
                 if(handleIdx != activeHandle) {
                     r *= 0.5;  g *= 0.5;  b *= 0.5;
-                    // printf("I'm in handleIdx %f %f %f\n",r,g,b);
-
                 }
                 glColor3f(r,g,b);
                 drawSphere( p[0] , p[1] , p[2] , spheresSize , 10 , 10 );
             }
         }
     }
-    // printf("End handleIdx\n");
-
 }
 
 
@@ -1069,12 +1093,10 @@ void key (unsigned char keyPressed, int x, int y) {
 
 void mouseCircle (int button, int state, int x, int y) {
     if (button == 3 ) {
-        printf("UPPP\n");
-        Rayon+=0.1;
+        Rayon+=0.01;
     }
     if (button == 4 ) {
-        printf("Downn\n");
-        Rayon = (Rayon == 0 ? 0 :  Rayon - 0.1);
+        Rayon = (Rayon <= 0 ? 0 :  Rayon - 0.01);
     }
 
     if (button == GLUT_RIGHT_BUTTON && state == GLUT_UP ) {
@@ -1083,8 +1105,8 @@ void mouseCircle (int button, int state, int x, int y) {
             viewerState = ViewerState_EDITINGHANDLE;
             ++numberOfHandles;
             activeHandle = numberOfHandles - 1; // last handle
-            printf("numberOfHandles %i\n", numberOfHandles);
         }
+
         float z = 0.0f;
 
         GLint viewport[4];
@@ -1111,10 +1133,41 @@ void mouseCircle (int button, int state, int x, int y) {
         if( viewerState == ViewerState_EDITINGHANDLE ) {
             viewerState = ViewerState_NORMAL;
             finalizeEditingOfCurrentHandle();
-            printf("END %i\n", numberOfHandles);
-
         }
 
+    }
+    if (button ==  GLUT_MIDDLE_BUTTON && state == GLUT_UP)
+    {
+        if( viewerState == ViewerState_NORMAL ) {
+            viewerState = ViewerState_EDITINGHANDLE;
+            ++numberOfHandles;
+            activeHandle = numberOfHandles - 1; // last handle
+        }
+
+        float z = 0.0f;
+
+        GLint viewport[4];
+        glGetIntegerv(GL_VIEWPORT,viewport);
+        GLdouble modelview[16];  glGetDoublev(GL_MODELVIEW_MATRIX , modelview);
+        GLdouble projection[16]; glGetDoublev(GL_PROJECTION_MATRIX , projection);
+        GLdouble xi, yi, zi;
+
+        float realy = viewport[3] - (GLint)y - 1;
+
+        glReadPixels((GLint) x, (GLint) realy, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &z );
+        gluUnProject((float)x, (float)realy, (float)z, modelview, projection, viewport, &xi, &yi, &zi);
+
+        // pointSelect
+        pointSelect[0] = xi;
+        pointSelect[1] = yi;
+        pointSelect[2] = zi;
+
+        addVerticesToCurrentHandleMouse3();
+
+        if( viewerState == ViewerState_EDITINGHANDLE ) {
+            viewerState = ViewerState_NORMAL;
+            finalizeEditingOfCurrentHandle();
+        }
     }
     if (button == GLUT_LEFT_BUTTON && state == GLUT_UP ) {
 
@@ -1122,7 +1175,6 @@ void mouseCircle (int button, int state, int x, int y) {
             viewerState = ViewerState_EDITINGHANDLE;
             ++numberOfHandles;
             activeHandle = numberOfHandles - 1; // last handle
-            printf("numberOfHandles %i\n", numberOfHandles);
         }
         float z = 0.0f;
 
@@ -1150,8 +1202,6 @@ void mouseCircle (int button, int state, int x, int y) {
         if( viewerState == ViewerState_EDITINGHANDLE ) {
             viewerState = ViewerState_NORMAL;
             finalizeEditingOfCurrentHandle();
-            printf("END %i\n", numberOfHandles);
-
         }
 
     }
