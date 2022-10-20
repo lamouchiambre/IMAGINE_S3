@@ -525,29 +525,6 @@ void getHandleSurface2( Vec3 center){
 
 }
 
-
-void setTagForVerticesInSurface() {
-    GLdouble xi = pointSelect[0];
-    GLdouble yi = pointSelect[1]; 
-    GLdouble zi = pointSelect[2];
-
-    Vec3 center = Vec3(xi, yi, zi);
-    priority_queue <pair<float, int>> queue_vextex =  getHandleSurface(center);
-
-    for( unsigned int v = 0 ; v < mesh.V.size() ; ++v ) {
-        pair<float, int> tmpPaire = queue_vextex.top();
-        queue_vextex.pop();
-        // Vec3 const & p = mesh.V[v].p;
-        Vec3 const & p = mesh.V[tmpPaire.second].p;
-
-        if(pow(p[0] - xi,2) + pow(p[1] - yi,2) + pow(p[2] - zi,2) - pow(Rayon,2) <= 0){
-            verticesAreMarkedForCurrentHandle[ tmpPaire.second ] = true;
-            verticesHandles[v] = activeHandle;
-        }
-    }
-    
-}
-
 void setTagForVerticesInSurface2() {
     GLdouble xi = pointSelect[0];
     GLdouble yi = pointSelect[1]; 
@@ -558,7 +535,7 @@ void setTagForVerticesInSurface2() {
     
 }
 
-void setTagForVerticesInSurface3() {
+void setTagForVerticesInSingle() {
     GLdouble xi = pointSelect[0];
     GLdouble yi = pointSelect[1]; 
     GLdouble zi = pointSelect[2];
@@ -611,11 +588,11 @@ void addVerticesToCurrentHandleMouse2() {
     setTagForVerticesInSurface2();
 }
 
-void addVerticesToCurrentHandleMouse3() {
+void addVerticesToCurrentHandleSingle() {
     // look at the rectangle rectangleSelectionTool, and see which vertices fall into the region.
     if( activeHandle < 0 || activeHandle >= numberOfHandles)
         return;
-    setTagForVerticesInSurface3();
+    setTagForVerticesInSingle();
 }
 
 void finalizeEditingOfCurrentHandle() {
@@ -1162,7 +1139,7 @@ void mouseCircle (int button, int state, int x, int y) {
         pointSelect[1] = yi;
         pointSelect[2] = zi;
 
-        addVerticesToCurrentHandleMouse3();
+        addVerticesToCurrentHandleSingle();
 
         if( viewerState == ViewerState_EDITINGHANDLE ) {
             viewerState = ViewerState_NORMAL;
@@ -1235,56 +1212,6 @@ void mouseCircle (int button, int state, int x, int y) {
     idle ();
 }
 
-void mouse (int button, int state, int x, int y) {
-    if( glutGetModifiers() & GLUT_ACTIVE_CTRL    ||   rectangleSelectionTool.isActive ) { // we can activate the selection only with ctrl pressed
-        if( viewerState == ViewerState_EDITINGHANDLE ) {
-            if (state == GLUT_UP) {
-                // then the mouse is released, confirm rectangle editing
-                rectangleSelectionTool.isActive = false;
-                addVerticesToCurrentHandle();
-            } else {
-                if (button == GLUT_LEFT_BUTTON) {
-                    rectangleSelectionTool.initRectangle(x,y);
-                    rectangleSelectionTool.isAdding = true;
-                    rectangleSelectionTool.isActive = true;
-                } else if (button == GLUT_RIGHT_BUTTON) {
-                    rectangleSelectionTool.initRectangle(x,y);
-                    rectangleSelectionTool.isAdding = false;
-                    rectangleSelectionTool.isActive = true;
-                }
-            }
-        }
-    }
-    else {
-        // moving the camera:
-        if (state == GLUT_UP) {
-            mouseMovePressed = false;
-            mouseRotatePressed = false;
-            mouseZoomPressed = false;
-        } else {
-            if (button == GLUT_LEFT_BUTTON) {
-                camera.beginRotate (x, y);
-                mouseMovePressed = false;
-                mouseRotatePressed = true;
-                mouseZoomPressed = false;
-            } else if (button == GLUT_RIGHT_BUTTON) {
-                lastX = x;
-                lastY = y;
-                mouseMovePressed = true;
-                mouseRotatePressed = false;
-                mouseZoomPressed = false;
-            } else if (button == GLUT_MIDDLE_BUTTON) {
-                if (mouseZoomPressed == false) {
-                    lastZoom = y;
-                    mouseMovePressed = false;
-                    mouseRotatePressed = false;
-                    mouseZoomPressed = true;
-                }
-            }
-        }
-    }
-    idle ();
-}
 
 void motion (int x, int y) {
     if( viewerState == ViewerState_EDITINGHANDLE  &&  rectangleSelectionTool.isActive ) {
