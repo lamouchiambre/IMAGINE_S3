@@ -38,6 +38,8 @@ std::vector< Vec3 > normals;
 std::vector< Vec3 > positions2;
 std::vector< Vec3 > normals2;
 
+std::vector<std::vector<std::vector<std::vector<std::pair<float, Vec3>>>>> gridCube;
+
 
 // -------------------------------------------
 // OpenGL/GLUT application code.
@@ -228,10 +230,11 @@ void  getBoite(std::vector< Vec3 > const & i_positions , Vec3  &dimMIN, Vec3  &d
     
 }
 
-void drawGridEnglobe(std::vector< Vec3 > const & i_positions, int nb){
-    Vec3 dimMIN = i_positions[0];
-    Vec3 dimMAX = i_positions[0];
-    getBoite(i_positions, dimMIN, dimMAX);
+void initializeGrid(int nb){
+
+    Vec3 dimMIN = positions[0];
+    Vec3 dimMAX = positions[0];
+    getBoite(positions, dimMIN, dimMAX);
     // std::cout<< dimMIN <<std::endl;
 
     float X, Y, Z, pasX, pasY, pasZ;
@@ -243,19 +246,20 @@ void drawGridEnglobe(std::vector< Vec3 > const & i_positions, int nb){
     pasY = Y/float(nb);
     pasZ = Z/float(nb);
 
-    std::vector<std::vector<std::vector<std::vector<Vec3>>>> gridCube;
+    // std::vector<std::vector<std::vector<std::vector<Vec3>>>> gridCube;
     for (int i = 0; i < nb; i++)
-    {   std::vector<std::vector<std::vector<Vec3>>> gridY;
+    {   std::vector<std::vector<std::vector<std::pair<float,Vec3>>>> gridY;
         for (int j = 0; j < nb; j++)
         {
-            std::vector<std::vector<Vec3>> gridZ;
+            std::vector<std::vector<std::pair<float,Vec3>>> gridZ;
             for (int k = 0; k < nb; k++)
             {
-                std::vector<Vec3> cuby;
+                std::vector<std::pair<float,Vec3>> cuby;
                 for (int l = 0; l < 8; l++)
                 {
-                    Vec3 tmpZero = Vec3(0.0f, 0.0f, 0.0f);
-                    cuby.push_back(tmpZero);
+                    // Vec3 tmpZero = std::pair(0.0f,Vec3(0.0f, 0.0f, 0.0f));
+                    
+                    cuby.push_back(std::pair(0.0f,Vec3(0.0f, 0.0f, 0.0f)));
                 }
                 gridZ.push_back(cuby);      
             }
@@ -264,6 +268,69 @@ void drawGridEnglobe(std::vector< Vec3 > const & i_positions, int nb){
         gridCube.push_back(gridY);
         
     }
+    for (int xi = 0; xi < nb; xi += 1)
+    {
+        for (int yi = 0; yi < nb; yi+= 1)
+        {
+            for (int zi = 0; zi < nb; zi += 1)
+            {
+                std::vector<std::pair<float, Vec3>> tmpCube  = {
+                        std::pair<float, Vec3>(0.0f, Vec3( dimMIN[0]+pasX*xi, dimMIN[1]+pasY*yi, dimMIN[2]+pasZ*zi)),
+                        std::pair<float, Vec3>(0.0f,Vec3( dimMIN[0]+pasX*xi+pasX, dimMIN[1]+pasY*yi, dimMIN[2]+pasZ*zi)),
+                        std::pair<float, Vec3>(0.0f,Vec3( dimMIN[0]+pasX*xi, dimMIN[1]+pasY*yi+pasY, dimMIN[2]+pasZ*zi)),
+                        std::pair<float, Vec3>(0.0f,Vec3( dimMIN[0]+pasX*xi+pasX, dimMIN[1]+pasY*yi+pasY, dimMIN[2]+pasZ*zi)),
+                        std::pair<float, Vec3>(0.0f,Vec3( dimMIN[0]+pasX*xi, dimMIN[1]+pasY*yi, dimMIN[2]+pasZ*zi+pasZ)),
+                        std::pair<float, Vec3>(0.0f,Vec3( dimMIN[0]+pasX*xi, dimMIN[1]+pasY*yi+pasY, dimMIN[2]+pasZ*zi+pasZ)),
+                        std::pair<float, Vec3>(0.0f,Vec3( dimMIN[0]+pasX*xi+pasX, dimMIN[1]+pasY*yi, dimMIN[2]+pasZ*zi+pasZ)),
+                        std::pair<float, Vec3>(0.0f,Vec3( dimMIN[0]+pasX*xi+pasX, dimMIN[1]+pasY*yi+pasY, dimMIN[2]+pasZ*zi+pasZ))
+                    };
+                gridCube[xi][yi][zi] = tmpCube;
+
+                // glVertex3f( gridCube[xi][yi][zi][0].second[0], gridCube[xi][yi][zi][0].second[1], gridCube[xi][yi][zi][0].second[2]);
+            }   
+        }    
+    }
+}
+
+void drawGridEnglobe(std::vector< Vec3 > const & i_positions, int nb){
+    initializeGrid(4);
+
+    // Vec3 dimMIN = i_positions[0];
+    // Vec3 dimMAX = i_positions[0];
+    // getBoite(i_positions, dimMIN, dimMAX);
+    // // std::cout<< dimMIN <<std::endl;
+
+    // float X, Y, Z, pasX, pasY, pasZ;
+    // X = (dimMAX - dimMIN)[0];
+    // Y = (dimMAX - dimMIN)[1];
+    // Z = (dimMAX - dimMIN)[2];
+
+    // pasX = X/float(nb);
+    // pasY = Y/float(nb);
+    // pasZ = Z/float(nb);
+
+    // // std::vector<std::vector<std::vector<std::vector<Vec3>>>> gridCube;
+    // for (int i = 0; i < nb; i++)
+    // {   std::vector<std::vector<std::vector<std::pair<float,Vec3>>>> gridY;
+    //     for (int j = 0; j < nb; j++)
+    //     {
+    //         std::vector<std::vector<std::pair<float,Vec3>>> gridZ;
+    //         for (int k = 0; k < nb; k++)
+    //         {
+    //             std::vector<std::pair<float,Vec3>> cuby;
+    //             for (int l = 0; l < 8; l++)
+    //             {
+    //                 // Vec3 tmpZero = std::pair(0.0f,Vec3(0.0f, 0.0f, 0.0f));
+                    
+    //                 cuby.push_back(std::pair(0.0f,Vec3(0.0f, 0.0f, 0.0f)));
+    //             }
+    //             gridZ.push_back(cuby);      
+    //         }
+    //         gridY.push_back(gridZ);
+    //     }
+    //     gridCube.push_back(gridY);
+        
+    // }
     
 
     glBegin(GL_POINTS);
@@ -273,69 +340,42 @@ void drawGridEnglobe(std::vector< Vec3 > const & i_positions, int nb){
         {
             for (int zi = 0; zi < nb; zi += 1)
             {
-                std::vector<Vec3> tmpCube  = {
-                        Vec3( dimMIN[0]+pasX*xi, dimMIN[1]+pasY*yi, dimMIN[2]+pasZ*zi),
-                        Vec3( dimMIN[0]+pasX*xi+pasX, dimMIN[1]+pasY*yi, dimMIN[2]+pasZ*zi),
-                        Vec3( dimMIN[0]+pasX*xi, dimMIN[1]+pasY*yi+pasY, dimMIN[2]+pasZ*zi),
-                        Vec3( dimMIN[0]+pasX*xi+pasX, dimMIN[1]+pasY*yi+pasY, dimMIN[2]+pasZ*zi),
-                        Vec3( dimMIN[0]+pasX*xi, dimMIN[1]+pasY*yi, dimMIN[2]+pasZ*zi+pasZ),
-                        Vec3( dimMIN[0]+pasX*xi, dimMIN[1]+pasY*yi+pasY, dimMIN[2]+pasZ*zi+pasZ),
-                        Vec3( dimMIN[0]+pasX*xi+pasX, dimMIN[1]+pasY*yi, dimMIN[2]+pasZ*zi+pasZ),
-                        Vec3( dimMIN[0]+pasX*xi+pasX, dimMIN[1]+pasY*yi+pasY, dimMIN[2]+pasZ*zi+pasZ)
-                    };
-                gridCube[xi][yi][zi] = tmpCube;
-                // glVertex3f( dimMIN[0]+xi*pasX, dimMIN[1]+yi*pasY, dimMIN[2]+zi*pasZ);
-                // glVertex3f( gridCube[xi][yi][zi][0][0], gridCube[xi][yi][zi][0][1], gridCube[xi][yi][zi][0][2]);
+                // std::vector<std::pair<float, Vec3>> tmpCube  = {
+                //         std::pair<float, Vec3>(0.0f, Vec3( dimMIN[0]+pasX*xi, dimMIN[1]+pasY*yi, dimMIN[2]+pasZ*zi)),
+                //         std::pair<float, Vec3>(0.0f,Vec3( dimMIN[0]+pasX*xi+pasX, dimMIN[1]+pasY*yi, dimMIN[2]+pasZ*zi)),
+                //         std::pair<float, Vec3>(0.0f,Vec3( dimMIN[0]+pasX*xi, dimMIN[1]+pasY*yi+pasY, dimMIN[2]+pasZ*zi)),
+                //         std::pair<float, Vec3>(0.0f,Vec3( dimMIN[0]+pasX*xi+pasX, dimMIN[1]+pasY*yi+pasY, dimMIN[2]+pasZ*zi)),
+                //         std::pair<float, Vec3>(0.0f,Vec3( dimMIN[0]+pasX*xi, dimMIN[1]+pasY*yi, dimMIN[2]+pasZ*zi+pasZ)),
+                //         std::pair<float, Vec3>(0.0f,Vec3( dimMIN[0]+pasX*xi, dimMIN[1]+pasY*yi+pasY, dimMIN[2]+pasZ*zi+pasZ)),
+                //         std::pair<float, Vec3>(0.0f,Vec3( dimMIN[0]+pasX*xi+pasX, dimMIN[1]+pasY*yi, dimMIN[2]+pasZ*zi+pasZ)),
+                //         std::pair<float, Vec3>(0.0f,Vec3( dimMIN[0]+pasX*xi+pasX, dimMIN[1]+pasY*yi+pasY, dimMIN[2]+pasZ*zi+pasZ))
+                //     };
+                // gridCube[xi][yi][zi] = tmpCube;
+
+                glVertex3f( gridCube[xi][yi][zi][0].second[0], gridCube[xi][yi][zi][0].second[1], gridCube[xi][yi][zi][0].second[2]);
             }   
         }    
     }
 
-    for (int xi = 0; xi < nb; xi += 1)
-    {
-        for (int yi = 0; yi < nb; yi += 1){
-            for (int zi = 0; zi < nb; zi += 1){
-                // glColor3f(0,0.4,0);
-                glVertex3f( gridCube[xi][yi][zi][7][0], gridCube[xi][yi][zi][7][1], gridCube[xi][yi][zi][7][2]);
-                glVertex3f( gridCube[xi][yi][zi][6][0], gridCube[xi][yi][zi][6][1], gridCube[xi][yi][zi][6][2]);
-                glVertex3f( gridCube[xi][yi][zi][5][0], gridCube[xi][yi][zi][5][1], gridCube[xi][yi][zi][5][2]);
-                glVertex3f( gridCube[xi][yi][zi][4][0], gridCube[xi][yi][zi][4][1], gridCube[xi][yi][zi][4][2]);
-                glVertex3f( gridCube[xi][yi][zi][3][0], gridCube[xi][yi][zi][3][1], gridCube[xi][yi][zi][3][2]);
-                glVertex3f( gridCube[xi][yi][zi][2][0], gridCube[xi][yi][zi][2][1], gridCube[xi][yi][zi][2][2]);
-                glVertex3f( gridCube[xi][yi][zi][1][0], gridCube[xi][yi][zi][1][1], gridCube[xi][yi][zi][1][2]);
-                glVertex3f( gridCube[xi][yi][zi][0][0], gridCube[xi][yi][zi][0][1], gridCube[xi][yi][zi][0][2]);
-            }
-        }
-    }
+    // for (int xi = 0; xi < nb; xi += 1)
+    // {
+    //     for (int yi = 0; yi < nb; yi += 1){
+    //         for (int zi = 0; zi < nb; zi += 1){
+    //             // glColor3f(0,0.4,0);
+    //             glVertex3f( gridCube[xi][yi][zi].second[7][0], gridCube[xi][yi][zi].second[7][1], gridCube[xi][yi][zi].second[7][2]);
+    //             glVertex3f( gridCube[xi][yi][zi].second[6][0], gridCube[xi][yi][zi].second[6][1], gridCube[xi][yi][zi].second[6][2]);
+    //             glVertex3f( gridCube[xi][yi][zi].second[5][0], gridCube[xi][yi][zi].second[5][1], gridCube[xi][yi][zi].second[5][2]);
+    //             glVertex3f( gridCube[xi][yi][zi].second[4][0], gridCube[xi][yi][zi].second[4][1], gridCube[xi][yi][zi].second[4][2]);
+    //             glVertex3f( gridCube[xi][yi][zi].second[3][0], gridCube[xi][yi][zi].second[3][1], gridCube[xi][yi][zi].second[3][2]);
+    //             glVertex3f( gridCube[xi][yi][zi].second[2][0], gridCube[xi][yi][zi].second[2][1], gridCube[xi][yi][zi].second[2][2]);
+    //             glVertex3f( gridCube[xi][yi][zi].second[1][0], gridCube[xi][yi][zi].second[1][1], gridCube[xi][yi][zi].second[1][2]);
+    //             glVertex3f( gridCube[xi][yi][zi].second[0][0], gridCube[xi][yi][zi].second[0][1], gridCube[xi][yi][zi].second[0][2]);
+    //         }
+    //     }
+    // }
 
 
     glEnd();
-
-        // for (int xi = 0; xi < nb+1; xi += 1)
-    // {
-    //     for (int yi = 0; yi < nb+1; yi+= 1)
-    //     {
-    //         for (int zi = 0; zi < nb+1; zi += 1)
-    //         {
-    //             glVertex3f( dimMIN[0]+xi*pasX, dimMIN[1]+yi*pasY, dimMIN[2]+zi*pasZ);
-    //         }   
-    //     }    
-    // }
-
-    // glBegin(GL_POINTS);
-    // glVertex3f( dimMIN[0], dimMIN[1], dimMIN[2]);
-    // glVertex3f( dimMIN[0]+X, dimMIN[1], dimMIN[2]);
-    // glVertex3f( dimMIN[0], dimMIN[1]+Y, dimMIN[2]);
-    // glVertex3f( dimMIN[0]+X, dimMIN[1]+Y, dimMIN[2]);
-
-    // glVertex3f( dimMIN[0], dimMIN[1], dimMIN[2]+Z);
-    // glVertex3f( dimMIN[0], dimMIN[1]+Y, dimMIN[2]+Z);
-    // glVertex3f( dimMIN[0]+X, dimMIN[1], dimMIN[2]+Z);
-
-    // glVertex3f( dimMAX[0], dimMAX[1], dimMAX[2]);
-    // glEnd();
-
-
-
 }
 
 void drawGrid(float size, float nblock){
@@ -344,13 +384,10 @@ void drawGrid(float size, float nblock){
         for(int y = 0; y<size; y++){
             for(int z = 0; z<size; z++){
             glVertex3f( x*nblock, y*nblock, z*nblock);
-
             }
         }
     }
-
     glEnd();
-
 }
 
 
@@ -599,7 +636,6 @@ int main (int argc, char ** argv) {
     glutInitDisplayMode (GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE);
     glutInitWindowSize (SCREENWIDTH, SCREENHEIGHT);
     window = glutCreateWindow ("tp point processing");
-
     init ();
     glutIdleFunc (idle);
     glutDisplayFunc (display);
@@ -646,8 +682,6 @@ int main (int argc, char ** argv) {
 
         }
     }
-
-
 
     glutMainLoop ();
     return EXIT_SUCCESS;
