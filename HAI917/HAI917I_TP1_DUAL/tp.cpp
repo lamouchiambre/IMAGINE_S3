@@ -39,6 +39,8 @@ std::vector< Vec3 > positions2;
 std::vector< Vec3 > normals2;
 
 std::vector<std::vector<std::vector<std::vector<std::pair<float, Vec3>>>>> gridCube;
+std::vector<std::vector<std::vector<std::vector<std::pair<float, Vec3>>>>> gridCube2;
+
 
 
 // -------------------------------------------
@@ -54,7 +56,7 @@ static bool mouseMovePressed = false;
 static bool mouseZoomPressed = false;
 static int lastX=0, lastY=0, lastZoom=0;
 static bool fullScreen = false;
-
+static int NB_div = 68;
 
 struct Plane
 {
@@ -189,6 +191,28 @@ bool save( const std::string & filename , std::vector< Vec3 > & vertices , std::
 // rendering.
 // ------------------------------------------------------------------------------------------------------------
 
+Vec3 project(Vec3 input_point, Vec3 point_plane, Vec3 normal_plane)
+{
+    float d = Vec3::dot(input_point - point_plane, normal_plane)/normal_plane.length();
+    return input_point - d * normal_plane;
+}
+
+float fonctionImplicite(Vec3 & inputPoint, std::vector<Vec3> const & positions, std::vector<Vec3> const & normals, BasicANNkdTree const & kdtree){
+    float out = 0.0f;
+    ANNidxArray id_nearest_neighbors = new ANNidx[1];
+    ANNdistArray square_distances_to_neighbors = new ANNdist[1];
+    kdtree.knearest(inputPoint , 1 , id_nearest_neighbors , square_distances_to_neighbors);
+
+    Vec3 ni = normals[id_nearest_neighbors[0]];
+    Vec3 x = project(inputPoint, positions[id_nearest_neighbors[0]], ni);
+
+    // out = x.dot( x - positions[id_nearest_neighbors[0]],ni);
+    out = x.dot( inputPoint - x,ni);
+
+    // out = x.dot( inputPoint - x, ni);
+    return out;
+}
+
 void initLight () {
     GLfloat light_position1[4] = {22.0f, 16.0f, 50.0f, 0.0f};
     GLfloat direction1[3] = {-52.0f,-16.0f,-50.0f};
@@ -268,6 +292,10 @@ void initializeGrid(int nb){
         gridCube.push_back(gridY);
         
     }
+
+    BasicANNkdTree kdtree;
+    kdtree.build(positions);
+
     for (int xi = 0; xi < nb; xi += 1)
     {
         for (int yi = 0; yi < nb; yi+= 1)
@@ -284,53 +312,31 @@ void initializeGrid(int nb){
                         std::pair<float, Vec3>(0.0f,Vec3( dimMIN[0]+pasX*xi+pasX, dimMIN[1]+pasY*yi, dimMIN[2]+pasZ*zi+pasZ)),
                         std::pair<float, Vec3>(0.0f,Vec3( dimMIN[0]+pasX*xi+pasX, dimMIN[1]+pasY*yi+pasY, dimMIN[2]+pasZ*zi+pasZ))
                     };
+                for (int i = 0; i < 8; i++)
+                {
+                    /* code */
+                    tmpCube[i].first = fonctionImplicite(tmpCube[i].second, positions, normals, kdtree);
+                    // if (tmpCube[i].first<0.0f)
+                    // {
+                        /* code */
+                        // printf("sorite grid : %f \n", tmpCube[i].first);    
+                    // }                    
+                }
+                
                 gridCube[xi][yi][zi] = tmpCube;
 
                 // glVertex3f( gridCube[xi][yi][zi][0].second[0], gridCube[xi][yi][zi][0].second[1], gridCube[xi][yi][zi][0].second[2]);
             }   
         }    
     }
+    printf("----------------------------\n");
 }
 
 void drawGridEnglobe(std::vector< Vec3 > const & i_positions, int nb){
-    initializeGrid(4);
-
-    // Vec3 dimMIN = i_positions[0];
-    // Vec3 dimMAX = i_positions[0];
-    // getBoite(i_positions, dimMIN, dimMAX);
-    // // std::cout<< dimMIN <<std::endl;
-
-    // float X, Y, Z, pasX, pasY, pasZ;
-    // X = (dimMAX - dimMIN)[0];
-    // Y = (dimMAX - dimMIN)[1];
-    // Z = (dimMAX - dimMIN)[2];
-
-    // pasX = X/float(nb);
-    // pasY = Y/float(nb);
-    // pasZ = Z/float(nb);
-
-    // // std::vector<std::vector<std::vector<std::vector<Vec3>>>> gridCube;
-    // for (int i = 0; i < nb; i++)
-    // {   std::vector<std::vector<std::vector<std::pair<float,Vec3>>>> gridY;
-    //     for (int j = 0; j < nb; j++)
-    //     {
-    //         std::vector<std::vector<std::pair<float,Vec3>>> gridZ;
-    //         for (int k = 0; k < nb; k++)
-    //         {
-    //             std::vector<std::pair<float,Vec3>> cuby;
-    //             for (int l = 0; l < 8; l++)
-    //             {
-    //                 // Vec3 tmpZero = std::pair(0.0f,Vec3(0.0f, 0.0f, 0.0f));
-                    
-    //                 cuby.push_back(std::pair(0.0f,Vec3(0.0f, 0.0f, 0.0f)));
-    //             }
-    //             gridZ.push_back(cuby);      
-    //         }
-    //         gridY.push_back(gridZ);
-    //     }
-    //     gridCube.push_back(gridY);
-        
-    // }
+    if (gridCube.size()==0)
+    {
+        initializeGrid(nb);   
+    }
     
 
     glBegin(GL_POINTS);
@@ -340,41 +346,10 @@ void drawGridEnglobe(std::vector< Vec3 > const & i_positions, int nb){
         {
             for (int zi = 0; zi < nb; zi += 1)
             {
-                // std::vector<std::pair<float, Vec3>> tmpCube  = {
-                //         std::pair<float, Vec3>(0.0f, Vec3( dimMIN[0]+pasX*xi, dimMIN[1]+pasY*yi, dimMIN[2]+pasZ*zi)),
-                //         std::pair<float, Vec3>(0.0f,Vec3( dimMIN[0]+pasX*xi+pasX, dimMIN[1]+pasY*yi, dimMIN[2]+pasZ*zi)),
-                //         std::pair<float, Vec3>(0.0f,Vec3( dimMIN[0]+pasX*xi, dimMIN[1]+pasY*yi+pasY, dimMIN[2]+pasZ*zi)),
-                //         std::pair<float, Vec3>(0.0f,Vec3( dimMIN[0]+pasX*xi+pasX, dimMIN[1]+pasY*yi+pasY, dimMIN[2]+pasZ*zi)),
-                //         std::pair<float, Vec3>(0.0f,Vec3( dimMIN[0]+pasX*xi, dimMIN[1]+pasY*yi, dimMIN[2]+pasZ*zi+pasZ)),
-                //         std::pair<float, Vec3>(0.0f,Vec3( dimMIN[0]+pasX*xi, dimMIN[1]+pasY*yi+pasY, dimMIN[2]+pasZ*zi+pasZ)),
-                //         std::pair<float, Vec3>(0.0f,Vec3( dimMIN[0]+pasX*xi+pasX, dimMIN[1]+pasY*yi, dimMIN[2]+pasZ*zi+pasZ)),
-                //         std::pair<float, Vec3>(0.0f,Vec3( dimMIN[0]+pasX*xi+pasX, dimMIN[1]+pasY*yi+pasY, dimMIN[2]+pasZ*zi+pasZ))
-                //     };
-                // gridCube[xi][yi][zi] = tmpCube;
-
                 glVertex3f( gridCube[xi][yi][zi][0].second[0], gridCube[xi][yi][zi][0].second[1], gridCube[xi][yi][zi][0].second[2]);
             }   
         }    
     }
-
-    // for (int xi = 0; xi < nb; xi += 1)
-    // {
-    //     for (int yi = 0; yi < nb; yi += 1){
-    //         for (int zi = 0; zi < nb; zi += 1){
-    //             // glColor3f(0,0.4,0);
-    //             glVertex3f( gridCube[xi][yi][zi].second[7][0], gridCube[xi][yi][zi].second[7][1], gridCube[xi][yi][zi].second[7][2]);
-    //             glVertex3f( gridCube[xi][yi][zi].second[6][0], gridCube[xi][yi][zi].second[6][1], gridCube[xi][yi][zi].second[6][2]);
-    //             glVertex3f( gridCube[xi][yi][zi].second[5][0], gridCube[xi][yi][zi].second[5][1], gridCube[xi][yi][zi].second[5][2]);
-    //             glVertex3f( gridCube[xi][yi][zi].second[4][0], gridCube[xi][yi][zi].second[4][1], gridCube[xi][yi][zi].second[4][2]);
-    //             glVertex3f( gridCube[xi][yi][zi].second[3][0], gridCube[xi][yi][zi].second[3][1], gridCube[xi][yi][zi].second[3][2]);
-    //             glVertex3f( gridCube[xi][yi][zi].second[2][0], gridCube[xi][yi][zi].second[2][1], gridCube[xi][yi][zi].second[2][2]);
-    //             glVertex3f( gridCube[xi][yi][zi].second[1][0], gridCube[xi][yi][zi].second[1][1], gridCube[xi][yi][zi].second[1][2]);
-    //             glVertex3f( gridCube[xi][yi][zi].second[0][0], gridCube[xi][yi][zi].second[0][1], gridCube[xi][yi][zi].second[0][2]);
-    //         }
-    //     }
-    // }
-
-
     glEnd();
 }
 
@@ -416,6 +391,47 @@ void drawPointSet( std::vector< Vec3 > const & i_positions , std::vector< Vec3 >
     glEnd();
 }
 
+void DUAL(int nb){
+    if (gridCube.size()==0)
+    {
+        initializeGrid(nb);   
+    }
+    glBegin(GL_POINTS);
+
+    for (int i = 0; i < gridCube.size(); i++){//x
+        for (int j = 0; j < gridCube[i].size(); j++){//y
+            for (int k = 0; k < gridCube[i][j].size(); k++){//z
+                float testdif = gridCube[i][j][k][0].first;
+                bool intru = false;
+                Vec3 mean(0,0,0);
+                for (int m = 0; m < 8; m++){ //8
+                    // fonctionImplicite(gridCube[i][j][l][m].second, positions, normals, kdtree, gridCube[i][j][l][m].first);
+                    // testdif *= gridCube[i][j][k][m].first;
+                    if (testdif*gridCube[i][j][k][m].first <0.0f)
+                    {
+                        /* code */
+                        intru = true;
+                    }
+                    
+                    mean +=gridCube[i][j][k][m].second;
+                    // std::cout<< "out : "<<gridCube[i][j][l][m].first<<std::endl;
+                }
+                if (intru )
+                {
+                    /* code */  
+                    mean/=8.0f;
+                    glVertex3f( mean[0] , mean[1] , mean[2] );                  
+                }
+
+
+                
+            }
+        }
+    }
+    glEnd();
+}
+
+
 void draw () {
     glPointSize(2); // for example...
 
@@ -426,16 +442,16 @@ void draw () {
     // glColor3f(1,0,0);
     // drawPointSet(positions2 , normals2);
 
+    // glPointSize(5); // for example...
+    // glColor3f(0,1,0);
+    // drawGridEnglobe(positions, NB_div);
+    
     glPointSize(5); // for example...
-    glColor3f(0,1,0);
-    // drawGrid(10, 0.1);
-    drawGridEnglobe(positions, 4);
+    // glColor3f(1,1,0);
+    glColor3f(1,0,0);
+    DUAL(NB_div);
+
 }
-
-
-
-
-
 
 
 
@@ -528,11 +544,6 @@ void reshape(int w, int h) {
     camera.resize (w, h);
 }
 
-Vec3 project(Vec3 input_point, Vec3 point_plane, Vec3 normal_plane)
-{
-    float d = Vec3::dot(input_point - point_plane, normal_plane)/normal_plane.length();
-    return input_point - d * normal_plane;
-}
 
 void APSS(Vec3 & inputPoint, Vec3 & outputPoint, Vec3 & outputNormal, std::vector<Vec3> const & positions, std::vector<Vec3> const & normals, BasicANNkdTree const & kdtree, int kernel_type, float h, unsigned int nbIterations=10, unsigned int knn = 20 ){
 
@@ -587,7 +598,9 @@ void HPSS(Vec3 & inputPoint, Vec3 & outputPoint, Vec3 & outputNormal, std::vecto
     float wi = 0.0;
     float w = 0.0;
 
-
+    float out;
+    // fonctionImplicite(inputPoint, positions, normals, kdtree, out);
+    // std::cout << "out " << out<< std::endl;
 
     for (int k = 0; k < nbIterations; k++)
     {
@@ -628,6 +641,7 @@ void HPSS(Vec3 & inputPoint, Vec3 & outputPoint, Vec3 & outputNormal, std::vecto
     
 }
 
+
 int main (int argc, char ** argv) {
     if (argc > 2) {
         exit (EXIT_FAILURE);
@@ -645,8 +659,8 @@ int main (int argc, char ** argv) {
     glutMouseFunc (mouse);
     key ('?', 0, 0);
 
-
     {
+
         // Load a first pointset, and build a kd-tree:
         loadPN("pointsets/igea_subsampled_extreme.pn" , positions , normals);
         // loadPN("pointsets/dino_subsampled_extreme.pn" , positions , normals);
@@ -670,17 +684,18 @@ int main (int argc, char ** argv) {
             positions2[pIt] = 0.6 * positions2[pIt];
         }
 
-        // PROJECT USING MLS (HPSS and APSS):
-        // TODO
+
+        
+        
+
         for( unsigned int pIt = 0 ; pIt < positions2.size() ; ++pIt ) {
             // Vec3 outputPoint; 
             // Vec3 outPutNormal;
             HPSS(positions2[pIt], positions2[pIt], normals2[pIt],  positions, normals, kdtree, 0 , 20);
             // positions2[pIt] = outputPoint;
             // normals2[pIt] = outPutNormal;
-
-
         }
+        drawGrid(5.0f, 8);
     }
 
     glutMainLoop ();
