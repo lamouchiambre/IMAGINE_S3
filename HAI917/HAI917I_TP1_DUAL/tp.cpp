@@ -56,7 +56,7 @@ static bool mouseMovePressed = false;
 static bool mouseZoomPressed = false;
 static int lastX=0, lastY=0, lastZoom=0;
 static bool fullScreen = false;
-static int NB_div = 68;
+static int NB_div = 128;
 
 struct Plane
 {
@@ -251,7 +251,9 @@ void  getBoite(std::vector< Vec3 > const & i_positions , Vec3  &dimMIN, Vec3  &d
         dimMAX[1] = i_positions[i][1] > dimMAX[1] ?  i_positions[i][1] : dimMAX[1];
         dimMAX[2] = i_positions[i][2] > dimMAX[2] ?  i_positions[i][2] : dimMAX[2];
     }
-    
+    dimMIN -= Vec3(0.1,0.1,0.1);
+    dimMAX += Vec3(0.1,0.1,0.1);
+
 }
 
 void initializeGrid(int nb){
@@ -304,13 +306,14 @@ void initializeGrid(int nb){
             {
                 std::vector<std::pair<float, Vec3>> tmpCube  = {
                         std::pair<float, Vec3>(0.0f, Vec3( dimMIN[0]+pasX*xi, dimMIN[1]+pasY*yi, dimMIN[2]+pasZ*zi)),
-                        std::pair<float, Vec3>(0.0f,Vec3( dimMIN[0]+pasX*xi+pasX, dimMIN[1]+pasY*yi, dimMIN[2]+pasZ*zi)),
-                        std::pair<float, Vec3>(0.0f,Vec3( dimMIN[0]+pasX*xi, dimMIN[1]+pasY*yi+pasY, dimMIN[2]+pasZ*zi)),
-                        std::pair<float, Vec3>(0.0f,Vec3( dimMIN[0]+pasX*xi+pasX, dimMIN[1]+pasY*yi+pasY, dimMIN[2]+pasZ*zi)),
-                        std::pair<float, Vec3>(0.0f,Vec3( dimMIN[0]+pasX*xi, dimMIN[1]+pasY*yi, dimMIN[2]+pasZ*zi+pasZ)),
-                        std::pair<float, Vec3>(0.0f,Vec3( dimMIN[0]+pasX*xi, dimMIN[1]+pasY*yi+pasY, dimMIN[2]+pasZ*zi+pasZ)),
-                        std::pair<float, Vec3>(0.0f,Vec3( dimMIN[0]+pasX*xi+pasX, dimMIN[1]+pasY*yi, dimMIN[2]+pasZ*zi+pasZ)),
-                        std::pair<float, Vec3>(0.0f,Vec3( dimMIN[0]+pasX*xi+pasX, dimMIN[1]+pasY*yi+pasY, dimMIN[2]+pasZ*zi+pasZ))
+                        std::pair<float, Vec3>(0.0f,Vec3( dimMIN[0]+pasX*(xi +1), dimMIN[1]+pasY*yi, dimMIN[2]+pasZ*zi)),
+                        std::pair<float, Vec3>(0.0f,Vec3( dimMIN[0]+pasX*(xi +1), dimMIN[1]+pasY*(yi+1), dimMIN[2]+pasZ*zi)),
+                        std::pair<float, Vec3>(0.0f,Vec3( dimMIN[0]+pasX*xi, dimMIN[1]+pasY*(yi+1), dimMIN[2]+pasZ*zi)),
+
+                        std::pair<float, Vec3>(0.0f,Vec3( dimMIN[0]+pasX*xi, dimMIN[1]+pasY*yi, dimMIN[2]+pasZ*(zi+1))),
+                        std::pair<float, Vec3>(0.0f,Vec3( dimMIN[0]+pasX*(xi +1), dimMIN[1]+pasY*yi, dimMIN[2]+pasZ*(zi+1))),
+                        std::pair<float, Vec3>(0.0f,Vec3( dimMIN[0]+pasX*(xi +1), dimMIN[1]+pasY*(yi+1), dimMIN[2]+pasZ*(zi+1))),
+                        std::pair<float, Vec3>(0.0f,Vec3( dimMIN[0]+pasX*xi, dimMIN[1]+pasY*(yi+1), dimMIN[2]+pasZ*(zi+1)))
                     };
                 for (int i = 0; i < 8; i++)
                 {
@@ -340,16 +343,21 @@ void drawGridEnglobe(std::vector< Vec3 > const & i_positions, int nb){
     
 
     glBegin(GL_POINTS);
-    for (int xi = 0; xi < nb; xi += 1)
-    {
-        for (int yi = 0; yi < nb; yi+= 1)
-        {
-            for (int zi = 0; zi < nb; zi += 1)
-            {
-                glVertex3f( gridCube[xi][yi][zi][0].second[0], gridCube[xi][yi][zi][0].second[1], gridCube[xi][yi][zi][0].second[2]);
-            }   
-        }    
-    }
+    // for (int xi = 0; xi < nb; xi += 1)
+    // {
+    //     for (int yi = 0; yi < nb; yi+= 1)
+    //     {
+    //         for (int zi = 0; zi < nb; zi += 1)
+    //         {
+    //             glVertex3f( gridCube[xi][yi][zi][0].second[0], gridCube[xi][yi][zi][0].second[1], gridCube[xi][yi][zi][0].second[2]);
+    //         }   
+    //     }    
+    // }
+    // glVertex3f( gridCube[0][0][0][0].second[0], gridCube[0][0][0][0].second[1], gridCube[0][0][0][0].second[2]);
+    // glVertex3f( gridCube[0][0][0][1].second[0], gridCube[0][0][0][1].second[1], gridCube[0][0][0][1].second[2]);
+    // glVertex3f( gridCube[0][0][0][2].second[0], gridCube[0][0][0][2].second[1], gridCube[0][0][0][2].second[2]);
+    // glVertex3f( gridCube[0][0][0][3].second[0], gridCube[0][0][0][3].second[1], gridCube[0][0][0][3].second[2]);
+
     glEnd();
 }
 
@@ -390,14 +398,201 @@ void drawPointSet( std::vector< Vec3 > const & i_positions , std::vector< Vec3 >
     }
     glEnd();
 }
+Vec3 meanCube(std::vector<std::pair<float, Vec3>> all_sommets){
+    Vec3 mean(0.0f, 0.0f, 0.0f);
+    for (int i = 0; i < all_sommets.size(); i++)
+    {
+        /* code */
+        mean += all_sommets[i].second;
+    }
+    mean /=8.0f;
+    
+    return mean;
+}
+
+void construirefaceLINE(int x, int y, int z, int axe){
+    //glBegin(GL_TRIANGLES);
+   // 
+
+    if (axe == 0 )//x
+    {
+        /* code */  
+        Vec3 vertex1 = meanCube(gridCube[x][y][z-1]);
+        Vec3 vertex2 = meanCube(gridCube[x][y][z]);
+        Vec3 vertex3 = meanCube(gridCube[x][y-1][z]);
+        Vec3 vertex4 = meanCube(gridCube[x][y-1][z-1]);
+
+        glNormal3f( vertex1[0] , vertex1[1] , vertex1[2]);
+        glVertex3f( vertex1[0] , vertex1[1] , vertex1[2] );
+
+        glNormal3f( vertex2[0] , vertex2[1] , vertex2[2]);
+        glVertex3f( vertex2[0] , vertex2[1] , vertex2[2] );
+
+        glNormal3f( vertex2[0] , vertex2[1] , vertex2[2]);
+        glVertex3f( vertex2[0] , vertex2[1] , vertex2[2] );
+        glVertex3f( vertex3[0] , vertex3[1] , vertex3[2] );
+        
+        glNormal3f( vertex3[0] , vertex3[1] , vertex3[2]);
+        glVertex3f( vertex3[0] , vertex3[1] , vertex3[2] );
+        glVertex3f( vertex4[0] , vertex4[1] , vertex4[2] );
+
+        glNormal3f( vertex4[0] , vertex4[1] , vertex4[2]);
+        glVertex3f( vertex4[0] , vertex4[1] , vertex4[2] );
+        glVertex3f( vertex1[0] , vertex1[1] , vertex1[2] );
+
+        glNormal3f( vertex1[0] , vertex1[1] , vertex1[2]);
+        glVertex3f( vertex1[0] , vertex1[1] , vertex1[2] );
+        glVertex3f( vertex3[0] , vertex3[1] , vertex3[2] );
+
+    }else
+    {
+        if (axe == 1)//y
+        {
+            Vec3 vertex1 = meanCube(gridCube[x][y][z-1]);
+            Vec3 vertex2 = meanCube(gridCube[x][y][z]);
+            Vec3 vertex3 = meanCube(gridCube[x-1][y][z]);
+            Vec3 vertex4 = meanCube(gridCube[x-1][y][z-1]);
+
+            // glVertex3f( vertex1[0] , vertex1[1] , vertex1[2] );
+            // glVertex3f( vertex2[0] , vertex2[1] , vertex2[2] );
+
+            // glVertex3f( vertex2[0] , vertex2[1] , vertex2[2] );
+            // glVertex3f( vertex3[0] , vertex3[1] , vertex3[2] );
+            
+            // glVertex3f( vertex3[0] , vertex3[1] , vertex3[2] );
+            // glVertex3f( vertex4[0] , vertex4[1] , vertex4[2] );
+
+            // glVertex3f( vertex4[0] , vertex4[1] , vertex4[2] );
+            // glVertex3f( vertex1[0] , vertex1[1] , vertex1[2] );
+
+            // glVertex3f( vertex1[0] , vertex1[1] , vertex1[2] );
+            // glVertex3f( vertex3[0] , vertex3[1] , vertex3[2] );
+            
+            glNormal3f( vertex1[0] , vertex1[1] , vertex1[2]);
+            glVertex3f( vertex1[0] , vertex1[1] , vertex1[2] );
+
+            glNormal3f( vertex2[0] , vertex2[1] , vertex2[2]);
+            glVertex3f( vertex2[0] , vertex2[1] , vertex2[2] );
+
+            glNormal3f( vertex2[0] , vertex2[1] , vertex2[2]);
+            glVertex3f( vertex2[0] , vertex2[1] , vertex2[2] );
+            glVertex3f( vertex3[0] , vertex3[1] , vertex3[2] );
+            
+            glNormal3f( vertex3[0] , vertex3[1] , vertex3[2]);
+            glVertex3f( vertex3[0] , vertex3[1] , vertex3[2] );
+            glVertex3f( vertex4[0] , vertex4[1] , vertex4[2] );
+
+            glNormal3f( vertex4[0] , vertex4[1] , vertex4[2]);
+            glVertex3f( vertex4[0] , vertex4[1] , vertex4[2] );
+            glVertex3f( vertex1[0] , vertex1[1] , vertex1[2] );
+
+            glNormal3f( vertex1[0] , vertex1[1] , vertex1[2]);
+            glVertex3f( vertex1[0] , vertex1[1] , vertex1[2] );
+        glVertex3f( vertex3[0] , vertex3[1] , vertex3[2] );
+        }else //z
+        {
+            Vec3 vertex1 = meanCube(gridCube[x][y-1][z]);
+            Vec3 vertex2 = meanCube(gridCube[x-1][y-1][z]);
+            Vec3 vertex3 = meanCube(gridCube[x][y][z]);
+            Vec3 vertex4 = meanCube(gridCube[x-1][y][z]);
+
+            glNormal3f( vertex1[0] , vertex1[1] , vertex1[2]);
+            glVertex3f( vertex1[0] , vertex1[1] , vertex1[2] );
+
+            glNormal3f( vertex2[0] , vertex2[1] , vertex2[2]);
+            glVertex3f( vertex2[0] , vertex2[1] , vertex2[2] );
+
+            glNormal3f( vertex2[0] , vertex2[1] , vertex2[2]);
+            glVertex3f( vertex2[0] , vertex2[1] , vertex2[2] );
+            glVertex3f( vertex3[0] , vertex3[1] , vertex3[2] );
+            
+            glNormal3f( vertex3[0] , vertex3[1] , vertex3[2]);
+            glVertex3f( vertex3[0] , vertex3[1] , vertex3[2] );
+            glVertex3f( vertex4[0] , vertex4[1] , vertex4[2] );
+
+            glNormal3f( vertex4[0] , vertex4[1] , vertex4[2]);
+            glVertex3f( vertex4[0] , vertex4[1] , vertex4[2] );
+            glVertex3f( vertex1[0] , vertex1[1] , vertex1[2] );
+
+            glNormal3f( vertex1[0] , vertex1[1] , vertex1[2]);
+            glVertex3f( vertex1[0] , vertex1[1] , vertex1[2] );
+            glVertex3f( vertex3[0] , vertex3[1] , vertex3[2] );
+        }        
+    }
+}
+
+
+void construireface(int x, int y, int z, int axe){
+    //glBegin(GL_TRIANGLES);
+   // 
+
+    if (axe == 0 )//x
+    {
+        /* code */  
+        Vec3 vertex1 = meanCube(gridCube[x][y][z-1]);
+        Vec3 vertex2 = meanCube(gridCube[x][y][z]);
+        Vec3 vertex3 = meanCube(gridCube[x][y-1][z]);
+        Vec3 vertex4 = meanCube(gridCube[x][y-1][z-1]);
+
+        glNormal3f( vertex1[0] , vertex1[1] , vertex1[2]);
+        glVertex3f( vertex1[0] , vertex1[1] , vertex1[2] );
+        glVertex3f( vertex2[0] , vertex2[1] , vertex2[2] );
+        glVertex3f( vertex3[0] , vertex3[1] , vertex3[2] );
+
+        glNormal3f( vertex3[0] , vertex3[1] , vertex3[2]);
+        glVertex3f( vertex3[0] , vertex3[1] , vertex3[2] );
+        glVertex3f( vertex4[0] , vertex4[1] , vertex4[2] );
+        glVertex3f( vertex1[0] , vertex1[1] , vertex1[2] );
+
+
+    }else
+    {
+        if (axe == 1)//y
+        {
+            Vec3 vertex1 = meanCube(gridCube[x][y][z-1]);
+            Vec3 vertex2 = meanCube(gridCube[x][y][z]);
+            Vec3 vertex3 = meanCube(gridCube[x-1][y][z]);
+            Vec3 vertex4 = meanCube(gridCube[x-1][y][z-1]);
+
+            glNormal3f( vertex1[0] , vertex1[1] , vertex1[2]);
+            glVertex3f( vertex1[0] , vertex1[1] , vertex1[2] );
+            glVertex3f( vertex2[0] , vertex2[1] , vertex2[2] );
+            glVertex3f( vertex3[0] , vertex3[1] , vertex3[2] );
+    
+            glNormal3f( vertex3[0] , vertex3[1] , vertex3[2]);
+            glVertex3f( vertex3[0] , vertex3[1] , vertex3[2] );
+            glVertex3f( vertex4[0] , vertex4[1] , vertex4[2] );
+            glVertex3f( vertex1[0] , vertex1[1] , vertex1[2] );
+        }else //z
+        {
+            Vec3 vertex1 = meanCube(gridCube[x][y-1][z]);
+            Vec3 vertex2 = meanCube(gridCube[x-1][y-1][z]);
+            Vec3 vertex3 = meanCube(gridCube[x][y][z]);
+            Vec3 vertex4 = meanCube(gridCube[x-1][y][z]);
+
+            glNormal3f( vertex1[0] , vertex1[1] , vertex1[2]);
+            glVertex3f( vertex1[0] , vertex1[1] , vertex1[2] );
+            glVertex3f( vertex2[0] , vertex2[1] , vertex2[2] );
+            glVertex3f( vertex3[0] , vertex3[1] , vertex3[2] );
+
+            glNormal3f( vertex3[0] , vertex3[1] , vertex3[2]);
+            glVertex3f( vertex3[0] , vertex3[1] , vertex3[2] );
+            glVertex3f( vertex4[0] , vertex4[1] , vertex4[2] );
+            glVertex3f( vertex1[0] , vertex1[1] , vertex1[2] );
+        }        
+    }
+}
+
+
 
 void DUAL(int nb){
     if (gridCube.size()==0)
     {
         initializeGrid(nb);   
     }
-    glBegin(GL_POINTS);
 
+    glBegin(GL_LINES);
+    // glBegin(GL_POINTS);
     for (int i = 0; i < gridCube.size(); i++){//x
         for (int j = 0; j < gridCube[i].size(); j++){//y
             for (int k = 0; k < gridCube[i][j].size(); k++){//z
@@ -407,7 +602,7 @@ void DUAL(int nb){
                 for (int m = 0; m < 8; m++){ //8
                     // fonctionImplicite(gridCube[i][j][l][m].second, positions, normals, kdtree, gridCube[i][j][l][m].first);
                     // testdif *= gridCube[i][j][k][m].first;
-                    if (testdif*gridCube[i][j][k][m].first <0.0f)
+                    if (testdif*gridCube[i][j][k][m].first < 0.0f)
                     {
                         /* code */
                         intru = true;
@@ -420,7 +615,20 @@ void DUAL(int nb){
                 {
                     /* code */  
                     mean/=8.0f;
-                    glVertex3f( mean[0] , mean[1] , mean[2] );                  
+                    // glVertex3f( mean[0] , mean[1] , mean[2] );     
+                    if (gridCube[i][j][k][0].first*gridCube[i][j][k][1].first <0.0f)
+                    {
+                        construirefaceLINE(i, j, k, 0);
+                    }
+                    if (gridCube[i][j][k][0].first*gridCube[i][j][k][3].first < 0.0f)
+                    {
+                        construirefaceLINE(i, j, k, 1);
+                    }
+                    if (gridCube[i][j][k][0].first*gridCube[i][j][k][4].first <0.0f)
+                    {
+                        construirefaceLINE(i, j, k, 2);
+                    }
+                                 
                 }
 
 
@@ -430,29 +638,67 @@ void DUAL(int nb){
     }
     glEnd();
 }
+void drawVertex(){
+    glBegin( GL_TRIANGLES);
+        // glPolygonMode (GL_FRONT_AND_BACK, GL_LINE); GL_QUADS
+
+        glPointSize(5); // for example...
+
+        glColor3f(1,0,1);
+        glVertex3f( gridCube[0][0][0][0].second[0], gridCube[0][0][0][0].second[1], gridCube[0][0][0][0].second[2]);
+        glVertex3f( gridCube[0][0][0][1].second[0], gridCube[0][0][0][1].second[1], gridCube[0][0][0][1].second[2]);
+        glVertex3f( gridCube[0][0][0][2].second[0], gridCube[0][0][0][2].second[1], gridCube[0][0][0][2].second[2]);
+
+        glColor3f(1,1,1);
+        glVertex3f( gridCube[0][0][0][2].second[0], gridCube[0][0][0][2].second[1], gridCube[0][0][0][2].second[2]);
+        glVertex3f( gridCube[0][0][0][3].second[0], gridCube[0][0][0][3].second[1], gridCube[0][0][0][3].second[2]);
+        glVertex3f( gridCube[0][0][0][0].second[0], gridCube[0][0][0][0].second[1], gridCube[0][0][0][0].second[2]);
+
+        glColor3f(1,0,1);
+        glVertex3f( gridCube[1][0][0][0].second[0], gridCube[1][0][0][0].second[1], gridCube[1][0][0][0].second[2]);
+        glVertex3f( gridCube[1][0][0][1].second[0], gridCube[1][0][0][1].second[1], gridCube[1][0][0][1].second[2]);
+        glVertex3f( gridCube[1][0][0][2].second[0], gridCube[1][0][0][2].second[1], gridCube[1][0][0][2].second[2]);
+
+        glColor3f(1,1,1);
+        glVertex3f( gridCube[0][0][0][2].second[0], gridCube[0][0][0][2].second[1], gridCube[0][0][0][2].second[2]);
+        glVertex3f( gridCube[0][0][0][3].second[0], gridCube[0][0][0][3].second[1], gridCube[0][0][0][3].second[2]);
+        glVertex3f( gridCube[0][0][0][0].second[0], gridCube[0][0][0][0].second[1], gridCube[0][0][0][0].second[2]);
+
+        // glColor3f(1,0,1);
+        // glVertex3f( gridCube[0][0][0][4].second[0], gridCube[0][0][0][4].second[1], gridCube[0][0][0][4].second[2]);
+        // glVertex3f( gridCube[0][0][0][5].second[0], gridCube[0][0][0][5].second[1], gridCube[0][0][0][5].second[2]);
+        // glVertex3f( gridCube[0][0][0][6].second[0], gridCube[0][0][0][6].second[1], gridCube[0][0][0][6].second[2]);
+
+        // glColor3f(1,1,1);
+        // glVertex3f( gridCube[0][0][0][6].second[0], gridCube[0][0][0][6].second[1], gridCube[0][0][0][6].second[2]);
+        // glVertex3f( gridCube[0][0][0][7].second[0], gridCube[0][0][0][7].second[1], gridCube[0][0][0][7].second[2]);
+        // glVertex3f( gridCube[0][0][0][4].second[0], gridCube[0][0][0][4].second[1], gridCube[0][0][0][4].second[2]);
+    glEnd();
+}
 
 
 void draw () {
-    glPointSize(2); // for example...
+    // glPointSize(2); // for example...
 
-    glColor3f(0.8,0.8,1);
-    drawPointSet(positions , normals);
+    // glColor3f(0.8,0.8,1);
+    // drawPointSet(positions , normals);
 
     // glPointSize(5); // for example...
     // glColor3f(1,0,0);
     // drawPointSet(positions2 , normals2);
 
-    // glPointSize(5); // for example...
-    // glColor3f(0,1,0);
-    // drawGridEnglobe(positions, NB_div);
+    glPointSize(5); // for example...
+    glColor3f(0,1,0);
+    drawGridEnglobe(positions, NB_div);
     
     glPointSize(5); // for example...
-    // glColor3f(1,1,0);
-    glColor3f(1,0,0);
+    glColor3f(1,1,0);
+    glColor3f(1,0,1);
     DUAL(NB_div);
 
-}
+    drawVertex();
 
+}
 
 
 void display () {
