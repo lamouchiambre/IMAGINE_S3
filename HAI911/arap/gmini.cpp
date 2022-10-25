@@ -273,28 +273,30 @@ void updateMeshVertexPositionsFromARAPSolver() {
 
 
 
-        // return; // TODO : COMMENT THIS LINE WHEN YOU CONTINUE THE EXERCISE (update of the rotation matrices -- auxiliary variables)
+        //  return; // TODO : COMMENT THIS LINE WHEN YOU CONTINUE THE EXERCISE (update of the rotation matrices -- auxiliary variables)
 
 
 
         // 2 SECOND : UPDATE THE ROTATION MATRICES
+
         for( unsigned int v = 0 ; v < mesh.V.size() ; ++v ) {
-            Eigen::MatrixXd tensorMatrix = Eigen::MatrixXd::Zero(3,3);
+            Eigen::MatrixXd newRotationMatrix = Eigen::MatrixXd::Zero(3,3);
             for( std::map< unsigned int , double >::const_iterator it = edgeAndVertexWeights.get_weight_of_adjacent_edges_it_begin(v) ;
                  it != edgeAndVertexWeights.get_weight_of_adjacent_edges_it_end(v) ; ++it) {
                 unsigned int vNeighbor = it->first;
                 Eigen::VectorXd initialEdge(3);
                 Eigen::VectorXd rotatedEdge(3);
                 for( unsigned int coord = 0 ; coord < 3 ; ++coord ) {
-                    initialEdge[coord] = mesh.V[vNeighbor].pInit[coord]  -  mesh.V[v].pInit[coord]; //ej
-                    rotatedEdge[coord] = mesh.V[vNeighbor].p[coord]  -  mesh.V[v].p[coord]; //ej'
+                    initialEdge[coord] = mesh.V[vNeighbor].pInit[coord]  -  mesh.V[v].pInit[coord];
+                    rotatedEdge[coord] = mesh.V[vNeighbor].p[coord]  -  mesh.V[v].p[coord];
                 }
-                tensorMatrix += initialEdge + rotatedEdge;
-                // WHAT TO PUT HERE ??????? How to update the entries of the tensor matrix ?
-
-
+                for( unsigned int coord = 0 ; coord < 3 ; ++coord ) {
+                    for( unsigned int coord2 = 0 ; coord2 < 3 ; ++coord2 ) {
+                        newRotationMatrix(coord , coord2) += initialEdge[coord2] * rotatedEdge[coord];
+                    }
+                }
             }
-            vertexRotationMatrices[v] = getClosestRotation( tensorMatrix );
+            vertexRotationMatrices[v] = getClosestRotation( newRotationMatrix );
         }
     }
 }
@@ -305,27 +307,6 @@ void updateMeshVertexPositionsFromARAPSolver() {
 //-----------------------------------------------------------------------------------//
 //-----------------------------------------------------------------------------------//
 //-----------------------------------------------------------------------------------//
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
