@@ -39,8 +39,8 @@ std::vector< Vec3 > positions2;
 std::vector< Vec3 > normals2;
 
 std::vector<std::vector<std::vector<std::vector<std::pair<float, Vec3>>>>> gridCube;
-std::vector<std::vector<std::vector<std::vector<std::pair<float, Vec3>>>>> gridCube2;
-
+std::vector<std::vector<std::vector<std::vector<Vec3>>>> gridCubePoint;
+std::vector<std::vector<std::vector<std::vector<Vec3>>>> gridCubeNormal;
 
 
 // -------------------------------------------
@@ -56,7 +56,7 @@ static bool mouseMovePressed = false;
 static bool mouseZoomPressed = false;
 static int lastX=0, lastY=0, lastZoom=0;
 static bool fullScreen = false;
-static int NB_div = 128;
+static int NB_div = 32;
 
 struct Plane
 {
@@ -343,21 +343,17 @@ void drawGridEnglobe(std::vector< Vec3 > const & i_positions, int nb){
     
 
     glBegin(GL_POINTS);
-    // for (int xi = 0; xi < nb; xi += 1)
-    // {
-    //     for (int yi = 0; yi < nb; yi+= 1)
-    //     {
-    //         for (int zi = 0; zi < nb; zi += 1)
-    //         {
-    //             glVertex3f( gridCube[xi][yi][zi][0].second[0], gridCube[xi][yi][zi][0].second[1], gridCube[xi][yi][zi][0].second[2]);
-    //         }   
-    //     }    
-    // }
-    // glVertex3f( gridCube[0][0][0][0].second[0], gridCube[0][0][0][0].second[1], gridCube[0][0][0][0].second[2]);
-    // glVertex3f( gridCube[0][0][0][1].second[0], gridCube[0][0][0][1].second[1], gridCube[0][0][0][1].second[2]);
-    // glVertex3f( gridCube[0][0][0][2].second[0], gridCube[0][0][0][2].second[1], gridCube[0][0][0][2].second[2]);
-    // glVertex3f( gridCube[0][0][0][3].second[0], gridCube[0][0][0][3].second[1], gridCube[0][0][0][3].second[2]);
-
+    for (int xi = 0; xi < nb; xi += 1)
+    {
+        for (int yi = 0; yi < nb; yi+= 1)
+        {
+            for (int zi = 0; zi < nb; zi += 1)
+            {
+                glNormal3f( gridCube[xi][yi][zi][0].second[0], gridCube[xi][yi][zi][0].second[1], gridCube[xi][yi][zi][0].second[2]);
+                glVertex3f( gridCube[xi][yi][zi][0].second[0], gridCube[xi][yi][zi][0].second[1], gridCube[xi][yi][zi][0].second[2]);
+            }   
+        }    
+    }
     glEnd();
 }
 
@@ -398,11 +394,11 @@ void drawPointSet( std::vector< Vec3 > const & i_positions , std::vector< Vec3 >
     }
     glEnd();
 }
+
 Vec3 meanCube(std::vector<std::pair<float, Vec3>> all_sommets){
     Vec3 mean(0.0f, 0.0f, 0.0f);
     for (int i = 0; i < all_sommets.size(); i++)
     {
-        /* code */
         mean += all_sommets[i].second;
     }
     mean /=8.0f;
@@ -411,12 +407,9 @@ Vec3 meanCube(std::vector<std::pair<float, Vec3>> all_sommets){
 }
 
 void construirefaceLINE(int x, int y, int z, int axe){
-    //glBegin(GL_TRIANGLES);
-   // 
 
     if (axe == 0 )//x
     {
-        /* code */  
         Vec3 vertex1 = meanCube(gridCube[x][y][z-1]);
         Vec3 vertex2 = meanCube(gridCube[x][y][z]);
         Vec3 vertex3 = meanCube(gridCube[x][y-1][z]);
@@ -453,21 +446,6 @@ void construirefaceLINE(int x, int y, int z, int axe){
             Vec3 vertex3 = meanCube(gridCube[x-1][y][z]);
             Vec3 vertex4 = meanCube(gridCube[x-1][y][z-1]);
 
-            // glVertex3f( vertex1[0] , vertex1[1] , vertex1[2] );
-            // glVertex3f( vertex2[0] , vertex2[1] , vertex2[2] );
-
-            // glVertex3f( vertex2[0] , vertex2[1] , vertex2[2] );
-            // glVertex3f( vertex3[0] , vertex3[1] , vertex3[2] );
-            
-            // glVertex3f( vertex3[0] , vertex3[1] , vertex3[2] );
-            // glVertex3f( vertex4[0] , vertex4[1] , vertex4[2] );
-
-            // glVertex3f( vertex4[0] , vertex4[1] , vertex4[2] );
-            // glVertex3f( vertex1[0] , vertex1[1] , vertex1[2] );
-
-            // glVertex3f( vertex1[0] , vertex1[1] , vertex1[2] );
-            // glVertex3f( vertex3[0] , vertex3[1] , vertex3[2] );
-            
             glNormal3f( vertex1[0] , vertex1[1] , vertex1[2]);
             glVertex3f( vertex1[0] , vertex1[1] , vertex1[2] );
 
@@ -521,10 +499,7 @@ void construirefaceLINE(int x, int y, int z, int axe){
     }
 }
 
-
 void construireface(int x, int y, int z, int axe){
-    //glBegin(GL_TRIANGLES);
-   // 
 
     if (axe == 0 )//x
     {
@@ -592,7 +567,6 @@ void DUAL(int nb){
     }
 
     glBegin(GL_LINES);
-    // glBegin(GL_POINTS);
     for (int i = 0; i < gridCube.size(); i++){//x
         for (int j = 0; j < gridCube[i].size(); j++){//y
             for (int k = 0; k < gridCube[i][j].size(); k++){//z
@@ -600,22 +574,18 @@ void DUAL(int nb){
                 bool intru = false;
                 Vec3 mean(0,0,0);
                 for (int m = 0; m < 8; m++){ //8
-                    // fonctionImplicite(gridCube[i][j][l][m].second, positions, normals, kdtree, gridCube[i][j][l][m].first);
-                    // testdif *= gridCube[i][j][k][m].first;
+
                     if (testdif*gridCube[i][j][k][m].first < 0.0f)
                     {
-                        /* code */
                         intru = true;
                     }
                     
                     mean +=gridCube[i][j][k][m].second;
-                    // std::cout<< "out : "<<gridCube[i][j][l][m].first<<std::endl;
                 }
                 if (intru )
                 {
-                    /* code */  
                     mean/=8.0f;
-                    // glVertex3f( mean[0] , mean[1] , mean[2] );     
+ 
                     if (gridCube[i][j][k][0].first*gridCube[i][j][k][1].first <0.0f)
                     {
                         construirefaceLINE(i, j, k, 0);
@@ -629,15 +599,13 @@ void DUAL(int nb){
                         construirefaceLINE(i, j, k, 2);
                     }
                                  
-                }
-
-
-                
+                } 
             }
         }
     }
     glEnd();
 }
+
 void drawVertex(){
     glBegin( GL_TRIANGLES);
         // glPolygonMode (GL_FRONT_AND_BACK, GL_LINE); GL_QUADS
@@ -680,19 +648,18 @@ void drawVertex(){
 void draw () {
     // glPointSize(2); // for example...
 
-    // glColor3f(0.8,0.8,1);
-    // drawPointSet(positions , normals);
+    glColor3f(0.8,0.8,1);
+    drawPointSet(positions , normals);
 
-    // glPointSize(5); // for example...
+    // glPointSize(1); // for example...
     // glColor3f(1,0,0);
     // drawPointSet(positions2 , normals2);
 
-    glPointSize(5); // for example...
-    glColor3f(0,1,0);
-    drawGridEnglobe(positions, NB_div);
+    // glPointSize(1); // for example...
+    // glColor3f(0,1,0);
+    // drawGridEnglobe(positions, NB_div);
     
-    glPointSize(5); // for example...
-    glColor3f(1,1,0);
+    glPointSize(1); // for example...
     glColor3f(1,0,1);
     DUAL(NB_div);
 
@@ -801,15 +768,10 @@ void APSS(Vec3 & inputPoint, Vec3 & outputPoint, Vec3 & outputNormal, std::vecto
 
     for (int k = 0; k < nbIterations; k++)
     {
-        /* code */
-
         kdtree.knearest(x , knn , id_nearest_neighbors , square_distances_to_neighbors);
 
         Vec3 c(0,0,0);
         Vec3 n(0,0,0);
-
-
-        // Vec3 cov(0,0,0);
 
         for (int i = 0; i < knn; i++)
         {
@@ -822,14 +784,10 @@ void APSS(Vec3 & inputPoint, Vec3 & outputPoint, Vec3 & outputNormal, std::vecto
         outputNormal = n;
     }
 
-
-    
     std::vector<Vec3> projectP = std::vector<Vec3>();
 
     delete [] id_nearest_neighbors;
     delete [] square_distances_to_neighbors;
-
-    
 }
 
 void HPSS(Vec3 & inputPoint, Vec3 & outputPoint, Vec3 & outputNormal, std::vector<Vec3> const & positions, std::vector<Vec3> const & normals, BasicANNkdTree const & kdtree, int kernel_type, float h, unsigned int nbIterations=1, unsigned int knn = 20 ){
@@ -861,7 +819,6 @@ void HPSS(Vec3 & inputPoint, Vec3 & outputPoint, Vec3 & outputNormal, std::vecto
 
         for (int i = 0; i < knn; i++)
         {
-            // std::cout << "inputPoint" << inputPoint << "id_nearest_neighbors" <<  positions[id_nearest_neighbors[i]]<<std::endl;
             ni = normals[id_nearest_neighbors[i]];
             p = x - (x.dot( x - positions[id_nearest_neighbors[i]],ni))*ni;
 
@@ -871,20 +828,16 @@ void HPSS(Vec3 & inputPoint, Vec3 & outputPoint, Vec3 & outputNormal, std::vecto
 
             c += wi*p;
             n += wi*ni;
-
-
-            // pi.push_back(p);
         }
+
         c /= w;
         n /= w;
 
         x = project(x, c, n); 
-        // x = c; 
 
         outputPoint = x;
         outputNormal = n;
     }
-    
 }
 
 

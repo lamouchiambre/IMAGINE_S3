@@ -257,16 +257,13 @@ void drawPointSet( std::vector< Vec3 > const & i_positions , std::vector< Vec3 >
 void draw () {
     glPointSize(2); // for example...
 
-    // glColor3f(0.8,0.8,1);
-    // drawPointSet(positions , normals);
+    glColor3f(0.8,0.8,1);
+    drawPointSet(positions , normals);
 
     glPointSize(5); // for example...
     glColor3f(1,0,0);
     drawPointSet(positions2 , normals2);
 
-    glPointSize(5); // for example...
-    glColor3f(1,1,1);
-    drawGrid(10, 0.1);
 }
 
 
@@ -371,7 +368,7 @@ Vec3 project(Vec3 input_point, Vec3 point_plane, Vec3 normal_plane)
     return input_point - d * normal_plane;
 }
 
-void APSS(Vec3 & inputPoint, Vec3 & outputPoint, Vec3 & outputNormal, std::vector<Vec3> const & positions, std::vector<Vec3> const & normals, BasicANNkdTree const & kdtree, int kernel_type, float h, unsigned int nbIterations=10, unsigned int knn = 20 ){
+void MLS(Vec3 & inputPoint, Vec3 & outputPoint, Vec3 & outputNormal, std::vector<Vec3> const & positions, std::vector<Vec3> const & normals, BasicANNkdTree const & kdtree, int kernel_type, float h, unsigned int nbIterations=10, unsigned int knn = 20 ){
 
     //fonction de projection sur un plan (un point et une normal)
     //realisation d'une iteration de i de 0 à nbIterations
@@ -412,10 +409,8 @@ void APSS(Vec3 & inputPoint, Vec3 & outputPoint, Vec3 & outputNormal, std::vecto
     
 }
 
-void HPSS(Vec3 & inputPoint, Vec3 & outputPoint, Vec3 & outputNormal, std::vector<Vec3> const & positions, std::vector<Vec3> const & normals, BasicANNkdTree const & kdtree, int kernel_type, float h, unsigned int nbIterations=1, unsigned int knn = 20 ){
+void HPSS(Vec3 & inputPoint, Vec3 & outputPoint, Vec3 & outputNormal, std::vector<Vec3> const & positions, std::vector<Vec3> const & normals, BasicANNkdTree const & kdtree, int kernel_type, float h, unsigned int nbIterations=10, unsigned int knn = 20 ){
 
-    //fonction de projection sur un plan (un point et une normal)
-    //realisation d'une iteration de i de 0 à nbIterations
     ANNidxArray id_nearest_neighbors = new ANNidx[knn];
     ANNdistArray square_distances_to_neighbors = new ANNdist[knn];
     Vec3 x = inputPoint;
@@ -423,8 +418,6 @@ void HPSS(Vec3 & inputPoint, Vec3 & outputPoint, Vec3 & outputNormal, std::vecto
     float r = 0.0;
     float wi = 0.0;
     float w = 0.0;
-
-
 
     for (int k = 0; k < nbIterations; k++)
     {
@@ -486,7 +479,7 @@ int main (int argc, char ** argv) {
 
     {
         // Load a first pointset, and build a kd-tree:
-        // loadPN("pointsets/igea_subsampled_extreme.pn" , positions , normals);
+        // loadPN("pointsets/igea.pn" , positions , normals);
         // loadPN("pointsets/dino_subsampled_extreme.pn" , positions , normals);
         loadPN("pointsets/dino.pn" , positions , normals);
 
@@ -508,12 +501,14 @@ int main (int argc, char ** argv) {
             positions2[pIt] = 0.6 * positions2[pIt];
         }
 
-        // PROJECT USING MLS (HPSS and APSS):
+        // PROJECT USING MLS (HPSS and MLS):
         // TODO
         for( unsigned int pIt = 0 ; pIt < positions2.size() ; ++pIt ) {
             // Vec3 outputPoint; 
             // Vec3 outPutNormal;
-            HPSS(positions2[pIt], positions2[pIt], normals2[pIt],  positions, normals, kdtree, 0 , 20);
+            //void HPSS(Vec3 & inputPoint, Vec3 & outputPoint, Vec3 & outputNormal, std::vector<Vec3> const & positions, std::vector<Vec3> const & normals, BasicANNkdTree const & kdtree, int kernel_type, float h, unsigned int nbIterations=10, unsigned int knn = 20 ){
+            
+            HPSS(positions2[pIt], positions2[pIt], normals2[pIt],  positions, normals, kdtree, 5 , 0);
             // positions2[pIt] = outputPoint;
             // normals2[pIt] = outPutNormal;
 
